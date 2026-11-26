@@ -2,7 +2,7 @@
 <html lang="zh-HK">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta id="appViewportMeta" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
 <title>Manity+</title>
 <meta name="application-name" content="Manity+">
 <meta name="apple-mobile-web-app-title" content="Manity+">
@@ -56,7 +56,7 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang HK", "Microsoft JhengHei", sans-serif;
     background: var(--bg-app);
     color: var(--text-main);
-    padding-bottom: 84px;
+    padding-bottom: calc(144px + env(safe-area-inset-bottom, 24px));
   }
 
   /* ================= 手機操作介面 (Screen UI) ================= */
@@ -126,7 +126,7 @@
   }
   .tab-btn.active { color: var(--navy); border-bottom-color: var(--gold); background: #FAF8F3; }
 
-  .container { max-width: 640px; margin: 0 auto; padding: 12px; }
+  .container { max-width: 640px; margin: 0 auto; padding: 12px 12px calc(40px + env(safe-area-inset-bottom, 20px)) 12px; }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
 
@@ -165,6 +165,7 @@
     color: #111;
   }
   input:focus, select:focus, textarea:focus { outline: none; border-color: var(--navy); background: #FDFCF9; }
+  #custPhone::placeholder, #custEmail::placeholder { font-size: 12.5px; }
   .field-pending-yellow {
     background: #FEF9C3 !important;
     border-color: #EAB308 !important;
@@ -193,6 +194,49 @@
   .btn-outline { background: #fff; border: 1px solid #CCD2DA; color: #333; }
   .btn-sm { padding: 7px 11px; font-size: 12px; white-space: nowrap; }
 
+
+  /* 預設簽名命名與選擇彈窗 */
+  .sig-preset-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 290px;
+    overflow-y: auto;
+    margin-top: 8px;
+    padding-right: 2px;
+  }
+  .sig-preset-item {
+    border: 1.3px solid #DCE1E8;
+    border-radius: 10px;
+    padding: 8px 10px;
+    background: #FDFCF9;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    transition: all 0.15s ease;
+  }
+  .sig-preset-item:hover, .sig-preset-item:active {
+    border-color: var(--gold);
+    background: #FAF6EC;
+  }
+  .sig-preset-thumb-box {
+    width: 84px;
+    height: 44px;
+    border: 1px dashed #CBD5E1;
+    border-radius: 6px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .sig-preset-thumb-box img {
+    max-width: 92%;
+    max-height: 92%;
+    object-fit: contain;
+  }
 
   /* 管理員密碼驗證彈窗 */
   .pwd-modal-backdrop {
@@ -256,18 +300,182 @@
 
   /* 主頁客戶卡片：1 2 3 4 期數格子看板 */
   .cust-card-v21 {
-    border: 1.2px solid #DCE1E8;
+    border: 1.3px solid #D5C49A;
     border-radius: 11px;
-    padding: 12px;
-    margin-bottom: 10px;
+    padding: 0;
+    margin-bottom: 12px;
     background: #fff;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    box-shadow: 0 2px 6px rgba(30, 50, 80, 0.05);
+    overflow: visible;
+  }
+  .cust-card-header-band {
+    background: linear-gradient(90deg, #FBF6EA 0%, #F4E9CE 100%);
+    border-bottom: 1px solid #E5D4A8;
+    border-radius: 10px 10px 0 0;
+    padding: 8px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+  .cust-card-body {
+    padding: 10px 12px 12px 12px;
   }
   .cust-card-top {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     gap: 10px;
+  }
+  .cust-menu-wrap {
+    position: relative;
+    flex-shrink: 0;
+  }
+  .cust-dots-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid rgba(182, 154, 88, 0.55);
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--navy);
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    box-shadow: 0 1px 3px rgba(30, 50, 80, 0.08);
+  }
+  .btn-start-patrol {
+    background: linear-gradient(135deg, #C6A456 0%, #9E7C32 100%);
+    color: #fff;
+    border: 1px solid #8E6E29;
+    box-shadow: 0 2px 6px rgba(158, 124, 50, 0.28);
+    font-weight: 700;
+  }
+  .cust-dots-btn:active { transform: scale(0.94); }
+  .cust-dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: 32px;
+    background: #fff;
+    border: 1px solid #DCE1E8;
+    border-radius: 9px;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.16);
+    min-width: 118px;
+    z-index: 50;
+    display: none;
+    overflow: hidden;
+  }
+  .cust-dropdown-menu.open { display: block; }
+  .cust-dropdown-item {
+    width: 100%;
+    padding: 9px 12px;
+    border: none;
+    background: #fff;
+    text-align: left;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+  }
+  .cust-dropdown-item:active { background: #F1F5F9; }
+  .cust-dropdown-item + .cust-dropdown-item {
+    border-top: 1px solid #F1F5F9;
+  }
+  .cust-dropdown-item.danger { color: #DC2626; }
+  .cust-card-bottom-action {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .cust-schedule-summary {
+    margin-top: 7px;
+    padding: 6px 8px;
+    border-radius: 8px;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    font-size: clamp(9.2px, 2.5vw, 10.5px);
+    line-height: 1.42;
+    letter-spacing: -0.2px;
+    color: #334155;
+  }
+  .cust-schedule-summary .sched-line {
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.48;
+  }
+  .cust-schedule-summary .sched-line + .sched-line {
+    margin-top: 2px;
+  }
+  .cust-schedule-summary .sched-line-highlight {
+    margin-top: 3px;
+    font-size: clamp(10.2px, 2.75vw, 11.5px);
+    font-weight: 800;
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.45;
+  }
+  .cust-schedule-summary.due-soon {
+    background: #FFFBEB;
+    border-color: #FDE68A;
+  }
+  .cust-schedule-summary.overdue {
+    background: #FEF2F2;
+    border-color: #FECACA;
+  }
+  .cust-schedule-summary.completed {
+    background: #F0FDF4;
+    border-color: #BBF7D0;
+  }
+  .program-extra-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 1.5px 7px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+    border: 1px solid #F59E0B;
+    color: #92400E;
+    font-size: 10.5px;
+    font-weight: 800;
+    line-height: 1.25;
+    margin-left: 5px;
+    vertical-align: middle;
+  }
+  .period-slot-btn.extra-slot {
+    position: relative;
+  }
+  .period-slot-btn.extra-slot::after {
+    content: attr(data-extra-label);
+    position: absolute;
+    top: -5px;
+    right: -3px;
+    background: #D97706;
+    color: #fff;
+    font-size: 7.5px;
+    font-weight: 800;
+    padding: 0 3.5px;
+    border-radius: 6px;
+    line-height: 1.3;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.22);
+    z-index: 2;
+  }
+  .extra-insp-remark {
+    margin-top: 6px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: #FFFBEB;
+    border-left: 3px solid #D97706;
+    font-size: 11px;
+    font-weight: 600;
+    color: #92400E;
+    line-height: 1.4;
   }
   .period-slots-wrap {
     margin-top: 10px;
@@ -284,22 +492,23 @@
     align-items: center;
   }
   .period-slots-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 4px;
   }
   .period-slot-btn {
-    min-width: 48px;
-    padding: 5px 8px;
-    border-radius: 8px;
-    font-size: 12px;
+    width: 100%;
+    min-width: 0;
+    padding: 4px 1px;
+    border-radius: 6px;
+    font-size: 10.5px;
     font-weight: 700;
     cursor: pointer;
     display: inline-flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    line-height: 1.2;
+    line-height: 1.15;
     touch-action: manipulation;
     transition: transform 0.12s ease;
   }
@@ -307,24 +516,62 @@
   .period-slot-btn.done {
     background: var(--navy);
     color: #fff;
-    border: 1.5px solid var(--navy);
+    border: 1.2px solid var(--navy);
   }
   .period-slot-btn.done .slot-sub {
-    font-size: 9.5px;
+    font-size: 8px;
     font-weight: 500;
     color: var(--gold-light);
-    margin-top: 2px;
+    margin-top: 1.5px;
+    white-space: nowrap;
   }
   .period-slot-btn.empty {
     background: #F8FAFC;
-    color: #64748B;
-    border: 1.5px dashed #CBD5E1;
+    color: #94A3B8;
+    border: 1.2px dashed #CBD5E1;
+    cursor: default;
   }
   .period-slot-btn.empty .slot-sub {
-    font-size: 9.5px;
+    font-size: 8px;
     font-weight: 500;
     color: #94A3B8;
-    margin-top: 2px;
+    margin-top: 1.5px;
+    white-space: nowrap;
+  }
+
+  /* 雲端同步圓形雲朵狀態徽章 */
+  .cloud-status-orb {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: #FEF9C3;
+    color: #D97706;
+    border: 1.5px solid #FDE047;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    transition: all 0.25s ease;
+    position: relative;
+  }
+  .cloud-status-orb.ok {
+    background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+    color: #ffffff;
+    border-color: #86EFAC;
+    box-shadow: 0 2px 8px rgba(22, 163, 74, 0.32);
+  }
+  .cloud-status-orb.syncing {
+    background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%);
+    color: #ffffff;
+    border-color: #FDE68A;
+    box-shadow: 0 2px 8px rgba(217, 119, 6, 0.30);
+  }
+  .cloud-status-orb.err {
+    background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+    color: #ffffff;
+    border-color: #FECACA;
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.32);
   }
 
   /* 主頁客戶參考編號分類卡片 */
@@ -397,10 +644,34 @@
   .cat-done-badge {
     font-size: 12px;
     font-weight: 700;
-    padding: 3px 9px;
+    padding: 4px 10px;
     border-radius: 12px;
     white-space: nowrap;
     flex-shrink: 0;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: transform 0.12s ease, background 0.2s ease;
+  }
+  .cat-done-badge:active {
+    transform: scale(0.95);
+  }
+  .cat-collapse-arrow {
+    font-size: 10px;
+    opacity: 0.78;
+    margin-left: 2px;
+    transition: transform 0.2s ease;
+    display: inline-block;
+  }
+  .cat-collapse-arrow.collapsed {
+    transform: rotate(-90deg);
+  }
+  .cat-items-body.collapsed {
+    display: none;
   }
   .cat-done-badge.pending {
     background: #FEF2F2;
@@ -586,12 +857,17 @@
     display: none;
     align-items: center;
     justify-content: center;
+    padding: 6px;
     margin-bottom: 6px;
     cursor: pointer;
   }
   .photo-preview-thumb {
-    width: 100%; height: 100%;
+    max-width: 88%;
+    max-height: 88%;
+    width: auto;
+    height: auto;
     object-fit: contain;
+    border-radius: 4px;
     display: block;
   }
   .photo-placeholder {
@@ -623,30 +899,30 @@
     touch-action: none;
   }
 
-  /* 底部操作列 */
+  /* 底部操作列 (預留充足底部與左右弧形螢幕邊角安全留白) */
   .bottom-bar {
     position: fixed; bottom: 0; left: 0; right: 0;
     background: #fff; border-top: 1px solid #DDD;
-    padding: 8px 10px;
+    padding: 10px 14px calc(18px + env(safe-area-inset-bottom, 16px)) 14px;
     display: flex; gap: 8px; align-items: stretch; justify-content: space-between;
     z-index: 100;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.06);
   }
   .bottom-unified-progress {
     flex: 1.65;
     min-width: 0;
     display: flex;
     align-items: center;
-    padding: 6px 8px;
+    padding: 5px 6px;
     border-radius: 10px;
-    border: 1.5px solid #FECACA;
-    background: #FEF2F2;
+    border: 1.5px solid #FCA5A5;
+    background: #FEE2E2;
     transition: all 0.2s ease;
-    gap: 6px;
+    gap: 5px;
   }
   .bottom-unified-progress.all-done {
-    border-color: #86EFAC;
-    background: #E6F4EA;
+    border-color: #22C55E;
+    background: #DCFCE7;
   }
   .bprog-seg {
     flex: 1;
@@ -655,7 +931,13 @@
     flex-direction: column;
     justify-content: center;
     cursor: pointer;
-    padding: 1px 2px;
+    padding: 3px 4px;
+    border-radius: 7px;
+    transition: background 0.2s ease;
+  }
+  .bprog-seg.done {
+    background: #BBF7D0;
+    box-shadow: inset 0 0 0 1px #86EFAC;
   }
   .bprog-seg.wf-seg {
     flex: 0.92;
@@ -706,14 +988,51 @@
     background: #16A34A;
   }
 
-  /* ================= 100% 還原 Canva A4 列印版面 ================= */
+  /* ================= 100% 還原 Canva A4 列印版面 (支援手機螢幕自適應縮放 + 手勢縮放) ================= */
   #print-preview-wrapper {
     display: none;
     background: #525659;
-    padding: 12px 6px 90px 6px;
+    padding: 12px 8px calc(140px + env(safe-area-inset-bottom, 24px)) 8px;
     overflow-x: auto;
+    overflow-y: auto;
+    touch-action: pan-x pan-y pinch-zoom;
+    -webkit-overflow-scrolling: touch;
   }
   #print-preview-wrapper.active { display: block; }
+  .preview-toolbar {
+    position: sticky;
+    left: 0;
+    top: 8px;
+    z-index: 60;
+    width: 100%;
+    max-width: 210mm;
+    margin: 0 auto 12px auto;
+    background: #fff;
+    padding: 10px 12px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.28);
+  }
+  .a4-zoom-viewport {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    touch-action: pan-x pan-y pinch-zoom;
+  }
+  .a4-scale-slot {
+    position: relative;
+    margin: 0 auto 14px auto;
+    overflow: visible;
+    touch-action: pan-x pan-y pinch-zoom;
+  }
+  .a4-scale-slot .a4-page {
+    margin: 0 !important;
+    transform-origin: top left;
+  }
 
   .a4-page {
     width: 210mm;
@@ -937,7 +1256,8 @@
   .date-line {
     width: 48mm;
     border-bottom: 0.8pt dashed #666;
-    padding-left: 2mm;
+    text-align: center;
+    padding: 0 2mm;
     font-weight: 600;
     font-size: 8.5pt;
     min-height: 4.5mm;
@@ -963,7 +1283,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1.5mm;
+    padding: 3.2mm;
   }
   .gold-photo-num {
     position: absolute;
@@ -976,8 +1296,8 @@
     text-shadow: 0 0 3px #fff, 0 0 3px #fff;
   }
   .gold-photo-frame img {
-    max-width: 94%;
-    max-height: 92%;
+    max-width: 84%;
+    max-height: 82%;
     width: auto;
     height: auto;
     object-fit: contain;
@@ -1045,7 +1365,7 @@
     line-height: 1;
   }
 
-  /* 列印 / 匯出 PDF 專用媒體查詢 (修正第2頁後多出空白第3頁問題) */
+  /* 列印 / 匯出 PDF 專用媒體查詢 (自動還原 100% 原始 A4 尺寸) */
   @media print {
     @page { size: A4 portrait; margin: 0; }
     html, body {
@@ -1053,6 +1373,7 @@
       padding: 0 !important;
       background: #fff !important;
       height: auto !important;
+      width: 210mm !important;
     }
     .app-topbar, .tabs, .container, .bottom-bar, .preview-toolbar, .toast-msg, .pwd-modal-backdrop { display: none !important; }
     #print-preview-wrapper {
@@ -1061,15 +1382,32 @@
       padding: 0 !important;
       margin: 0 !important;
       overflow: visible !important;
+      width: 210mm !important;
+    }
+    .a4-zoom-viewport {
+      display: block !important;
+      width: 210mm !important;
+    }
+    .a4-scale-slot {
+      width: 210mm !important;
+      height: 296.5mm !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .a4-scale-slot.hide-p3-slot {
+      display: none !important;
     }
     .a4-page {
       width: 210mm !important;
       height: 296.5mm !important;
       margin: 0 !important;
       box-shadow: none !important;
+      transform: none !important;
       page-break-inside: avoid;
       break-inside: avoid;
     }
+    #slot-page-2,
+    #slot-page-3:not(.hide-p3-slot),
     #a4-page-2,
     #a4-page-3:not(.hide-p3) {
       page-break-before: always;
@@ -1081,6 +1419,35 @@
 </head>
 <body>
 
+  <!-- 儲存預設簽名：輸入正式名稱小視窗 -->
+  <div id="savePresetSigModal" class="pwd-modal-backdrop" onclick="if(event.target===this) closeSavePresetSigModal()">
+    <div class="pwd-modal-box" style="border-top-color: var(--gold); max-width: 350px;">
+      <div class="pwd-modal-title">設為預設簽名</div>
+      <div class="pwd-modal-desc" style="margin-bottom:8px;">請為此簽名輸入正式名稱（例如檢查員姓名或職銜），方便日後隨時揀選套用：</div>
+      <div style="border:1px dashed #CBD5E1; border-radius:8px; background:#FAFBFC; height:74px; display:flex; align-items:center; justify-content:center; margin-bottom:10px; padding:4px;">
+        <img id="savePresetSigPreviewImg" src="" alt="簽名預覽" style="max-height:64px; max-width:92%; object-fit:contain;">
+      </div>
+      <input type="text" id="presetSigNameInput" maxlength="30" placeholder="例如：Chan Tai Man / 首席檢查員..." onkeydown="if(event.key==='Enter') confirmSavePresetSignature()">
+      <div id="savePresetSigErr" class="pwd-modal-err">請輸入簽名名稱！</div>
+      <div style="display:flex; gap:8px; margin-top:14px;">
+        <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeSavePresetSigModal()">取消</button>
+        <button type="button" class="btn btn-gold" style="flex:1;" onclick="confirmSavePresetSignature()">確認儲存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 套用預設簽名：選擇簽名小視窗 -->
+  <div id="selectPresetSigModal" class="pwd-modal-backdrop" onclick="if(event.target===this) closeSelectPresetSigModal()">
+    <div class="pwd-modal-box" style="border-top-color: var(--navy); max-width: 370px;">
+      <div class="pwd-modal-title">選擇預設簽名</div>
+      <div class="pwd-modal-desc" style="margin-bottom:6px;">請揀選要套用到此報告的檢查人員簽名：</div>
+      <div id="selectPresetSigList" class="sig-preset-list"></div>
+      <div style="display:flex; gap:8px; margin-top:14px;">
+        <button type="button" class="btn btn-outline" style="width:100%;" onclick="closeSelectPresetSigModal()">關閉</button>
+      </div>
+    </div>
+  </div>
+
   <div id="incompleteWarnModal" class="pwd-modal-backdrop" onclick="if(event.target===this) closeIncompleteWarnModal()">
     <div class="pwd-modal-box" style="border-top-color: #DC2626; max-width: 370px;">
       <div class="pwd-modal-title" style="color:#DC2626;">⚠️ 警告：報告項目尚未完全完成</div>
@@ -1089,6 +1456,17 @@
       <div style="display:flex; gap:8px; margin-top:14px;">
         <button type="button" class="btn btn-navy" style="flex:1;" onclick="closeIncompleteWarnModal()">返回繼續填寫</button>
         <button type="button" class="btn btn-outline" style="flex:1; color:#B45309; border-color:#F59E0B;" onclick="proceedPreviewAnyway()">仍然預覽 / 出PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="confirmCancelExtraModal" class="pwd-modal-backdrop" onclick="if(event.target===this) closeConfirmCancelExtraModal()">
+    <div class="pwd-modal-box" style="border-top-color: #D97706;">
+      <div class="pwd-modal-title">確認取消額外添加？</div>
+      <div class="pwd-modal-desc" id="confirmCancelExtraDesc">確定要取消最近一次額外添加的巡訪次數嗎？</div>
+      <div style="display:flex; gap:8px; margin-top:14px;">
+        <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeConfirmCancelExtraModal()">保留</button>
+        <button type="button" class="btn" style="flex:1; background:#D97706; color:#fff;" onclick="executeConfirmedCancelExtra()">確認取消添加</button>
       </div>
     </div>
   </div>
@@ -1128,7 +1506,14 @@
           <h1 style="font-size:15px; font-weight:800; color:var(--navy); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Manity Inspection Report</h1>
         </div>
       </div>
-      <span id="cloudSyncBadge" style="font-size:11px; font-weight:700; padding:3px 9px; border-radius:999px; background:#FEF9C3; color:#B45309; border:1px solid #FDE047; white-space:nowrap; flex-shrink:0;">☁️ 連線中...</span>
+      <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v81</span>
+        <span id="cloudSyncBadge" class="cloud-status-orb syncing" title="雲端連線中..." aria-label="雲端連線狀態">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+          </svg>
+        </span>
+      </div>
     </div>
     <div class="topbar-actions-row" id="topbarActionsRow">
       <button type="button" class="btn btn-sm" id="btnBackHome" style="flex:0 0 auto; padding:6px 12px; background:#F4F6F9; color:var(--navy); border:1px solid #D5DCE4;" onclick="goHome()">← 返回主頁</button>
@@ -1153,12 +1538,11 @@
     </div>
 
     <div class="card">
-      <div class="card-title">
-        <span>按參考編號 (Ref no.) 揀選客戶</span>
-        <span id="customerCountBadge" style="font-size:11px; background:#EEF2F6; color:var(--navy); padding:2px 9px; border-radius:10px; font-weight:700;">0 位客戶</span>
-      </div>
-      <div style="margin-bottom:10px;">
+      <div style="margin-bottom:6px;">
         <input type="text" id="homeSearchInput" placeholder="🔍 搜尋參考編號 (Ref no.)、客戶姓名或單位..." oninput="renderHomeCustomerList()">
+      </div>
+      <div style="display:flex; justify-content:flex-end; align-items:center; margin-bottom:10px;">
+        <span id="customerCountBadge" style="font-size:11px; background:#EEF2F6; color:var(--navy); padding:2px 9px; border-radius:10px; font-weight:700;">0 位客戶</span>
       </div>
       <div id="homeCustomerList"></div>
     </div>
@@ -1184,23 +1568,7 @@
         <div class="form-grid">
           <div class="form-group">
             <label>Ref no. 參考編號*</label>
-            <input type="text" id="refNo" placeholder="例如: MPC-2026-001" oninput="updateCustomerFieldHighlights()">
-          </div>
-          <div class="form-group">
-            <label>Customer Name 客戶姓名</label>
-            <div style="display:flex; gap:6px; align-items:center;">
-              <select id="custTitle" style="width:74px; flex-shrink:0; padding:9px 4px; font-weight:600;" onchange="updateCustomerFieldHighlights(); scheduleAutoSave(true);">
-                <option value="">稱謂</option>
-                <option value="Mr.">Mr.</option>
-                <option value="Ms.">Ms.</option>
-                <option value="Mrs.">Mrs.</option>
-              </select>
-              <input type="text" id="custName" style="flex:1; min-width:0;" placeholder="輸入客戶名稱" oninput="updateCustomerFieldHighlights()">
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Unit no. 單位號碼</label>
-            <input type="text" id="roomNo" placeholder="例如: Unit 12A" oninput="updateCustomerFieldHighlights()">
+            <input type="text" id="refNo" placeholder="MPC-2026-001" oninput="updateCustomerFieldHighlights()">
           </div>
           <div class="form-group">
             <label>Program 項目</label>
@@ -1212,6 +1580,39 @@
             </select>
           </div>
           <div class="form-group full">
+            <label>Customer Name 客戶姓名</label>
+            <div style="display:flex; gap:6px; align-items:center;">
+              <select id="custTitle" style="width:74px; flex-shrink:0; padding:9px 4px; font-weight:600;" onchange="updateCustomerFieldHighlights(); scheduleAutoSave(true);">
+                <option value="">稱謂</option>
+                <option value="Mr.">Mr.</option>
+                <option value="Ms.">Ms.</option>
+                <option value="Mrs.">Mrs.</option>
+              </select>
+              <input type="text" id="custName" style="flex:1; min-width:0;" placeholder="輸入客戶名稱" oninput="updateCustomerFieldHighlights()">
+            </div>
+          </div>
+          <div class="form-group full" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <div class="form-group" style="min-width:0;">
+              <label>Email 客戶電郵</label>
+              <input type="text" id="custEmail" inputmode="email" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="client@email.com" oninput="handleCustEmailInput()" onblur="handleCustEmailBlur()">
+            </div>
+            <div class="form-group" style="min-width:0;">
+              <label>Contact No. 聯絡電話</label>
+              <input type="text" id="custPhone" inputmode="tel" placeholder="如 +852 9123 4567" oninput="updateCustomerFieldHighlights()" onblur="handleCustPhoneBlur(this)">
+            </div>
+          </div>
+          <div id="emailTypoBanner" class="form-group full" style="display:none; background:#FFFBEB; border:1.2px solid #F59E0B; border-radius:8px; padding:7px 10px; font-size:12px; color:#92400E; line-height:1.45;"></div>
+          <div class="form-group full" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <div class="form-group" style="min-width:0;">
+              <label>Unit no. 單位號碼</label>
+              <input type="text" id="roomNo" placeholder="例如: Unit 12A" oninput="updateCustomerFieldHighlights()">
+            </div>
+            <div class="form-group" style="min-width:0;">
+              <label>Floor 樓層</label>
+              <input type="text" id="floorNo" placeholder="例如: 12/F" oninput="scheduleAutoSave(true)">
+            </div>
+          </div>
+          <div class="form-group full">
             <label>Address 地址</label>
             <input type="text" id="address" placeholder="輸入屋苑及地址" oninput="updateCustomerFieldHighlights()">
           </div>
@@ -1219,30 +1620,32 @@
             <label>Period 服務期 (日/月/年 至 日/月/年)</label>
             <div style="display:flex; align-items:center; gap:6px;">
               <div style="position:relative; flex:1; display:flex; align-items:center;">
-                <input type="text" id="periodStartDisplay" inputmode="numeric" maxlength="10" placeholder="日/月/年 (DD/MM/YYYY)" style="padding-right:30px;" oninput="handleDMYTextInput('start', this)">
+                <input type="text" id="periodStartDisplay" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" style="padding-right:28px;" oninput="handleDMYTextInput('start', this)">
                 <input type="date" id="periodStart" style="position:absolute; right:4px; width:26px; height:28px; opacity:0; cursor:pointer;" onchange="handlePeriodStartChange(); updateCustomerFieldHighlights();">
                 <span style="position:absolute; right:7px; pointer-events:none; font-size:14px;">📅</span>
               </div>
               <span style="font-weight:700; color:#555; font-size:13px;">至</span>
               <div style="position:relative; flex:1; display:flex; align-items:center;">
-                <input type="text" id="periodEndDisplay" inputmode="numeric" maxlength="10" placeholder="日/月/年 (DD/MM/YYYY)" style="padding-right:30px;" oninput="handleDMYTextInput('end', this)">
+                <input type="text" id="periodEndDisplay" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" style="padding-right:28px;" oninput="handleDMYTextInput('end', this)">
                 <input type="date" id="periodEnd" style="position:absolute; right:4px; width:26px; height:28px; opacity:0; cursor:pointer;" onchange="handlePeriodEndPickerChange(); updateCustomerFieldHighlights();">
                 <span style="position:absolute; right:7px; pointer-events:none; font-size:14px;">📅</span>
               </div>
             </div>
             <input type="hidden" id="period">
           </div>
-          <div class="form-group">
-            <label>Date 到訪日</label>
-            <input type="date" id="inspDate" onchange="updateCustomerFieldHighlights()">
-          </div>
-          <div class="form-group">
-            <label>Inspection 檢查次數</label>
-            <input type="number" id="inspNo" value="1" min="1" oninput="updateCustomerFieldHighlights()">
-          </div>
-          <div class="form-group">
-            <label>of Total (總次數 6 / 12)</label>
-            <input type="number" id="inspTotal" value="" placeholder="選方案自動帶入 (4/6/8)" min="1" oninput="updateCustomerFieldHighlights()">
+          <div class="form-group full" style="display:grid; grid-template-columns:1.38fr 0.81fr 0.81fr; gap:6px; align-items:end;">
+            <div class="form-group" style="min-width:0;">
+              <label style="white-space:nowrap;">Date 到訪日</label>
+              <input type="date" id="inspDate" style="padding:9px 6px; font-size:13px;" onchange="updateCustomerFieldHighlights()">
+            </div>
+            <div class="form-group" style="min-width:0;">
+              <label style="white-space:nowrap; font-size:11.5px;">Inspection 檢查次數</label>
+              <input type="number" id="inspNo" value="1" min="1" style="padding:9px 6px; text-align:center;" oninput="updateCustomerFieldHighlights()" onblur="handleInspNoBlurOrChange(this)">
+            </div>
+            <div class="form-group" style="min-width:0;">
+              <label style="white-space:nowrap; font-size:11.5px;">of Total 總次數 <span id="inspTotalHintSub"></span></label>
+              <input type="number" id="inspTotal" value="" placeholder="4/6/8" min="1" style="padding:9px 6px; text-align:center;" oninput="updateCustomerFieldHighlights()" onblur="handleInspTotalBlurOrChange(this)">
+            </div>
           </div>
         </div>
         <div style="margin-top:10px; display:flex; gap:8px;">
@@ -1272,23 +1675,21 @@
             <span class="textarea-counter-pill" id="notesCharCounter">剩餘 78 字</span>
           </div>
         </div>
+        <div style="margin-top:12px; display:flex; gap:8px;">
+          <button type="button" class="btn btn-navy" style="width:100%;" onclick="saveChecklistAndNotes()">儲存檢查清單</button>
+        </div>
       </div>
 
       <div class="card">
         <div class="card-title">
           <span>檢查人員簽名</span>
-          <div style="display:flex; gap:6px;">
-            <button type="button" class="btn btn-gold btn-sm" onclick="savePresetSignature()">設為預設簽名</button>
-            <button type="button" class="btn btn-outline btn-sm" onclick="clearSignature()">清除/重簽</button>
-          </div>
         </div>
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; gap:6px; flex-wrap:wrap;">
-          <label style="margin:0;">手寫簽名 或 上載預設簽名圖檔：</label>
-          <div style="display:flex; gap:6px;">
-            <input type="file" accept="image/*" id="sigImgInput" style="display:none;" onchange="handleSigImgUpload(event)">
-            <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('sigImgInput').click()">📷 上載簽名圖</button>
-            <button type="button" class="btn btn-navy btn-sm" onclick="applyPresetSignature()">套用預設簽名</button>
-          </div>
+        <div style="display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:5px; margin-bottom:8px;">
+          <input type="file" accept="image/*" id="sigImgInput" style="display:none;" onchange="handleSigImgUpload(event)">
+          <button type="button" class="btn btn-outline btn-sm" style="padding:7px 2px; font-size:11px;" onclick="document.getElementById('sigImgInput').click()">📷 上載簽名圖</button>
+          <button type="button" class="btn btn-navy btn-sm" style="padding:7px 2px; font-size:11px;" onclick="applyPresetSignature()">套用預設簽名</button>
+          <button type="button" class="btn btn-gold btn-sm" style="padding:7px 2px; font-size:11px;" onclick="savePresetSignature()">設為預設簽名</button>
+          <button type="button" class="btn btn-outline btn-sm" style="padding:7px 2px; font-size:11px;" onclick="clearSignature()">清除/重簽</button>
         </div>
         <div style="position:relative;">
           <canvas id="sigCanvas"></canvas>
@@ -1328,9 +1729,9 @@
           <span>Workflow for internal use (第 3 頁)</span>
           <span class="cat-done-badge pending" id="wfHeaderBadge"><span class="lamp-dot red"></span>未儲存</span>
         </div>
-        <div style="background:#FFF8E7; padding:8px 10px; border-radius:8px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
-          <span style="font-size:13px; font-weight:600; color:#7A5C12;">匯出 PDF 時包含第 3 頁內部核對表</span>
-          <input type="checkbox" id="includePage3" style="width:20px; height:20px; accent-color:var(--navy);" onchange="markWorkflowDirty()">
+        <div style="background:linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); border:1.8px solid #F59E0B; box-shadow:0 2px 6px rgba(245, 158, 11, 0.22); padding:10px 0 10px 11px; border-radius:9px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; gap:8px;">
+          <span style="font-size:14.5px; font-weight:800; color:#92400E; letter-spacing:0.2px; display:flex; align-items:center; gap:5px;">📄 匯出 PDF 時包含第 3 頁內部核對表</span>
+          <input type="checkbox" id="includePage3" class="wf-check" style="margin:0; flex-shrink:0;" onchange="markWorkflowDirty()">
         </div>
         <div id="workflowFormUI"></div>
         <div style="margin-top:14px; display:flex; gap:8px;">
@@ -1364,12 +1765,15 @@
 
   <!-- ================= A4 預覽與匯出視窗 ================= -->
   <div id="print-preview-wrapper">
-    <div class="preview-toolbar" style="max-width:210mm; margin:0 auto 12px auto; background:#fff; padding:10px 14px; border-radius:10px; display:flex; justify-content:space-between; align-items:center; gap:8px;">
-      <button type="button" class="btn btn-outline" onclick="togglePreview(false)">← 返回修改</button>
-      <button type="button" id="toolbarExportBtn" class="btn btn-navy" onclick="exportReportPDF()">列印 / 匯出 PDF</button>
+    <div class="preview-toolbar">
+      <button type="button" class="btn btn-outline" style="padding:8px 12px; font-size:13px;" onclick="togglePreview(false)">← 返回修改</button>
+      <span style="font-size:11.5px; color:#64748B; font-weight:600; text-align:center;">雙指可放大縮小檢視</span>
+      <button type="button" id="toolbarExportBtn" class="btn btn-navy" style="padding:8px 14px; font-size:13px;" onclick="exportReportPDF()">列印 / 匯出 PDF</button>
     </div>
 
+    <div class="a4-zoom-viewport" id="a4ZoomViewport">
     <!-- PAGE 1 -->
+    <div class="a4-scale-slot" id="slot-page-1">
     <div class="a4-page" id="a4-page-1">
       <div class="rpt-header" id="hdr-p1"></div>
       <div class="meta-grid" id="meta-p1"></div>
@@ -1407,8 +1811,10 @@
       </div>
       <div class="page-num-red">1</div>
     </div>
+    </div>
 
     <!-- PAGE 2 -->
+    <div class="a4-scale-slot" id="slot-page-2">
     <div class="a4-page" id="a4-page-2">
       <div class="rpt-header" id="hdr-p2"></div>
       <div class="meta-grid" id="meta-p2"></div>
@@ -1416,8 +1822,10 @@
       <div class="p2-grid" id="p2PhotoGrid"></div>
       <div class="page-num-red">2</div>
     </div>
+    </div>
 
     <!-- PAGE 3 -->
+    <div class="a4-scale-slot" id="slot-page-3">
     <div class="a4-page" id="a4-page-3">
       <div class="rpt-header" id="hdr-p3"></div>
       <div class="meta-grid" id="meta-p3"></div>
@@ -1425,11 +1833,14 @@
       <div class="p3-body" id="p3WorkflowBody"></div>
       <div class="page-num-red">3</div>
     </div>
+    </div>
+    </div>
   </div>
 
 <!-- Firebase App & Cloud Firestore SDK (Instant Multi-Device Real-Time Sync) -->
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
 // ================= Firebase 雲端即時同步引擎 (v44) =================
 const FIREBASE_CONFIG = {
@@ -1448,20 +1859,16 @@ let _fbPhotoFetchToken = 0;
 function setCloudSyncBadge(state, text) {
   const el = document.getElementById("cloudSyncBadge");
   if (!el) return;
+  el.classList.remove("ok", "syncing", "err");
   if (state === "ok") {
-    el.style.background = "#E6F4EA";
-    el.style.color = "#16A34A";
-    el.style.borderColor = "#A7F3D0";
+    el.classList.add("ok");
   } else if (state === "syncing") {
-    el.style.background = "#FEF9C3";
-    el.style.color = "#B45309";
-    el.style.borderColor = "#FDE047";
+    el.classList.add("syncing");
   } else {
-    el.style.background = "#FEF2F2";
-    el.style.color = "#DC2626";
-    el.style.borderColor = "#FECACA";
+    el.classList.add("err");
   }
-  el.textContent = text;
+  el.title = text || "";
+  el.setAttribute("aria-label", text || "雲端狀態");
 }
 
 function encodeFbId(str) {
@@ -1499,14 +1906,19 @@ function initFirebaseRealtimeSync() {
             refNo: ref,
             custTitle: data.custTitle || "",
             custName: data.custName || "",
+            custPhone: data.custPhone || "",
+            custEmail: data.custEmail || "",
             roomNo: data.roomNo || "",
+            floorNo: data.floorNo || "",
             address: data.address || "",
             program: data.program || "",
             period: data.period || "",
             periodStart: data.periodStart || "",
             periodEnd: data.periodEnd || "",
             lastInspNo: data.lastInspNo || 0,
-            inspTotal: data.inspTotal || ""
+            inspTotal: data.inspTotal || "",
+            extraInspections: parseInt(data.extraInspections || "0", 10) || 0,
+            extraInspectionNotes: Array.isArray(data.extraInspectionNotes) ? data.extraInspectionNotes : []
           };
           changed = true;
         }
@@ -1514,6 +1926,25 @@ function initFirebaseRealtimeSync() {
 
       if (changed) {
         setCustomers(localDb);
+        const curOpenRef = (document.getElementById("refNo")?.value || "").trim();
+        if (curOpenRef && localDb[curOpenRef]) {
+          const syncedC = localDb[curOpenRef];
+          const syncedCounts = calculateProgramInspectionCounts(syncedC.program, syncedC.inspTotal, syncedC.extraInspections);
+          const totEl = document.getElementById("inspTotal");
+          if (totEl && String(totEl.value) !== String(syncedCounts.safeTotal)) {
+            totEl.value = syncedCounts.safeTotal;
+          }
+          const noEl = document.getElementById("inspNo");
+          if (noEl && (parseInt(noEl.value || "1", 10) || 1) > syncedCounts.safeTotal) {
+            noEl.value = syncedCounts.safeTotal;
+          }
+          if (typeof updateCustomerFieldHighlights === "function") {
+            updateCustomerFieldHighlights();
+          }
+          if (typeof updatePreview === "function") {
+            updatePreview();
+          }
+        }
         if (typeof renderHomeCustomerList === "function") {
           renderHomeCustomerList();
         }
@@ -1591,14 +2022,29 @@ function initFirebaseRealtimeSync() {
       console.warn("Firestore reports listener error:", err);
     });
 
-    // 3. 同步預設簽名 (settings/preset_signature)
+    // 3. 同步預設簽名庫 (settings/preset_signature，支援多個具名簽名)
     fbDb.collection("settings").doc("preset_signature").onSnapshot(doc => {
-      if (doc.exists && doc.data() && doc.data().sigDataUrl) {
-        const cloudSig = doc.data().sigDataUrl;
-        window._presetSigMem = cloudSig;
-        try { localStorage.setItem("manity_preset_sig", cloudSig); } catch (e) {}
+      if (!doc.exists || !doc.data()) return;
+      const d = doc.data();
+      let list = [];
+      if (Array.isArray(d.signatures) && d.signatures.length > 0) {
+        list = d.signatures.filter(item => item && item.sigDataUrl);
+      } else if (d.sigDataUrl) {
+        list = [{ id: "default_1", name: d.name || "預設簽名 1", sigDataUrl: d.sigDataUrl, updatedAtMs: d.updatedAtMs || Date.now() }];
+      }
+      if (list.length > 0) {
+        window._presetSigListMem = list;
+        window._presetSigMem = list[0].sigDataUrl;
+        try {
+          localStorage.setItem("manity_preset_sigs_v2", JSON.stringify(list));
+          localStorage.setItem("manity_preset_sig", list[0].sigDataUrl);
+        } catch (e) {}
         if (typeof sigDataUrl !== "undefined" && !sigDataUrl && typeof setSignatureImage === "function") {
-          setSignatureImage(cloudSig);
+          setSignatureImage(list[0].sigDataUrl);
+        }
+        const selModal = document.getElementById("selectPresetSigModal");
+        if (selModal && selModal.classList.contains("active") && typeof renderSelectPresetSigList === "function") {
+          renderSelectPresetSigList();
         }
       }
     }, () => {});
@@ -1775,11 +2221,13 @@ async function deleteCloudCustomerAndAllReports(ref) {
   } catch (e) {}
 }
 
-async function syncPresetSignatureToCloud(dataUrl) {
-  if (!fbDb || !dataUrl) return;
+async function syncPresetSignatureListToCloud(list) {
+  if (!fbDb) return;
   try {
+    const cleanList = Array.isArray(list) ? list : [];
     await fbDb.collection("settings").doc("preset_signature").set({
-      sigDataUrl: dataUrl,
+      signatures: cleanList,
+      sigDataUrl: cleanList.length > 0 ? cleanList[0].sigDataUrl : "",
       updatedAtMs: Date.now()
     });
   } catch (e) {}
@@ -2117,6 +2565,7 @@ function saveCurrentReportToHistory() {
     custTitle: document.getElementById("custTitle")?.value || "",
     custName: document.getElementById("custName")?.value || "",
     roomNo: document.getElementById("roomNo")?.value || "",
+      floorNo: document.getElementById("floorNo")?.value || "",
     address: document.getElementById("address")?.value || "",
     program: document.getElementById("program")?.value || "",
     period: document.getElementById("period")?.value || "",
@@ -2140,9 +2589,13 @@ function applyReportRecordToEditor(ref, rec) {
   _activeCustomerKey = ref;
   document.getElementById("refNo").value = ref;
   const parsedRecName = splitCustTitleAndName(rec.custTitle, rec.custName);
+  const fallbackCust = getCustomers()[ref] || {};
   document.getElementById("custTitle").value = parsedRecName.title;
   document.getElementById("custName").value = parsedRecName.name;
+  document.getElementById("custPhone").value = formatSmartContactPhone(rec.custPhone || fallbackCust.custPhone || "");
+  document.getElementById("custEmail").value = rec.custEmail || fallbackCust.custEmail || "";
   document.getElementById("roomNo").value = rec.roomNo || "";
+  if (document.getElementById("floorNo")) document.getElementById("floorNo").value = rec.floorNo || fallbackCust.floorNo || "";
   document.getElementById("address").value = rec.address || "";
   document.getElementById("program").value = rec.program || "";
   document.getElementById("periodStart").value = rec.periodStart || "";
@@ -2224,7 +2677,7 @@ function startSpecificPeriodForCustomer(e, ref, targetInspNo) {
 function getCustomerNextEmptySlot(ref) {
   const c = getCustomers()[ref];
   if (!c) return { total: 4, nextEmpty: 1, completedCount: 0, isAllDone: false };
-  const total = parseInt(c.inspTotal || "0", 10) || PROGRAM_TOTAL_MAP[c.program] || 4;
+  const total = calculateProgramInspectionCounts(c.program, c.inspTotal, c.extraInspections).safeTotal;
   const hist = getReportsHistory();
   const custHist = hist[ref] || {};
   let nextEmpty = null;
@@ -2282,8 +2735,11 @@ function performAutoSave() {
       activeCustomerKey: _activeCustomerKey,
       refNo: document.getElementById("refNo")?.value || "",
       custTitle: document.getElementById("custTitle")?.value || "",
-    custName: document.getElementById("custName")?.value || "",
+      custName: document.getElementById("custName")?.value || "",
+      custPhone: document.getElementById("custPhone")?.value || "",
+      custEmail: document.getElementById("custEmail")?.value || "",
       roomNo: document.getElementById("roomNo")?.value || "",
+      floorNo: document.getElementById("floorNo")?.value || "",
       program: document.getElementById("program")?.value || "",
       address: document.getElementById("address")?.value || "",
       period: document.getElementById("period")?.value || "",
@@ -2323,10 +2779,21 @@ function performAutoSave() {
       const savedNos = hist[ref] ? Object.keys(hist[ref]).map(n => parseInt(n, 10)).filter(n => !isNaN(n)) : [];
       const maxCompletedNo = savedNos.length > 0 ? Math.max(...savedNos) : 0;
 
+      const prevCustObj = db[ref] || {};
+      const counts = calculateProgramInspectionCounts(
+        draft.program,
+        parseInt(draft.inspTotal || "0", 10) || prevCustObj.inspTotal || 0,
+        prevCustObj.extraInspections || 0
+      );
+      const preservedNotes = Array.isArray(prevCustObj.extraInspectionNotes)
+        ? prevCustObj.extraInspectionNotes.slice(0, counts.extraCount)
+        : [];
       db[ref] = {
         refNo: ref,
         custTitle: draft.custTitle,
         custName: draft.custName,
+        custPhone: (draft.custPhone || "").trim() || prevCustObj.custPhone || "",
+        custEmail: (draft.custEmail || "").trim() || prevCustObj.custEmail || "",
         roomNo: draft.roomNo,
         address: draft.address,
         program: draft.program,
@@ -2334,7 +2801,9 @@ function performAutoSave() {
         periodStart: draft.periodStart,
         periodEnd: draft.periodEnd,
         lastInspNo: maxCompletedNo,
-        inspTotal: parseInt(draft.inspTotal || "0", 10) || (db[ref]?.inspTotal || "")
+        inspTotal: counts.safeTotal,
+        extraInspections: counts.extraCount,
+        extraInspectionNotes: preservedNotes
       };
       setCustomers(db);
       syncCustomerToCloud(db[ref]);
@@ -2384,7 +2853,10 @@ function restoreAutoSavedDraft() {
     const parsedDraftName = splitCustTitleAndName(d.custTitle, d.custName);
     document.getElementById("custTitle").value = parsedDraftName.title;
     document.getElementById("custName").value = parsedDraftName.name;
+    document.getElementById("custPhone").value = formatSmartContactPhone(d.custPhone || "");
+    document.getElementById("custEmail").value = d.custEmail || "";
     document.getElementById("roomNo").value = d.roomNo || "";
+    if (document.getElementById("floorNo")) document.getElementById("floorNo").value = d.floorNo || "";
     document.getElementById("address").value = d.address || "";
     document.getElementById("program").value = d.program || "";
     document.getElementById("periodStart").value = d.periodStart || "";
@@ -2540,15 +3012,7 @@ function closeAdminPwdModal() {
 }
 
 function submitAdminPwdModal() {
-  const val = (document.getElementById("adminPwdInput").value || "").trim();
-  if (val !== ADMIN_DELETE_PWD) {
-    const err = document.getElementById("adminPwdErr");
-    err.style.display = "block";
-    const inp = document.getElementById("adminPwdInput");
-    inp.focus();
-    inp.select();
-    return;
-  }
+  // 暫時免驗證管理員密碼：保留輸入框畫面，直接撳「確認刪除」即可執行
   const fn = _pendingAdminAction;
   closeAdminPwdModal();
   if (typeof fn === "function") fn();
@@ -2597,6 +3061,338 @@ function deleteCustomerProfile(e, ref) {
   );
 }
 
+function addExtraInspectionForCustomer(e, ref) {
+  if (e) e.stopPropagation();
+  document.querySelectorAll(".cust-dropdown-menu.open").forEach(m => m.classList.remove("open"));
+  const db = getCustomers();
+  const c = db[ref];
+  if (!c) return;
+
+  const curCounts = calculateProgramInspectionCounts(c.program, c.inspTotal, c.extraInspections);
+  const newTotal = curCounts.safeTotal + 1;
+  const newExtra = curCounts.extraCount + 1;
+
+  const todayDmy = formatDateObjDMY(new Date());
+  const notesArr = Array.isArray(c.extraInspectionNotes) ? [...c.extraInspectionNotes] : [];
+  notesArr.push({
+    slotNo: newTotal,
+    extraIndex: newExtra,
+    addedDate: todayDmy,
+    text: `額外第 ${newExtra} 次加單（第 ${newTotal} 次巡訪，${todayDmy} 新增，累計 +${newExtra}）`
+  });
+
+  c.inspTotal = newTotal;
+  c.extraInspections = newExtra;
+  c.extraInspectionNotes = notesArr;
+  db[ref] = c;
+  setCustomers(db);
+  syncCustomerToCloud(c);
+
+  // 同步更新該客戶所有過往報告的 inspTotal，確保打開任何一期報告亦顯示最新總次數
+  const hist = getReportsHistory();
+  if (hist[ref]) {
+    Object.keys(hist[ref]).forEach(k => {
+      if (hist[ref][k]) {
+        hist[ref][k].inspTotal = newTotal;
+        syncReportAndPhotosToCloud(ref, hist[ref][k]);
+      }
+    });
+    setReportsHistory(hist);
+  }
+
+  // 若目前編輯區正開啟該客戶，同步更新總次數欄位、細字提示與預覽
+  const curRef = (document.getElementById("refNo")?.value || "").trim();
+  if (curRef === ref) {
+    const totEl = document.getElementById("inspTotal");
+    if (totEl) totEl.value = newTotal;
+    updateCustomerFieldHighlights();
+    if (typeof updatePreview === "function") updatePreview();
+  }
+
+  renderHomeCustomerList();
+  showToast(`✓ 已為 [${ref}] 添加 1 次檢查（總次數更新為 ${newTotal} 次）`);
+}
+
+let _pendingCancelExtraRef = "";
+
+function closeConfirmCancelExtraModal() {
+  const m = document.getElementById("confirmCancelExtraModal");
+  if (m) m.classList.remove("active");
+  _pendingCancelExtraRef = "";
+}
+
+function executeConfirmedCancelExtra() {
+  const ref = _pendingCancelExtraRef;
+  closeConfirmCancelExtraModal();
+  if (ref) performCancelExtraInspection(ref, true);
+}
+
+function cancelExtraInspectionForCustomer(e, ref) {
+  if (e) e.stopPropagation();
+  document.querySelectorAll(".cust-dropdown-menu.open").forEach(m => m.classList.remove("open"));
+  const db = getCustomers();
+  const c = db[ref];
+  if (!c) return;
+
+  const counts = calculateProgramInspectionCounts(c.program, c.inspTotal, c.extraInspections);
+  if (!counts.canCancelExtra) {
+    showToast(`⚠️ [${ref}] 目前為方案應有基礎次數（${counts.basePlanTotal} 次），不可再減少`);
+    return;
+  }
+
+  const curTotal = counts.safeTotal;
+  const hist = getReportsHistory();
+  const hasReportOnLastSlot = !!(hist[ref] && hist[ref][String(curTotal)]);
+
+  if (hasReportOnLastSlot) {
+    _pendingCancelExtraRef = ref;
+    const descEl = document.getElementById("confirmCancelExtraDesc");
+    if (descEl) {
+      descEl.textContent = `客戶 [${ref}] 的第 ${curTotal} 次（額外 +${counts.extraCount}）已有儲存的檢查報告紀錄。若取消此次添加，該期報告紀錄亦會一併移除，確定要取消嗎？`;
+    }
+    const modal = document.getElementById("confirmCancelExtraModal");
+    if (modal) modal.classList.add("active");
+    return;
+  }
+
+  performCancelExtraInspection(ref, false);
+}
+
+function performCancelExtraInspection(ref, deleteSlotReport) {
+  const db = getCustomers();
+  const c = db[ref];
+  if (!c) return;
+
+  const counts = calculateProgramInspectionCounts(c.program, c.inspTotal, c.extraInspections);
+  if (!counts.canCancelExtra) {
+    showToast(`⚠️ [${ref}] 不可少於方案應有次數（${counts.basePlanTotal} 次）`);
+    return;
+  }
+
+  const curTotal = counts.safeTotal;
+  const newTotal = Math.max(counts.basePlanTotal, curTotal - 1);
+  const newExtra = Math.max(0, newTotal - counts.basePlanTotal);
+
+  const notesArr = Array.isArray(c.extraInspectionNotes) ? [...c.extraInspectionNotes] : [];
+  if (notesArr.length > 0) {
+    notesArr.pop();
+  }
+
+  c.inspTotal = newTotal;
+  c.extraInspections = newExtra;
+  c.extraInspectionNotes = notesArr;
+  db[ref] = c;
+  setCustomers(db);
+  syncCustomerToCloud(c);
+
+  const hist = getReportsHistory();
+  if (hist[ref]) {
+    if (deleteSlotReport && hist[ref][String(curTotal)]) {
+      delete hist[ref][String(curTotal)];
+      deleteCloudPeriodReport(ref, curTotal);
+    }
+    Object.keys(hist[ref]).forEach(k => {
+      if (hist[ref][k]) {
+        hist[ref][k].inspTotal = newTotal;
+        syncReportAndPhotosToCloud(ref, hist[ref][k]);
+      }
+    });
+    setReportsHistory(hist);
+  }
+
+  const curRef = (document.getElementById("refNo")?.value || "").trim();
+  if (curRef === ref) {
+    const totEl = document.getElementById("inspTotal");
+    if (totEl) totEl.value = newTotal;
+    const noEl = document.getElementById("inspNo");
+    if (noEl && (parseInt(noEl.value || "1", 10) || 1) > newTotal) {
+      noEl.value = newTotal;
+    }
+    updateCustomerFieldHighlights();
+    if (typeof updatePreview === "function") updatePreview();
+  }
+
+  renderHomeCustomerList();
+  showToast(`✓ 已取消 [${ref}] 1 次額外添加（總次數恢復為 ${newTotal} 次）`);
+}
+
+function toggleCustCardMenu(e, btnEl) {
+  if (e) e.stopPropagation();
+  const menu = btnEl.nextElementSibling;
+  const isOpen = menu && menu.classList.contains("open");
+  document.querySelectorAll(".cust-dropdown-menu.open").forEach(m => m.classList.remove("open"));
+  if (menu && !isOpen) menu.classList.add("open");
+}
+
+document.addEventListener("click", () => {
+  document.querySelectorAll(".cust-dropdown-menu.open").forEach(m => m.classList.remove("open"));
+});
+
+function editCustomerProfileFromHome(e, ref) {
+  if (e) e.stopPropagation();
+  document.querySelectorAll(".cust-dropdown-menu.open").forEach(m => m.classList.remove("open"));
+  openEditor();
+  newCustomer();
+  loadCustomer(ref);
+  switchTab(0);
+}
+
+function parseIsoLocalMidnight(isoStr) {
+  if (!isoStr || typeof isoStr !== "string") return null;
+  const parts = isoStr.split("-");
+  if (parts.length !== 3) return null;
+  const y = parseInt(parts[0], 10);
+  const m = parseInt(parts[1], 10);
+  const d = parseInt(parts[2], 10);
+  if (!y || !m || !d) return null;
+  return new Date(y, m - 1, d);
+}
+
+function formatDateObjDMY(dt) {
+  if (!(dt instanceof Date) || isNaN(dt.getTime())) return "";
+  const dd = String(dt.getDate()).padStart(2, "0");
+  const mm = String(dt.getMonth() + 1).padStart(2, "0");
+  const yyyy = dt.getFullYear();
+  return `${dd}/${mm}/${yyyy}`;
+}
+
+function buildCustomerScheduleSentence(c, custHist, total, isAllDone) {
+  const MS_PER_DAY = 24 * 60 * 60 * 1000;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // 服務期計算平均間隔日數
+  const startDt = parseIsoLocalMidnight(c.periodStart);
+  const endDt = parseIsoLocalMidnight(c.periodEnd);
+  let totalPeriodDays = 365;
+  if (startDt && endDt && endDt >= startDt) {
+    totalPeriodDays = Math.max(1, Math.round((endDt - startDt) / MS_PER_DAY) + 1);
+  }
+  const safeTotal = Math.max(1, parseInt(total, 10) || 1);
+  const avgIntervalDays = Math.max(1, Math.round(totalPeriodDays / safeTotal));
+
+  const startStr = startDt ? formatDateObjDMY(startDt) : (c.period ? String(c.period).split(/\s*(?:至|-)\s*/)[0] : "未設定");
+  const programName = c.program || "服務";
+
+  // 收集所有已存報告並按期數排序
+  const periodKeys = Object.keys(custHist || {})
+    .map(k => parseInt(k, 10))
+    .filter(n => !isNaN(n) && custHist[String(n)])
+    .sort((a, b) => a - b);
+
+  // 首次巡查日期（優先取第 1 期，否則取最早一期有日期的紀錄）
+  let firstInspDt = null;
+  for (const k of periodKeys) {
+    const dt = parseIsoLocalMidnight(custHist[String(k)]?.inspDate);
+    if (dt) {
+      firstInspDt = dt;
+      break;
+    }
+  }
+
+  // 上次巡查日期（取最新一期有日期的紀錄）
+  let lastInspDt = null;
+  for (let i = periodKeys.length - 1; i >= 0; i--) {
+    const dt = parseIsoLocalMidnight(custHist[String(periodKeys[i])]?.inspDate);
+    if (dt) {
+      lastInspDt = dt;
+      break;
+    }
+  }
+
+  const hlNavy = (txt) => `<b style="color:var(--navy);">${txt}</b>`;
+  const hlGold = (txt) => `<b style="color:#8C6D23;">${txt}</b>`;
+
+  const extraCount = calculateProgramInspectionCounts(c.program, safeTotal, c.extraInspections).extraCount;
+  const totalCountLabel = extraCount > 0
+    ? `${hlNavy(safeTotal)} 次巡查<span style="color:#B45309; font-weight:700;">（含額外增加 ${extraCount} 次）</span>`
+    : `${hlNavy(safeTotal)} 次巡查`;
+
+  // 情況 1：所有巡查次數已全部完成
+  if (isAllDone) {
+    const firstLineHtml = firstInspDt
+      ? `<div class="sched-line">首次巡查為 ${hlNavy(formatDateObjDMY(firstInspDt))}，按服務期平均每 ${hlNavy(avgIntervalDays)} 日巡查一次。</div>`
+      : `<div class="sched-line">按服務期平均每 ${hlNavy(avgIntervalDays)} 日巡查一次。</div>`;
+    const lastLineHtml = lastInspDt
+      ? `<div class="sched-line">最後一次巡查為 ${hlNavy(formatDateObjDMY(lastInspDt))}，</div>`
+      : "";
+    return `
+      <div class="cust-schedule-summary completed">
+        <div class="sched-line">⏱️ 客戶由 ${hlNavy(startStr)} 開始使用 ${hlGold(programName)}（共 ${totalCountLabel}）。</div>
+        ${firstLineHtml}
+        ${lastLineHtml}
+        <div class="sched-line-highlight" style="color:#1E8E3E;">✓ 已完成全部巡查服務。</div>
+      </div>`;
+  }
+
+  // 情況 2：尚未有任何巡查日期紀錄
+  if (!lastInspDt) {
+    const suggestStr = startDt ? formatDateObjDMY(startDt) : "近期";
+    let statusColor = "#0369A1";
+    let boxClass = "";
+    let statusBadge = "";
+    if (startDt) {
+      const diffFromStart = Math.round((startDt - today) / MS_PER_DAY);
+      if (diffFromStart < 0) {
+        statusColor = "#DC2626";
+        boxClass = "overdue";
+        statusBadge = `（已過啟用日 ${Math.abs(diffFromStart)} 日）`;
+      } else if (diffFromStart <= 7) {
+        statusColor = "#D97706";
+        boxClass = "due-soon";
+        statusBadge = `（尚餘 ${diffFromStart} 日）`;
+      } else {
+        statusBadge = `（尚餘 ${diffFromStart} 日）`;
+      }
+    }
+    return `
+      <div class="cust-schedule-summary ${boxClass}">
+        <div class="sched-line">⏱️ 客戶由 ${hlNavy(startStr)} 開始使用 ${hlGold(programName)}（共 ${totalCountLabel}）。</div>
+        <div class="sched-line">按服務期平均每 ${hlNavy(avgIntervalDays)} 日巡查一次，尚未進行首次巡查，</div>
+        <div class="sched-line-highlight" style="color:${statusColor};">建議於 ${suggestStr} 起安排${statusBadge}。</div>
+      </div>`;
+  }
+
+  // 情況 3：已有巡查紀錄，計算距離上次日數及預計下次巡查日期
+  const daysSinceLast = Math.round((today - lastInspDt) / MS_PER_DAY);
+  const sinceText = daysSinceLast === 0
+    ? `即今日`
+    : (daysSinceLast > 0 ? `距今 ${hlNavy(daysSinceLast)} 日` : `將於 ${hlNavy(Math.abs(daysSinceLast))} 日後`);
+
+  const nextDt = new Date(lastInspDt.getTime() + avgIntervalDays * MS_PER_DAY);
+  const nextStr = formatDateObjDMY(nextDt);
+  const daysUntilNext = Math.round((nextDt - today) / MS_PER_DAY);
+
+  let nextColor = "#0369A1";
+  let boxClass = "";
+  let remainText = "";
+  if (daysUntilNext < 0) {
+    nextColor = "#DC2626";
+    boxClass = "overdue";
+    remainText = `（已逾期 ${Math.abs(daysUntilNext)} 日）`;
+  } else if (daysUntilNext === 0) {
+    nextColor = "#D97706";
+    boxClass = "due-soon";
+    remainText = `（今日到期）`;
+  } else if (daysUntilNext <= 7) {
+    nextColor = "#D97706";
+    boxClass = "due-soon";
+    remainText = `（尚餘 ${daysUntilNext} 日）`;
+  } else {
+    remainText = `（尚餘 ${daysUntilNext} 日）`;
+  }
+
+  const firstStr = firstInspDt ? formatDateObjDMY(firstInspDt) : formatDateObjDMY(lastInspDt);
+
+  return `
+    <div class="cust-schedule-summary ${boxClass}">
+      <div class="sched-line">⏱️ 客戶由 ${hlNavy(startStr)} 開始使用 ${hlGold(programName)}（共 ${totalCountLabel}）。</div>
+      <div class="sched-line">首次巡查為 ${hlNavy(firstStr)}，按服務期平均每 ${hlNavy(avgIntervalDays)} 日巡查一次。</div>
+      <div class="sched-line">上次巡查為 ${hlNavy(formatDateObjDMY(lastInspDt))}（${sinceText}），</div>
+      <div class="sched-line-highlight" style="color:${nextColor};">預計下次巡查日期為 ${nextStr}${remainText}。</div>
+    </div>`;
+}
+
 function renderHomeCustomerList() {
   const listEl = document.getElementById("homeCustomerList");
   const badgeEl = document.getElementById("customerCountBadge");
@@ -2620,87 +3416,119 @@ function renderHomeCustomerList() {
     listEl.innerHTML = `
       <div style="text-align:center; padding:24px 12px; color:#777; font-size:13px; background:#F9FAFB; border-radius:10px;">
         ${allCustomers.length === 0
-          ? "暫時未有已儲存嘅客戶檔案。<br>請按上方 <b>「＋ 新增客戶報告」</b> 建立第一位客戶並儲存，之後就會按 Ref no. 分類顯示喺呢度！"
+          ? "暫時未有已儲存嘅客戶檔案。<br>請按上方 <b>「＋ 新增客戶報告」</b> 建立第一位客戶並儲存！"
           : "搵唔到符合搜尋條件嘅客戶參考編號。"}
       </div>`;
     return;
   }
 
-  // 按 Ref no. 前綴分類（例如 MPC-2026-001 -> 分類為 MPC-2026，若無連字號則按首字母/前綴分組）
-  const groups = {};
-  filtered.forEach(c => {
-    const ref = (c.refNo || "未分類").trim();
-    const parts = ref.split("-");
-    const prefix = parts.length >= 2 ? parts.slice(0, -1).join("-").toUpperCase() : ref.slice(0, 4).toUpperCase();
-    if (!groups[prefix]) groups[prefix] = [];
-    groups[prefix].push(c);
-  });
-
   const hist = getReportsHistory();
-  listEl.innerHTML = Object.entries(groups).map(([prefix, items]) => `
-    <div class="ref-group-header">參考編號分類：${prefix} (${items.length})</div>
-    ${items.map(c => {
+  listEl.innerHTML = filtered.map(c => {
       const refEsc = c.refNo.replace(/"/g, '&quot;');
       const custHist = hist[c.refNo] || {};
       const slotStatus = getCustomerNextEmptySlot(c.refNo);
       const total = slotStatus.total;
       const completedCount = slotStatus.completedCount;
       const isAllDone = slotStatus.isAllDone;
-      const nextNo = slotStatus.nextEmpty;
+
+      const progCounts = calculateProgramInspectionCounts(c.program, total, c.extraInspections);
+      const extraCount = progCounts.extraCount;
+      const basePlanTotal = progCounts.basePlanTotal;
+      const extraNotesArr = Array.isArray(c.extraInspectionNotes) ? c.extraInspectionNotes : [];
 
       let slotsHtml = "";
       for (let i = 1; i <= total; i++) {
+        const isExtraSlot = extraCount > 0 && i > basePlanTotal;
+        const extraNth = isExtraSlot ? (i - basePlanTotal) : 0;
+        const extraCls = isExtraSlot ? " extra-slot" : "";
+        const extraAttr = isExtraSlot ? ` data-extra-label="+${extraNth}"` : "";
         const rec = custHist[String(i)];
         if (rec) {
-          const shortDate = rec.inspDate ? rec.inspDate.split("-").slice(1).reverse().join("/") : "已存檔";
+          const shortDate = rec.inspDate ? rec.inspDate.split("-").slice(1).reverse().join("/") : "已存";
           slotsHtml += `
-            <button type="button" class="period-slot-btn done" data-ref="${refEsc}" onclick="openHistoricalReport(event, this.dataset.ref, ${i})" title="點擊查閱或修改第 ${i} 次報告">
-              <span>${i} ✓</span>
+            <button type="button" class="period-slot-btn done${extraCls}"${extraAttr} data-ref="${refEsc}" onclick="openHistoricalReport(event, this.dataset.ref, ${i})" title="點擊查閱或修改第 ${i} 次報告${isExtraSlot ? `（額外增加 +${extraNth}）` : ''}">
+              <span>${i}✓</span>
               <span class="slot-sub">${shortDate}</span>
             </button>`;
         } else {
           slotsHtml += `
-            <button type="button" class="period-slot-btn empty" data-ref="${refEsc}" onclick="startSpecificPeriodForCustomer(event, this.dataset.ref, ${i})" title="點擊建立第 ${i} 次報告">
+            <div class="period-slot-btn empty${extraCls}"${extraAttr} title="未檢查（請按右下角「＋ 開始巡查」建立報告）${isExtraSlot ? `（額外增加 +${extraNth}）` : ''}">
               <span>${i}</span>
-              <span class="slot-sub">待檢查</span>
-            </button>`;
+              <span class="slot-sub">待查</span>
+            </div>`;
         }
       }
 
       const actionBtnHtml = isAllDone
         ? `<button type="button" class="btn btn-sm" disabled style="background:#E6F4EA; color:#1E8E3E; border:1px solid #A7F3D0; cursor:not-allowed; opacity:1;">✓ 已完成所有服務</button>`
-        : `<button type="button" class="btn btn-navy btn-sm" data-ref="${refEsc}" onclick="startNextNewPeriodForCustomer(event, this.dataset.ref)">＋ 開新一期 (第${nextNo}次)</button>`;
+        : `<button type="button" class="btn btn-start-patrol btn-sm" data-ref="${refEsc}" onclick="startNextNewPeriodForCustomer(event, this.dataset.ref)">＋ 開始巡查</button>`;
+
+      // 生效期格式整理為「幾年至到幾幾幾幾年」
+      let effectivePeriodText = "";
+      if (c.periodStart && c.periodEnd) {
+        effectivePeriodText = `${fmtDMY(c.periodStart)} 至 ${fmtDMY(c.periodEnd)}`;
+      } else if (c.period) {
+        effectivePeriodText = String(c.period).replace(/\s*-\s*/g, " 至 ");
+      }
+
+      const unitAndAddrText = [c.roomNo, c.address].filter(Boolean).join(" · ");
+      const extraBadgeHtml = extraCount > 0
+        ? `<span class="program-extra-badge">＋額外增加 ${extraCount} 次</span>`
+        : "";
+
+      let extraRemarkHtml = "";
+      if (extraCount > 0) {
+        const remarkLines = extraNotesArr.length > 0
+          ? extraNotesArr.map(n => `📝 Remark：${n.text}`).join("<br>")
+          : `📝 Remark：已額外增加 ${extraCount} 次巡訪檢查（總次數由 ${basePlanTotal} 次增至 ${total} 次）`;
+        extraRemarkHtml = `<div class="extra-insp-remark">${remarkLines}</div>`;
+      }
 
       return `
         <div class="cust-card-v21" style="${isAllDone ? 'border-color:#A7F3D0; background:#FAFDFB;' : ''}">
-          <div class="cust-card-top">
-            <div style="flex:1; min-width:0;">
-              <div>
-                <span class="cust-ref-pill">${c.refNo}</span>
-                <span style="font-size:12px; font-weight:700; color:${isAllDone ? '#1E8E3E' : 'var(--gold)'}; margin-left:6px;">已完成 ${completedCount} / ${total} 次</span>
-              </div>
-              <div style="font-size:14px; font-weight:700; color:#111; margin-bottom:2px;">
-                ${getFormattedCustomerName(c.custTitle, c.custName) || "（未填寫客戶姓名）"} ${c.roomNo ? `· ${c.roomNo}` : ""}
-              </div>
-              <div class="cust-meta-sub">
-                ${c.address ? `📍 ${c.address}<br>` : ""}
-                ${c.program ? `📋 ${c.program}` : ""} ${c.period ? `(${c.period})` : ""}
-              </div>
+          <div class="cust-card-header-band" style="${isAllDone ? 'background:linear-gradient(90deg, #E6F4EA 0%, #D1FAE5 100%); border-bottom-color:#A7F3D0;' : ''}">
+            <div style="display:flex; align-items:center; gap:8px; min-width:0; flex-wrap:wrap;">
+              <span class="cust-ref-pill" style="margin-bottom:0;">${c.refNo}</span>
+              <span style="font-size:12px; font-weight:800; color:${isAllDone ? '#1E8E3E' : '#8C6D23'};">已完成 ${completedCount} / ${total} 次</span>
             </div>
-            <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex-shrink:0;">
-              ${actionBtnHtml}
-              <button type="button" style="background:none; border:none; color:#999; font-size:11px; padding:2px 4px; cursor:pointer;" onclick="deleteCustomerProfile(event, this.dataset.ref)" data-ref="${refEsc}">刪除</button>
+            <div class="cust-menu-wrap">
+              <button type="button" class="cust-dots-btn" onclick="toggleCustCardMenu(event, this)" aria-label="更多操作">⋮</button>
+              <div class="cust-dropdown-menu">
+                <button type="button" class="cust-dropdown-item" data-ref="${refEsc}" onclick="addExtraInspectionForCustomer(event, this.dataset.ref)">
+                  <span>➕</span><span>添加檢查</span>
+                </button>
+                ${extraCount > 0 ? `<button type="button" class="cust-dropdown-item" style="color:#B45309;" data-ref="${refEsc}" onclick="cancelExtraInspectionForCustomer(event, this.dataset.ref)">
+                  <span>➖</span><span>取消添加</span>
+                </button>` : ""}
+                <button type="button" class="cust-dropdown-item danger" data-ref="${refEsc}" onclick="deleteCustomerProfile(event, this.dataset.ref)">
+                  <span>🗑️</span><span>刪除</span>
+                </button>
+              </div>
             </div>
           </div>
-          <div class="period-slots-wrap">
-            <div class="period-slots-label">
-              <span>檢查次數紀錄（撳深藍格可查閱／重出舊報告）</span>
+          <div class="cust-card-body">
+            <div style="font-size:14px; font-weight:700; color:#111; margin-bottom:2px;">
+              ${getFormattedCustomerName(c.custTitle, c.custName) || "（未填寫客戶姓名）"}
             </div>
-            <div class="period-slots-grid">${slotsHtml}</div>
+            <div class="cust-meta-sub">
+              ${unitAndAddrText ? `<div>📍 ${unitAndAddrText}</div>` : ""}
+              ${c.program ? `<div>📋 ${c.program}${extraBadgeHtml}</div>` : ""}
+              ${effectivePeriodText ? `<div>📅 生效期：${effectivePeriodText}</div>` : ""}
+            </div>
+            ${buildCustomerScheduleSentence(c, custHist, total, isAllDone)}
+            <div class="period-slots-wrap">
+              <div class="period-slots-label">
+                <span>檢查次數紀錄</span>
+              </div>
+              <div class="period-slots-grid" style="grid-template-columns: repeat(8, minmax(0, 1fr));">${slotsHtml}</div>
+              ${extraRemarkHtml}
+            </div>
+            <div class="cust-card-bottom-action">
+              ${actionBtnHtml}
+            </div>
           </div>
         </div>`;
-    }).join("")}
-  `).join("");
+  }).join("");
 }
 
 let currentTabIdx = 0;
@@ -2721,7 +3549,31 @@ function updateBottomBarActionBtn() {
   }
 }
 
-function switchTab(idx) {
+function switchTab(idx, bypassCustGuard = false) {
+  if (!bypassCustGuard && currentTabIdx === 0 && idx > 0) {
+    const emailEl = document.getElementById("custEmail");
+    const emailVal = (emailEl?.value || "").trim();
+    if (!emailVal || !isValidEmailFormat(emailVal)) {
+      updateCustomerFieldHighlights();
+      const reasonText = !emailVal
+        ? "• <strong>Email 客戶電郵</strong>尚未填寫（必填欄位）"
+        : `• <strong>Email 客戶電郵</strong>格式不正確（目前輸入：${emailVal}，須為 name@domain.com）`;
+      showStepIncompletePrompt(
+        "✉️ 請先確認客戶電郵",
+        reasonText,
+        () => {
+          if (emailEl) {
+            emailEl.scrollIntoView({ behavior: "smooth", block: "center" });
+            setTimeout(() => emailEl.focus(), 150);
+          }
+        }
+      );
+      return;
+    }
+    if (promptEmailTypoConfirmIfNeeded(() => switchTab(idx, true))) {
+      return;
+    }
+  }
   currentTabIdx = idx;
   document.querySelectorAll(".tab-btn").forEach((b, i) => b.classList.toggle("active", i === idx));
   document.querySelectorAll(".tab-panel").forEach((p, i) => p.classList.toggle("active", i === idx));
@@ -2739,12 +3591,131 @@ const PROGRAM_TOTAL_MAP = {
   "Premium Care 尊貴方案": 8
 };
 
+// 方案應有次數計算程式：確保任何增減操作均不會少於該方案應有基礎次數（Essential=4 / Plus=6 / Premium=8）
+function calculateProgramInspectionCounts(programName, rawTotal, rawExtra = 0) {
+  const basePlanTotal = PROGRAM_TOTAL_MAP[programName] || 4;
+  const parsedTotal = parseInt(rawTotal || "0", 10) || 0;
+  const parsedExtra = parseInt(rawExtra || "0", 10) || 0;
+  const candidateTotal = parsedTotal > 0 ? parsedTotal : (basePlanTotal + Math.max(0, parsedExtra));
+  const safeTotal = Math.max(basePlanTotal, candidateTotal);
+  const extraCount = Math.max(0, safeTotal - basePlanTotal);
+  return {
+    basePlanTotal,
+    safeTotal,
+    extraCount,
+    canCancelExtra: extraCount > 0 && safeTotal > basePlanTotal
+  };
+}
+
+function syncInspectionCountersUI() {
+  const progVal = document.getElementById("program")?.value || "";
+  const curRef = (document.getElementById("refNo")?.value || "").trim();
+  const c = curRef ? getCustomers()[curRef] : null;
+  const inspTotEl = document.getElementById("inspTotal");
+  const totHintEl = document.getElementById("inspTotalHintSub");
+
+  const rawTot = parseInt(inspTotEl?.value || "0", 10) || 0;
+  const baseMin = PROGRAM_TOTAL_MAP[progVal] || 0;
+
+  if (totHintEl) {
+    if (baseMin > 0) {
+      const effectiveTot = rawTot >= baseMin ? rawTot : (c ? calculateProgramInspectionCounts(progVal, c.inspTotal, c.extraInspections).safeTotal : baseMin);
+      const extraCnt = Math.max(0, effectiveTot - baseMin);
+      totHintEl.innerHTML = extraCnt > 0
+        ? `<span style="color:#B45309; font-weight:800;">(+${extraCnt})</span>`
+        : "";
+    } else {
+      totHintEl.innerHTML = "";
+    }
+  }
+}
+
+function handleInspNoBlurOrChange(el) {
+  let curNo = parseInt(el.value || "0", 10) || 0;
+  if (curNo < 1) {
+    curNo = 1;
+    el.value = 1;
+  }
+  const totEl = document.getElementById("inspTotal");
+  const curTot = parseInt(totEl?.value || "0", 10) || 0;
+  if (curTot > 0 && curNo > curTot) {
+    el.value = curTot;
+    showToast(`⚠️ 檢查次數不可大於總次數（${curTot} 次），已自動調整為第 ${curTot} 次`);
+  }
+  updateCustomerFieldHighlights();
+  if (typeof updatePreview === "function") updatePreview();
+  scheduleAutoSave(true);
+}
+
+function handleInspTotalBlurOrChange(el) {
+  const progVal = document.getElementById("program")?.value || "";
+  const baseMin = PROGRAM_TOTAL_MAP[progVal];
+  let curVal = parseInt(el.value || "0", 10) || 0;
+  if (baseMin && curVal > 0 && curVal < baseMin) {
+    curVal = baseMin;
+    el.value = baseMin;
+    showToast(`⚠️ [${progVal}] 應有基礎次數為 ${baseMin} 次，總次數不可少於 ${baseMin} 次`);
+  }
+
+  // 若目前檢查次數大於新的總次數，自動將檢查次數對齊至總次數上限
+  const inspNoEl = document.getElementById("inspNo");
+  const curNo = parseInt(inspNoEl?.value || "0", 10) || 0;
+  if (curVal > 0 && curNo > curVal && inspNoEl) {
+    inspNoEl.value = curVal;
+  }
+
+  // 若已存在該客戶檔案，即時同步更新客戶檔案及所有過往報告的總次數與額外次數
+  const curRef = (document.getElementById("refNo")?.value || "").trim();
+  const db = getCustomers();
+  if (curRef && db[curRef] && curVal > 0) {
+    const c = db[curRef];
+    const counts = calculateProgramInspectionCounts(progVal || c.program, curVal, 0);
+    const oldNotes = Array.isArray(c.extraInspectionNotes) ? [...c.extraInspectionNotes] : [];
+    const todayDmy = formatDateObjDMY(new Date());
+    const syncedNotes = [];
+    for (let k = 1; k <= counts.extraCount; k++) {
+      const slotNo = counts.basePlanTotal + k;
+      const existingNote = oldNotes[k - 1];
+      syncedNotes.push(existingNote || {
+        slotNo,
+        extraIndex: k,
+        addedDate: todayDmy,
+        text: `額外第 ${k} 次加單（第 ${slotNo} 次巡訪，${todayDmy} 新增，累計 +${k}）`
+      });
+    }
+    c.inspTotal = counts.safeTotal;
+    c.extraInspections = counts.extraCount;
+    c.extraInspectionNotes = syncedNotes;
+    db[curRef] = c;
+    setCustomers(db);
+    syncCustomerToCloud(c);
+
+    const hist = getReportsHistory();
+    if (hist[curRef]) {
+      Object.keys(hist[curRef]).forEach(pKey => {
+        if (hist[curRef][pKey]) {
+          hist[curRef][pKey].inspTotal = counts.safeTotal;
+          syncReportAndPhotosToCloud(curRef, hist[curRef][pKey]);
+        }
+      });
+      setReportsHistory(hist);
+    }
+    renderHomeCustomerList();
+  }
+
+  updateCustomerFieldHighlights();
+  if (typeof updatePreview === "function") updatePreview();
+  scheduleAutoSave(true);
+}
+
 function handleProgramChange(val) {
   if (PROGRAM_TOTAL_MAP[val]) {
-    document.getElementById("inspTotal").value = PROGRAM_TOTAL_MAP[val];
+    const baseMin = PROGRAM_TOTAL_MAP[val];
     const curRef = (document.getElementById("refNo")?.value || "").trim();
-    const isExistingSaved = !!(curRef && getCustomers()[curRef]);
-    if (!isExistingSaved) {
+    const existingCust = curRef ? getCustomers()[curRef] : null;
+    const prevExtra = existingCust ? (parseInt(existingCust.extraInspections || "0", 10) || 0) : 0;
+    document.getElementById("inspTotal").value = baseMin + Math.max(0, prevExtra);
+    if (!existingCust) {
       document.getElementById("inspNo").value = "1";
     }
   }
@@ -2830,7 +3801,7 @@ function closeConfirmClearModal() {
 function executeClearAllFormInputs() {
   closeConfirmClearModal();
   _activeCustomerKey = "";
-  ["refNo", "custTitle", "custName", "roomNo", "address", "program", "period", "periodStart", "periodEnd", "periodStartDisplay", "periodEndDisplay", "generalNotes", "inspTotal"].forEach(id => {
+  ["refNo", "custTitle", "custName", "custPhone", "custEmail", "roomNo", "floorNo", "address", "program", "period", "periodStart", "periodEnd", "periodStartDisplay", "periodEndDisplay", "generalNotes", "inspTotal"].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = "";
   });
@@ -2889,7 +3860,7 @@ function deleteCurrentPeriodPage() {
 
       // 清空表單狀態但不觸發自動重建歷史存檔
       _activeCustomerKey = "";
-      ["refNo", "custTitle", "custName", "roomNo", "address", "program", "period", "periodStart", "periodEnd", "periodStartDisplay", "periodEndDisplay", "generalNotes", "inspTotal"].forEach(id => {
+      ["refNo", "custTitle", "custName", "custPhone", "custEmail", "roomNo", "floorNo", "address", "program", "period", "periodStart", "periodEnd", "periodStartDisplay", "periodEndDisplay", "generalNotes", "inspTotal"].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = "";
       });
@@ -2949,10 +3920,12 @@ function syncPeriodString() {
 
 const CUSTOMER_REQUIRED_FIELDS = [
   { id: "refNo", label: "Ref no. 參考編號" },
+  { id: "program", label: "Program 項目" },
   { id: "custTitle", label: "客戶稱謂 (Mr./Ms./Mrs.)" },
   { id: "custName", label: "Customer Name 客戶姓名" },
+  { id: "custPhone", label: "Contact No. 客戶聯絡號碼" },
+  { id: "custEmail", label: "Email 客戶電郵" },
   { id: "roomNo", label: "Unit no. 單位號碼" },
-  { id: "program", label: "Program 項目" },
   { id: "address", label: "Address 地址" },
   { id: "periodStart", displayId: "periodStartDisplay", label: "Period 服務期開始日" },
   { id: "periodEnd", displayId: "periodEndDisplay", label: "Period 服務期結束日" },
@@ -2961,17 +3934,270 @@ const CUSTOMER_REQUIRED_FIELDS = [
   { id: "inspTotal", label: "of Total 總次數" }
 ];
 
+let _confirmedEmailTypoValue = "";
+
+function isValidEmailFormat(raw) {
+  const s = String(raw || "").trim();
+  if (!s) return false;
+  // 標準電郵格式檢查：不可含空格、必須有且僅有一個 @、網域須包含至少一個點及2位以上頂級域名
+  return /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(s);
+}
+
+function getEmailEditDistance(a, b) {
+  const m = a.length, n = b.length;
+  const dp = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
+  for (let i = 0; i <= m; i++) dp[i][0] = i;
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
+    }
+  }
+  return dp[m][n];
+}
+
+function detectEmailTypoSuggestion(raw) {
+  const s = String(raw || "").trim();
+  if (!s || !s.includes("@")) return null;
+  const parts = s.split("@");
+  if (parts.length !== 2) return null;
+  const localPart = parts[0].trim();
+  const domainLower = parts[1].trim().toLowerCase();
+  if (!localPart || !domainLower) return null;
+
+  const exactTypoMap = {
+    "gmial.com": "gmail.com",
+    "gmal.com": "gmail.com",
+    "gamil.com": "gmail.com",
+    "gnail.com": "gmail.com",
+    "gmaill.com": "gmail.com",
+    "gmail.con": "gmail.com",
+    "gmail.co": "gmail.com",
+    "gmail.cm": "gmail.com",
+    "gmail.om": "gmail.com",
+    "gmail.cmo": "gmail.com",
+    "gmail.ocm": "gmail.com",
+    "gmai.com": "gmail.com",
+    "hotmal.com": "hotmail.com",
+    "hotnail.com": "hotmail.com",
+    "hotmial.com": "hotmail.com",
+    "hotamil.com": "hotmail.com",
+    "hotmaill.com": "hotmail.com",
+    "hotmail.con": "hotmail.com",
+    "hotmail.co": "hotmail.com",
+    "hotmail.cm": "hotmail.com",
+    "hotmail.om": "hotmail.com",
+    "hotmai.com": "hotmail.com",
+    "yaho.com": "yahoo.com",
+    "yahooo.com": "yahoo.com",
+    "yhaoo.com": "yahoo.com",
+    "yaoo.com": "yahoo.com",
+    "yahoo.con": "yahoo.com",
+    "yahoo.co": "yahoo.com",
+    "yahoo.cm": "yahoo.com",
+    "yahoo.om": "yahoo.com",
+    "yaho.com.hk": "yahoo.com.hk",
+    "yahooo.com.hk": "yahoo.com.hk",
+    "yhaoo.com.hk": "yahoo.com.hk",
+    "yahoo.con.hk": "yahoo.com.hk",
+    "yahoo.com.hl": "yahoo.com.hk",
+    "yahoo.com.kh": "yahoo.com.hk",
+    "outlok.com": "outlook.com",
+    "outllok.com": "outlook.com",
+    "outloook.com": "outlook.com",
+    "outlook.con": "outlook.com",
+    "outlook.co": "outlook.com",
+    "iclod.com": "icloud.com",
+    "icluod.com": "icloud.com",
+    "icloud.con": "icloud.com",
+    "icloud.co": "icloud.com",
+    "live.con": "live.com",
+    "msn.con": "msn.com",
+    "qq.con": "qq.com",
+    "163.con": "163.com",
+    "126.con": "126.com"
+  };
+
+  if (exactTypoMap[domainLower]) {
+    const fixedDomain = exactTypoMap[domainLower];
+    return {
+      original: s,
+      suggested: `${localPart}@${fixedDomain}`,
+      suggestedDomain: fixedDomain,
+      typedDomain: parts[1].trim()
+    };
+  }
+
+  const popularDomains = [
+    "gmail.com",
+    "hotmail.com",
+    "yahoo.com",
+    "yahoo.com.hk",
+    "outlook.com",
+    "icloud.com",
+    "live.com",
+    "msn.com",
+    "qq.com",
+    "163.com",
+    "126.com"
+  ];
+  if (popularDomains.includes(domainLower)) return null;
+
+  let bestMatch = null;
+  let bestDist = 3;
+  for (const cand of popularDomains) {
+    if (Math.abs(domainLower.length - cand.length) > 2) continue;
+    const dist = getEmailEditDistance(domainLower, cand);
+    if (dist > 0 && dist <= 2 && dist < bestDist) {
+      bestDist = dist;
+      bestMatch = cand;
+    }
+  }
+  if (bestMatch) {
+    return {
+      original: s,
+      suggested: `${localPart}@${bestMatch}`,
+      suggestedDomain: bestMatch,
+      typedDomain: parts[1].trim()
+    };
+  }
+  return null;
+}
+
+function updateEmailTypoBanner() {
+  const emailEl = document.getElementById("custEmail");
+  const banner = document.getElementById("emailTypoBanner");
+  if (!emailEl || !banner) return;
+  const val = String(emailEl.value || "").trim();
+
+  if (!val) {
+    banner.style.display = "none";
+    banner.innerHTML = "";
+    return;
+  }
+
+  // 背後靜默檢查格式；只有預測到大路電郵（Gmail / Hotmail / Yahoo! 等）疑似打錯字時才溫和提醒
+  const typo = detectEmailTypoSuggestion(val);
+  if (typo && _confirmedEmailTypoValue !== val) {
+    banner.style.display = "block";
+    banner.style.background = "#FFFBEB";
+    banner.style.borderColor = "#F59E0B";
+    banner.style.color = "#92400E";
+    banner.innerHTML = `💡 溫馨提示：偵測到電郵尾段 <strong>@${typo.typedDomain}</strong> 疑似打錯字，你是不是想輸入 <strong>${typo.suggested}</strong>？ <button type="button" style="margin-top:4px; border:none; background:#D97706; color:#fff; font-weight:700; font-size:11.5px; padding:3px 9px; border-radius:5px; cursor:pointer;" onclick="applySuggestedEmail('${typo.suggested.replace(/'/g, "\'")}')">一鍵修正為 ${typo.suggested}</button>`;
+  } else {
+    banner.style.display = "none";
+    banner.innerHTML = "";
+  }
+}
+
+function applySuggestedEmail(newEmail) {
+  const emailEl = document.getElementById("custEmail");
+  if (!emailEl) return;
+  emailEl.value = newEmail;
+  _confirmedEmailTypoValue = "";
+  updateCustomerFieldHighlights();
+  scheduleAutoSave(true);
+  showToast(`✓ 已修正電郵為 ${newEmail}`);
+}
+
+function handleCustEmailInput() {
+  updateCustomerFieldHighlights();
+}
+
+function handleCustEmailBlur() {
+  const emailEl = document.getElementById("custEmail");
+  if (emailEl) {
+    emailEl.value = emailEl.value.trim();
+  }
+  updateCustomerFieldHighlights();
+  scheduleAutoSave(true);
+}
+
 function getMissingCustomerFields() {
   const missing = [];
   CUSTOMER_REQUIRED_FIELDS.forEach(f => {
     const el = document.getElementById(f.id);
     const val = el ? String(el.value || "").trim() : "";
-    if (!val) missing.push(f);
+    if (!val) {
+      missing.push(f);
+    } else if (f.id === "custEmail" && !isValidEmailFormat(val)) {
+      missing.push({ id: "custEmail", label: "Email 客戶電郵（格式不正確，須為 name@domain.com）" });
+    }
   });
   return missing;
 }
 
 // 客戶資料：未填寫的欄位預設顯示黃色底色，填寫完成後即時變回白色
+function formatSmartContactPhone(raw) {
+  const s = String(raw || "").trim();
+  if (!s) return "";
+  const hasPlus = s.startsWith("+");
+  const digits = s.replace(/\D/g, "");
+  if (!digits) return s;
+
+  // 1. 香港 (+852)：+852XXXXXXXX / 852XXXXXXXX / 8位香港本地號碼 (2/3/4/5/6/7/8/9開頭)
+  if ((digits.startsWith("852") && digits.length === 11)) {
+    const local8 = digits.slice(3);
+    return `+852 ${local8.slice(0, 4)} ${local8.slice(4)}`;
+  }
+  if (!hasPlus && digits.length === 8 && /^[2-9]/.test(digits)) {
+    return `+852 ${digits.slice(0, 4)} ${digits.slice(4)}`;
+  }
+
+  // 2. 泰國 (+66)：
+  //    - 手機：06/08/09 開頭共 10 位，或 6/8/9 開頭共 9 位，或 +66/66 + (可選0) + 6/8/9 開頭 9 位 -> +66 XX XXX XXXX
+  //    - 曼谷固網：02 開頭共 9 位，或 +66/66 + (可選0) + 2 開頭 8 位 -> +66 2 XXX XXXX
+  //    - 外府固網：03/04/05/07 開頭共 9 位，或 +66/66 + (可選0) + 3/4/5/7 開頭 8 位 -> +66 XX XXX XXX
+  let thNational = "";
+  if (digits.startsWith("66")) {
+    let rest = digits.slice(2);
+    if (rest.startsWith("0")) rest = rest.slice(1);
+    if ((rest.length === 9 && /^[689]/.test(rest)) || (rest.length === 8 && /^[23457]/.test(rest))) {
+      thNational = rest;
+    }
+  } else if (!hasPlus) {
+    if (digits.length === 10 && /^0[689]/.test(digits)) {
+      thNational = digits.slice(1);
+    } else if (digits.length === 9 && /^[689]/.test(digits)) {
+      thNational = digits;
+    } else if (digits.length === 9 && /^0[23457]/.test(digits)) {
+      thNational = digits.slice(1);
+    }
+  }
+
+  if (thNational) {
+    if (thNational.length === 9 && /^[689]/.test(thNational)) {
+      // 泰國手機習慣分隔：+66 XX XXX XXXX
+      return `+66 ${thNational.slice(0, 2)} ${thNational.slice(2, 5)} ${thNational.slice(5)}`;
+    }
+    if (thNational.length === 8 && thNational.startsWith("2")) {
+      // 泰國曼谷區號習慣分隔：+66 2 XXX XXXX
+      return `+66 2 ${thNational.slice(1, 4)} ${thNational.slice(4)}`;
+    }
+    if (thNational.length === 8 && /^[3457]/.test(thNational)) {
+      // 泰國其他府區號習慣分隔：+66 XX XXX XXX
+      return `+66 ${thNational.slice(0, 2)} ${thNational.slice(2, 5)} ${thNational.slice(5)}`;
+    }
+  }
+
+  // 3. 其他已帶國際區號（+ 開頭）保留結構並整理多餘空格
+  if (hasPlus) {
+    return "+" + s.slice(1).trim().replace(/\s+/g, " ");
+  }
+  return s.replace(/\s+/g, " ");
+}
+
+function handleCustPhoneBlur(el) {
+  if (!el) return;
+  const formatted = formatSmartContactPhone(el.value);
+  if (formatted && formatted !== el.value) {
+    el.value = formatted;
+  }
+  updateCustomerFieldHighlights();
+  scheduleAutoSave(true);
+}
+
 function updateCustomerFieldHighlights() {
   const missing = getMissingCustomerFields();
   const missingIds = new Set(missing.map(m => m.id));
@@ -2985,6 +4211,12 @@ function updateCustomerFieldHighlights() {
   const tabLampCust = document.getElementById("tabLampCust");
   if (tabLampCust) {
     tabLampCust.className = "lamp-dot " + (missing.length === 0 ? "green" : "red");
+  }
+  if (typeof updateEmailTypoBanner === "function") {
+    updateEmailTypoBanner();
+  }
+  if (typeof syncInspectionCountersUI === "function") {
+    syncInspectionCountersUI();
   }
 }
 
@@ -3093,36 +4325,103 @@ function handleNotesInput(el) {
   scheduleAutoSave(false);
 }
 
+const catCollapsedState = {};
+const _catBadgeTapTimers = {};
+
+function toggleCatCollapse(catId, forceState) {
+  const next = typeof forceState === "boolean" ? forceState : !catCollapsedState[catId];
+  catCollapsedState[catId] = next;
+  const bodyEl = document.getElementById(`cat-body-${catId}`);
+  if (bodyEl) {
+    bodyEl.classList.toggle("collapsed", next);
+  }
+  const arrowEl = document.getElementById(`cat-arrow-${catId}`);
+  if (arrowEl) {
+    arrowEl.classList.toggle("collapsed", next);
+  }
+}
+
+function completeAllItemsInCategory(catId) {
+  const cat = CATEGORIES.find(c => c.id === catId);
+  if (!cat) return;
+  cat.items.forEach(it => {
+    checkState[it.code] = checkState[it.code] || { status: "", remark: "" };
+    checkState[it.code].status = "ok";
+    ["ok", "no", "na"].forEach(type => {
+      const btn = document.getElementById(`btn-${type}-${it.code}`);
+      if (btn) btn.className = "pill" + (type === "ok" ? " active-ok" : "");
+    });
+    const remEl = document.getElementById(`rem-${it.code}`);
+    if (remEl) remEl.placeholder = "備註 (選填)...";
+  });
+  updateAllChecklistHighlights();
+  scheduleAutoSave(true);
+  showToast(`✓ 「${cat.title}」已全部設為完成 (✓)`);
+}
+
+function handleCatBadgeTap(e, catId) {
+  if (e) {
+    e.stopPropagation();
+    e.preventDefault();
+  }
+  if (_catBadgeTapTimers[catId]) {
+    clearTimeout(_catBadgeTapTimers[catId]);
+    delete _catBadgeTapTimers[catId];
+    completeAllItemsInCategory(catId);
+  } else {
+    _catBadgeTapTimers[catId] = setTimeout(() => {
+      delete _catBadgeTapTimers[catId];
+      toggleCatCollapse(catId);
+    }, 450);
+  }
+}
+
+function handleCatBadgeDblClick(e, catId) {
+  if (e) {
+    e.stopPropagation();
+    e.preventDefault();
+  }
+  if (_catBadgeTapTimers[catId]) {
+    clearTimeout(_catBadgeTapTimers[catId]);
+    delete _catBadgeTapTimers[catId];
+  }
+  completeAllItemsInCategory(catId);
+}
+
 // 渲染第 1 頁手機輸入表單
 function renderChecklistUI() {
   const container = document.getElementById("checklistFormContainer");
-  container.innerHTML = CATEGORIES.map(cat => `
+  container.innerHTML = CATEGORIES.map(cat => {
+    const isCol = !!catCollapsedState[cat.id];
+    return `
     <div style="margin-bottom:16px;">
       <div class="cat-subject-header" id="cat-hdr-${cat.id}">
-        <span>${cat.title}</span>
-        <span class="cat-done-badge pending" id="cat-badge-${cat.id}">0/${cat.items.length}</span>
+        <span style="flex:1; min-width:0;">${cat.title}</span>
+        <span class="cat-done-badge pending" id="cat-badge-${cat.id}" onclick="handleCatBadgeTap(event, '${cat.id}')" ondblclick="handleCatBadgeDblClick(event, '${cat.id}')" title="單按收合/展開；連按兩下全部完成">0/${cat.items.length} <span class="cat-collapse-arrow${isCol ? ' collapsed' : ''}" id="cat-arrow-${cat.id}">▼</span></span>
       </div>
-      ${cat.items.map(it => {
-        checkState[it.code] = checkState[it.code] || { status: "", remark: "" };
-        const initRem = getRemarkRemainingChars(checkState[it.code].remark || "");
-        return `
-        <div class="chk-item" id="chk-row-${it.code}">
-          <div class="chk-row-top">
-            <div class="chk-label"><span>${it.code}</span>${it.name}</div>
-            <div class="status-pills">
-              <button type="button" class="pill" id="btn-ok-${it.code}" onclick="setCheck('${it.code}','ok')">✓</button>
-              <button type="button" class="pill" id="btn-no-${it.code}" onclick="setCheck('${it.code}','no')">✗</button>
-              <button type="button" class="pill" id="btn-na-${it.code}" onclick="setCheck('${it.code}','na')">N/A</button>
+      <div class="cat-items-body${isCol ? ' collapsed' : ''}" id="cat-body-${cat.id}">
+        ${cat.items.map(it => {
+          checkState[it.code] = checkState[it.code] || { status: "", remark: "" };
+          const initRem = getRemarkRemainingChars(checkState[it.code].remark || "");
+          return `
+          <div class="chk-item" id="chk-row-${it.code}">
+            <div class="chk-row-top">
+              <div class="chk-label"><span>${it.code}</span>${it.name}</div>
+              <div class="status-pills">
+                <button type="button" class="pill" id="btn-ok-${it.code}" onclick="setCheck('${it.code}','ok')">✓</button>
+                <button type="button" class="pill" id="btn-no-${it.code}" onclick="setCheck('${it.code}','no')">✗</button>
+                <button type="button" class="pill" id="btn-na-${it.code}" onclick="setCheck('${it.code}','na')">N/A</button>
+              </div>
             </div>
-          </div>
-          <div class="input-with-counter">
-            <input type="text" class="chk-remark-input" id="rem-${it.code}" placeholder="備註 (選填)..." oninput="handleRemarkInput('${it.code}', this)">
-            <span class="char-counter-pill" id="rem-cnt-${it.code}">剩 ${initRem} 字</span>
-          </div>
-        </div>`;
-      }).join("")}
-    </div>
-  `).join("");
+            <div class="input-with-counter">
+              <input type="text" class="chk-remark-input" id="rem-${it.code}" placeholder="備註 (選填)..." oninput="handleRemarkInput('${it.code}', this)">
+              <span class="char-counter-pill" id="rem-cnt-${it.code}">剩 ${initRem} 字</span>
+            </div>
+          </div>`;
+        }).join("")}
+      </div>
+    </div>`;
+  }).join("");
   updateAllChecklistHighlights();
 }
 
@@ -3177,15 +4476,17 @@ function updateAllChecklistHighlights() {
     }
     const hdr = document.getElementById(`cat-hdr-${cat.id}`);
     const badge = document.getElementById(`cat-badge-${cat.id}`);
+    const isCol = !!catCollapsedState[cat.id];
+    const arrowHtml = `<span class="cat-collapse-arrow${isCol ? ' collapsed' : ''}" id="cat-arrow-${cat.id}">▼</span>`;
     if (hdr && badge) {
       if (isCatDone) {
         hdr.classList.add("cat-complete");
         badge.className = "cat-done-badge done";
-        badge.innerHTML = `<span class="lamp-dot green"></span>✓ 全部完成`;
+        badge.innerHTML = `<span class="lamp-dot green"></span>✓ 全部完成 ${arrowHtml}`;
       } else {
         hdr.classList.remove("cat-complete");
         badge.className = "cat-done-badge pending";
-        badge.innerHTML = `<span class="lamp-dot red"></span>${doneCount}/${total}`;
+        badge.innerHTML = `<span class="lamp-dot red"></span>${doneCount}/${total} ${arrowHtml}`;
       }
     }
   });
@@ -3277,6 +4578,7 @@ function jumpToFirstIncompleteCat() {
   for (const cat of CATEGORIES) {
     const doneCount = cat.items.filter(it => !!(checkState[it.code] && checkState[it.code].status)).length;
     if (doneCount < cat.items.length) {
+      toggleCatCollapse(cat.id, false);
       const hdr = document.getElementById(`cat-hdr-${cat.id}`);
       if (hdr) {
         hdr.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -3479,11 +4781,17 @@ function saveCustomerProfile(silentToast = false) {
   if (missing.length > 0) {
     const first = missing[0];
     const focusEl = document.getElementById(first.displayId || first.id);
-    showToast(`⚠️ 尚有 ${missing.length} 項未填（請先填寫：${first.label}）`);
-    if (focusEl) {
-      focusEl.scrollIntoView({ behavior: "smooth", block: "center" });
-      setTimeout(() => focusEl.focus(), 150);
-    }
+    const listHtml = missing.map(m => `• ${m.label}`).join("<br>");
+    showStepIncompletePrompt(
+      `⚠️ 第 1 步「客戶資料」尚欠 ${missing.length} 項`,
+      listHtml,
+      () => {
+        if (focusEl) {
+          focusEl.scrollIntoView({ behavior: "smooth", block: "center" });
+          setTimeout(() => focusEl.focus(), 150);
+        }
+      }
+    );
     return false;
   }
   const ref = document.getElementById("refNo").value.trim();
@@ -3502,19 +4810,35 @@ function saveCustomerProfile(silentToast = false) {
     }
   }
 
+  const prevCust = db[ref] || {};
+  const progVal = document.getElementById("program").value;
+  const rawInputTotal = parseInt(document.getElementById("inspTotal").value || "0", 10) || 0;
+  const counts = calculateProgramInspectionCounts(progVal, rawInputTotal, prevCust.extraInspections || 0);
+  if (rawInputTotal > 0 && rawInputTotal < counts.basePlanTotal) {
+    document.getElementById("inspTotal").value = counts.safeTotal;
+    showToast(`⚠️ [${progVal}] 應有基礎次數為 ${counts.basePlanTotal} 次，已自動修正為 ${counts.safeTotal} 次`);
+  }
+  const existingExtraNotes = Array.isArray(prevCust.extraInspectionNotes)
+    ? prevCust.extraInspectionNotes.slice(0, counts.extraCount)
+    : [];
   _activeCustomerKey = ref;
   db[ref] = {
     refNo: ref,
     custTitle: document.getElementById("custTitle").value,
     custName: document.getElementById("custName").value,
+    custPhone: formatSmartContactPhone(document.getElementById("custPhone").value),
+    custEmail: document.getElementById("custEmail").value.trim(),
     roomNo: document.getElementById("roomNo").value,
+    floorNo: (document.getElementById("floorNo")?.value || "").trim(),
     address: document.getElementById("address").value,
-    program: document.getElementById("program").value,
+    program: progVal,
     period: document.getElementById("period").value,
     periodStart: document.getElementById("periodStart").value,
     periodEnd: document.getElementById("periodEnd").value,
     lastInspNo: parseInt(document.getElementById("inspNo").value || "1", 10),
-    inspTotal: parseInt(document.getElementById("inspTotal").value || "12", 10)
+    inspTotal: counts.safeTotal,
+    extraInspections: counts.extraCount,
+    extraInspectionNotes: existingExtraNotes
   };
   setCustomers(db);
   syncCustomerToCloud(db[ref]);
@@ -3555,13 +4879,69 @@ function showStepIncompletePrompt(titleText, detailHtml, focusFn) {
   };
 }
 
+function promptEmailTypoConfirmIfNeeded(onProceedFn) {
+  const emailVal = (document.getElementById("custEmail")?.value || "").trim();
+  const typo = detectEmailTypoSuggestion(emailVal);
+  if (!typo || _confirmedEmailTypoValue === emailVal) {
+    return false;
+  }
+
+  const modal = document.getElementById("incompleteWarnModal");
+  const titleEl = modal.querySelector(".pwd-modal-title");
+  const descEl = modal.querySelector(".pwd-modal-desc");
+  const detailsEl = document.getElementById("incompleteWarnDetails");
+  const btnWrap = detailsEl.nextElementSibling;
+
+  const origTitle = titleEl.textContent;
+  const origDesc = descEl.textContent;
+  const origBtns = btnWrap.innerHTML;
+
+  titleEl.style.color = "#B45309";
+  titleEl.textContent = "💡 電郵地址拼寫錯誤提醒";
+  descEl.textContent = "系統偵測到客戶電郵域名可能打錯了 1～2 個字母，請確認是否需要自動修正：";
+  detailsEl.style.background = "#FFFBEB";
+  detailsEl.style.borderColor = "#FDE68A";
+  detailsEl.style.color = "#92400E";
+  detailsEl.innerHTML = `目前輸入：<strong style="color:#DC2626;">${typo.original}</strong><br>建議修正：<strong style="color:#15803D;">${typo.suggested}</strong>`;
+  btnWrap.innerHTML = `
+    <button type="button" class="btn btn-navy" style="flex:1;" id="emailTypoFixBtn">改用 ${typo.suggestedDomain}</button>
+    <button type="button" class="btn btn-outline" style="flex:1;" id="emailTypoKeepBtn">無誤，照常過版</button>
+  `;
+
+  const restoreModal = () => {
+    titleEl.style.color = "#DC2626";
+    titleEl.textContent = origTitle;
+    descEl.textContent = origDesc;
+    detailsEl.style.background = "";
+    detailsEl.style.borderColor = "";
+    detailsEl.style.color = "";
+    btnWrap.innerHTML = origBtns;
+    closeIncompleteWarnModal();
+  };
+
+  modal.classList.add("active");
+  document.getElementById("emailTypoFixBtn").onclick = () => {
+    restoreModal();
+    applySuggestedEmail(typo.suggested);
+    if (typeof onProceedFn === "function") onProceedFn();
+  };
+  document.getElementById("emailTypoKeepBtn").onclick = () => {
+    _confirmedEmailTypoValue = emailVal;
+    updateEmailTypoBanner();
+    restoreModal();
+    if (typeof onProceedFn === "function") onProceedFn();
+  };
+  return true;
+}
+
 function goToChecklistStep() {
   const missing = getMissingCustomerFields();
   if (missing.length === 0) {
+    if (promptEmailTypoConfirmIfNeeded(() => goToChecklistStep())) return;
     // 即使忘記按「儲存客戶資料」，只要資料已填齊，按「下一步」都會自動幫你儲存客戶資料
     saveCustomerProfile(true);
     showToast("✓ 已自動儲存客戶資料並進入檢查清單！");
-    switchTab(1);
+    switchTab(1, true);
   } else {
     const first = missing[0];
     const focusEl = document.getElementById(first.displayId || first.id);
@@ -3592,7 +4972,10 @@ function loadCustomer(ref, overrideInspNo = null) {
   const parsedCustName = splitCustTitleAndName(c.custTitle, c.custName);
   document.getElementById("custTitle").value = parsedCustName.title;
   document.getElementById("custName").value = parsedCustName.name;
+  document.getElementById("custPhone").value = formatSmartContactPhone(c.custPhone || "");
+  document.getElementById("custEmail").value = c.custEmail || "";
   document.getElementById("roomNo").value = c.roomNo || "";
+  if (document.getElementById("floorNo")) document.getElementById("floorNo").value = c.floorNo || "";
   document.getElementById("address").value = c.address || "";
   document.getElementById("program").value = c.program || "";
   document.getElementById("periodStart").value = c.periodStart || "";
@@ -3613,7 +4996,7 @@ function loadCustomer(ref, overrideInspNo = null) {
 
 function newCustomer() {
   _activeCustomerKey = "";
-  ["refNo", "custTitle", "custName", "roomNo", "address", "program", "period", "periodStart", "periodEnd", "periodStartDisplay", "periodEndDisplay", "generalNotes"].forEach(id => {
+  ["refNo", "custTitle", "custName", "custPhone", "custEmail", "roomNo", "floorNo", "address", "program", "period", "periodStart", "periodEnd", "periodStartDisplay", "periodEndDisplay", "generalNotes"].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = "";
   });
@@ -3649,7 +5032,7 @@ function saveChecklistAndNotes(silent = false) {
   performAutoSave();
   if (!silent) {
     const ref = (document.getElementById("refNo")?.value || "").trim();
-    showToast(ref ? `✓ 已儲存 [${ref}] 檢查清單、備註及簽名！` : "✓ 已儲存檢查清單、備註及簽名！");
+    showToast(ref ? `✓ 已儲存 [${ref}] 檢查清單及備註！` : "✓ 已儲存檢查清單及備註！");
   }
 }
 
@@ -3866,37 +5249,188 @@ function setSignatureImage(dataUrl) {
   }
 }
 
+function getPresetSignatureList() {
+  if (Array.isArray(window._presetSigListMem) && window._presetSigListMem.length > 0) {
+    return window._presetSigListMem;
+  }
+  let list = [];
+  try {
+    const raw = localStorage.getItem("manity_preset_sigs_v2");
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) list = parsed.filter(item => item && item.sigDataUrl);
+    }
+  } catch (e) {}
+  if (list.length === 0) {
+    let legacy = window._presetSigMem || "";
+    if (!legacy) {
+      try { legacy = localStorage.getItem("manity_preset_sig") || ""; } catch (e) {}
+    }
+    if (legacy) {
+      list = [{ id: "default_1", name: "預設簽名 1", sigDataUrl: legacy, updatedAtMs: Date.now() }];
+    }
+  }
+  window._presetSigListMem = list;
+  return list;
+}
+
+function setPresetSignatureList(list) {
+  const clean = Array.isArray(list) ? list : [];
+  window._presetSigListMem = clean;
+  window._presetSigMem = clean.length > 0 ? clean[0].sigDataUrl : "";
+  try {
+    localStorage.setItem("manity_preset_sigs_v2", JSON.stringify(clean));
+    localStorage.setItem("manity_preset_sig", window._presetSigMem);
+  } catch (e) {}
+  syncPresetSignatureListToCloud(clean);
+}
+
 function savePresetSignature() {
   if (!sigDataUrl) {
     showToast("請先手寫簽名或上載簽名圖像！");
     return;
   }
-  try {
-    localStorage.setItem("manity_preset_sig", sigDataUrl);
-  } catch (e) {}
-  window._presetSigMem = sigDataUrl;
-  syncPresetSignatureToCloud(sigDataUrl);
-  document.getElementById("presetSigStatus").textContent = "✓ 已儲存預設簽名（每次開啟或新增客戶都會自動套用）";
-  showToast("已將目前簽名設為預設簽名！");
+  const prevImg = document.getElementById("savePresetSigPreviewImg");
+  if (prevImg) prevImg.src = sigDataUrl;
+  const input = document.getElementById("presetSigNameInput");
+  const errEl = document.getElementById("savePresetSigErr");
+  if (errEl) errEl.style.display = "none";
+  if (input) {
+    const existingCount = getPresetSignatureList().length;
+    input.value = "";
+    input.placeholder = `例如：檢查員 ${existingCount + 1} / Chan Tai Man`;
+  }
+  const modal = document.getElementById("savePresetSigModal");
+  if (modal) {
+    modal.classList.add("active");
+    setTimeout(() => { if (input) input.focus(); }, 100);
+  }
+}
+
+function closeSavePresetSigModal() {
+  const modal = document.getElementById("savePresetSigModal");
+  if (modal) modal.classList.remove("active");
+}
+
+function confirmSavePresetSignature() {
+  if (!sigDataUrl) {
+    closeSavePresetSigModal();
+    return;
+  }
+  const input = document.getElementById("presetSigNameInput");
+  const errEl = document.getElementById("savePresetSigErr");
+  const sigName = (input ? input.value : "").trim();
+  if (!sigName) {
+    if (errEl) errEl.style.display = "block";
+    if (input) input.focus();
+    return;
+  }
+  if (errEl) errEl.style.display = "none";
+
+  const list = [...getPresetSignatureList()];
+  const existIdx = list.findIndex(item => (item.name || "").trim().toLowerCase() === sigName.toLowerCase());
+  const entry = {
+    id: existIdx !== -1 ? list[existIdx].id : ("sig_" + Date.now()),
+    name: sigName,
+    sigDataUrl: sigDataUrl,
+    updatedAtMs: Date.now()
+  };
+  if (existIdx !== -1) {
+    list[existIdx] = entry;
+  } else {
+    list.unshift(entry);
+  }
+  setPresetSignatureList(list);
+  closeSavePresetSigModal();
+
+  const stEl = document.getElementById("presetSigStatus");
+  if (stEl) stEl.textContent = `✓ 已儲存預設簽名「${sigName}」（共 ${list.length} 個預設簽名可隨時揀選）`;
+  showToast(`✓ 已儲存預設簽名「${sigName}」！`);
 }
 
 function loadSavedPresetSignature(silent = false) {
-  let saved = window._presetSigMem || "";
-  if (!saved) {
-    try { saved = localStorage.getItem("manity_preset_sig") || ""; } catch (e) {}
-  }
-  if (saved) {
-    setSignatureImage(saved);
+  const list = getPresetSignatureList();
+  if (list.length > 0 && list[0].sigDataUrl) {
+    setSignatureImage(list[0].sigDataUrl);
     const stEl = document.getElementById("presetSigStatus");
-    if (stEl) stEl.textContent = "✓ 已自動套用預設簽名";
-    if (!silent) showToast("已套用預設簽名！");
+    if (stEl) stEl.textContent = `✓ 已自動套用預設簽名「${list[0].name}」`;
+    if (!silent) showToast(`已套用預設簽名「${list[0].name}」！`);
   } else if (!silent) {
     showToast("尚未設定預設簽名，請先簽名或上載圖檔");
   }
 }
 
 function applyPresetSignature() {
-  loadSavedPresetSignature(false);
+  const list = getPresetSignatureList();
+  if (list.length === 0) {
+    showToast("尚未設定任何預設簽名，請先手寫或上載後按「設為預設簽名」");
+    return;
+  }
+  renderSelectPresetSigList();
+  const modal = document.getElementById("selectPresetSigModal");
+  if (modal) modal.classList.add("active");
+}
+
+function closeSelectPresetSigModal() {
+  const modal = document.getElementById("selectPresetSigModal");
+  if (modal) modal.classList.remove("active");
+}
+
+function renderSelectPresetSigList() {
+  const container = document.getElementById("selectPresetSigList");
+  if (!container) return;
+  const list = getPresetSignatureList();
+  if (list.length === 0) {
+    container.innerHTML = `<div style="text-align:center; padding:18px 10px; color:#777; font-size:12.5px; background:#F9FAFB; border-radius:8px;">暫時未有已儲存的預設簽名。</div>`;
+    return;
+  }
+  container.innerHTML = list.map((item, idx) => {
+    const safeName = String(item.name || `簽名 ${idx + 1}`).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    const safeId = String(item.id || idx).replace(/"/g, "&quot;");
+    return `
+      <div class="sig-preset-item">
+        <div style="display:flex; align-items:center; gap:9px; min-width:0; flex:1; cursor:pointer;" onclick="selectAndApplyPresetSig('${safeId}')">
+          <div class="sig-preset-thumb-box">
+            <img src="${item.sigDataUrl}" alt="${safeName}">
+          </div>
+          <div style="min-width:0; flex:1;">
+            <div style="font-size:13.5px; font-weight:800; color:var(--navy); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${safeName}</div>
+            <div style="font-size:11px; color:#64748B; margin-top:2px;">點擊套用此簽名</div>
+          </div>
+        </div>
+        <div style="display:flex; align-items:center; gap:5px; flex-shrink:0;">
+          <button type="button" class="btn btn-navy btn-sm" style="padding:6px 10px; font-size:11.5px;" onclick="selectAndApplyPresetSig('${safeId}')">套用</button>
+          <button type="button" class="btn btn-outline btn-sm" style="padding:6px 8px; font-size:11.5px; color:#DC2626; border-color:#FECACA;" onclick="deletePresetSigItem(event, '${safeId}')" title="刪除此預設簽名">🗑️</button>
+        </div>
+      </div>`;
+  }).join("");
+}
+
+function selectAndApplyPresetSig(sigId) {
+  const list = getPresetSignatureList();
+  const chosen = list.find(item => String(item.id) === String(sigId));
+  if (!chosen || !chosen.sigDataUrl) return;
+  setSignatureImage(chosen.sigDataUrl);
+  scheduleAutoSave(true);
+  closeSelectPresetSigModal();
+  const stEl = document.getElementById("presetSigStatus");
+  if (stEl) stEl.textContent = `✓ 已套用預設簽名「${chosen.name}」`;
+  showToast(`✓ 已套用預設簽名「${chosen.name}」！`);
+}
+
+function deletePresetSigItem(e, sigId) {
+  if (e) e.stopPropagation();
+  const list = getPresetSignatureList();
+  const target = list.find(item => String(item.id) === String(sigId));
+  const nextList = list.filter(item => String(item.id) !== String(sigId));
+  setPresetSignatureList(nextList);
+  renderSelectPresetSigList();
+  if (target) {
+    showToast(`已刪除預設簽名「${target.name}」`);
+  }
+  if (nextList.length === 0) {
+    closeSelectPresetSigModal();
+  }
 }
 
 function clearSignature() {
@@ -3987,11 +5521,11 @@ function buildMetaHTML() {
         <span class="meta-zh-r">檢查次數</span>
         <span class="meta-colon">:</span>
         <span class="meta-insp-val">${inspNo}</span>
-        <span>of Total</span>
+        <span style="font-weight:500; color:#333;">of Total</span>
         <span class="meta-insp-val">${inspTotal}</span>
-        <span style="margin-left:1.5mm;">Date 到訪日</span>
+        <span style="margin-left:1.5mm; font-weight:500; color:#333;">Date 到訪日</span>
         <span class="meta-colon">:</span>
-        <span style="font-weight:600; padding-left:0.5mm;">${fmtDate}</span>
+        <span style="font-weight:600; color:#111; padding-left:0.5mm;">${fmtDate}</span>
       </div>
     </div>
   `;
@@ -4049,9 +5583,14 @@ function renderReportPages() {
   `).join("");
 
   const p3 = document.getElementById("a4-page-3");
+  const slot3 = document.getElementById("slot-page-3");
   const showP3 = document.getElementById("includePage3").checked;
   p3.classList.toggle("hide-p3", !showP3);
   p3.style.display = showP3 ? "flex" : "none";
+  if (slot3) {
+    slot3.classList.toggle("hide-p3-slot", !showP3);
+    slot3.style.display = showP3 ? "block" : "none";
+  }
 
   document.getElementById("p3WorkflowBody").innerHTML = WORKFLOW_GROUPS.map(grp => `
     <div class="p3-group">
@@ -4133,23 +5672,251 @@ function buildExportPdfFilename() {
   return `${ref}_${periodPart}_${datePart}`;
 }
 
-function exportReportPDF() {
-  if (currentTabIdx !== 3 || !workflowSaved) {
-    showToast("⚠️ 請先按「儲存離場核對」方可列印 / 匯出 PDF！");
+let _previewBaseScale = 1;
+let _previewUserZoom = 1;
+let _pinchInitDist = 0;
+let _pinchInitZoom = 1;
+
+function fitA4PreviewToScreen(resetZoom = false) {
+  const wrapper = document.getElementById("print-preview-wrapper");
+  if (!wrapper || !wrapper.classList.contains("active")) return;
+  if (resetZoom) _previewUserZoom = 1;
+
+  const p1 = document.getElementById("a4-page-1");
+  if (!p1) return;
+
+  // 取得 A4 頁面實際像素尺寸 (210mm x 297mm)
+  const rawW = p1.offsetWidth || 794;
+  const rawH = p1.offsetHeight || 1123;
+  const availW = Math.max(260, (wrapper.clientWidth || window.innerWidth) - 16);
+
+  // 預設剛好 Fit 滿手機寬度 (最大 1.0 倍)
+  _previewBaseScale = Math.min(1, availW / rawW);
+  const effectiveScale = _previewBaseScale * _previewUserZoom;
+
+  const showP3 = document.getElementById("includePage3")?.checked;
+  [1, 2, 3].forEach(num => {
+    const slot = document.getElementById(`slot-page-${num}`);
+    const page = document.getElementById(`a4-page-${num}`);
+    if (!slot || !page) return;
+    if (num === 3 && !showP3) {
+      slot.style.display = "none";
+      return;
+    }
+    slot.style.display = "block";
+    page.style.transform = `scale(${effectiveScale})`;
+    slot.style.width = `${Math.round(rawW * effectiveScale)}px`;
+    slot.style.height = `${Math.round(rawH * effectiveScale)}px`;
+  });
+}
+
+function resetA4PreviewScaleForPrint() {
+  const showP3 = document.getElementById("includePage3")?.checked;
+  [1, 2, 3].forEach(num => {
+    const slot = document.getElementById(`slot-page-${num}`);
+    const page = document.getElementById(`a4-page-${num}`);
+    if (!slot || !page) return;
+    if (num === 3 && !showP3) {
+      slot.style.display = "none";
+      return;
+    }
+    page.style.transform = "none";
+    slot.style.width = "210mm";
+    slot.style.height = "296.5mm";
+  });
+}
+
+// 支援雙指手勢縮放 (Pinch-to-Zoom) 及雙擊放大還原
+(function setupPreviewPinchZoom() {
+  const vp = document.getElementById("a4ZoomViewport");
+  if (!vp) return;
+
+  vp.addEventListener("touchstart", e => {
+    if (e.touches && e.touches.length === 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      _pinchInitDist = Math.hypot(dx, dy);
+      _pinchInitZoom = _previewUserZoom;
+    }
+  }, { passive: true });
+
+  vp.addEventListener("touchmove", e => {
+    if (e.touches && e.touches.length === 2 && _pinchInitDist > 10) {
+      e.preventDefault();
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const dist = Math.hypot(dx, dy);
+      const nextZoom = Math.min(3.5, Math.max(1, _pinchInitZoom * (dist / _pinchInitDist)));
+      if (Math.abs(nextZoom - _previewUserZoom) > 0.02) {
+        _previewUserZoom = nextZoom;
+        fitA4PreviewToScreen(false);
+      }
+    }
+  }, { passive: false });
+
+  let _lastTapTime = 0;
+  vp.addEventListener("touchend", e => {
+    if (e.touches && e.touches.length > 0) return;
+    const now = Date.now();
+    if (now - _lastTapTime < 280) {
+      _previewUserZoom = (_previewUserZoom > 1.15) ? 1 : 2.0;
+      fitA4PreviewToScreen(false);
+      _lastTapTime = 0;
+    } else {
+      _lastTapTime = now;
+    }
+  }, { passive: true });
+})();
+
+window.addEventListener("resize", () => {
+  if (document.getElementById("print-preview-wrapper")?.classList.contains("active")) {
+    fitA4PreviewToScreen(false);
+  }
+});
+
+function buildStandaloneReportBlob() {
+  const p1 = document.getElementById("a4-page-1")?.outerHTML || "";
+  const p2 = document.getElementById("a4-page-2")?.outerHTML || "";
+  const showP3 = document.getElementById("includePage3")?.checked;
+  const p3 = showP3 ? (document.getElementById("a4-page-3")?.outerHTML || "") : "";
+  const titleStr = buildExportPdfFilename();
+
+  let styleBlocks = "";
+  document.querySelectorAll("style").forEach(st => {
+    styleBlocks += st.outerHTML + "\n";
+  });
+
+  const cleanDocHtml = [
+    '<!DOCTYPE html>',
+    '<html lang="zh-HK">',
+    '<head>',
+    '<meta charset="UTF-8">',
+    '<meta name="viewport" content="width=device-width, initial-scale=1.0">',
+    '<title>' + titleStr + '</title>',
+    styleBlocks,
+    '<style>',
+    '  html, body { margin: 0; padding: 0; background: #525659; }',
+    '  .a4-page { margin: 12px auto !important; transform: none !important; }',
+    '  @media print { @page { size: A4 portrait; margin: 0; } html, body { background: #fff !important; width: 210mm !important; } .a4-page { margin: 0 !important; box-shadow: none !important; width: 210mm !important; height: 296.5mm !important; } #a4-page-2, #a4-page-3 { page-break-before: always; break-before: page; } }',
+    '</style>',
+    '</head>',
+    '<body>',
+    p1,
+    p2,
+    p3,
+    '</body>',
+    '</html>'
+  ].join('\n');
+  return new Blob([cleanDocHtml], { type: "text/html;charset=utf-8" });
+}
+
+async function exportReportPDF() {
+  if (!workflowSaved) {
+    showToast("⚠️ 請先在「4. 離場核對」按「儲存離場核對」方可匯出！");
     return;
   }
-  const targetFilename = buildExportPdfFilename();
-  document.title = targetFilename;
-  window.print();
+
+  const targetFilename = buildExportPdfFilename() + ".pdf";
+  const exportBtn = document.getElementById("toolbarExportBtn");
+  const origBtnText = exportBtn ? exportBtn.textContent : "列印 / 匯出 PDF";
+
+  if (exportBtn) {
+    exportBtn.disabled = true;
+    exportBtn.textContent = "⏳ 正在生成 PDF...";
+  }
+  showToast("正在生成高清 A4 PDF 檔案，請稍候...");
+
+  // 暫時還原 100% 原始 A4 比例以確保清晰度
+  resetA4PreviewScaleForPrint();
+
+  try {
+    // 組合所有要匯出的 A4 頁面到暫存容器
+    const showP3 = document.getElementById("includePage3")?.checked;
+    const tempHost = document.createElement("div");
+    tempHost.style.position = "fixed";
+    tempHost.style.left = "-9999px";
+    tempHost.style.top = "0";
+    tempHost.style.width = "210mm";
+    tempHost.style.background = "#ffffff";
+
+    [1, 2, 3].forEach(num => {
+      if (num === 3 && !showP3) return;
+      const srcPage = document.getElementById(`a4-page-${num}`);
+      if (!srcPage) return;
+      const clone = srcPage.cloneNode(true);
+      clone.style.transform = "none";
+      clone.style.margin = "0";
+      clone.style.boxShadow = "none";
+      clone.style.width = "210mm";
+      clone.style.height = "296.8mm";
+      if (num > 1) {
+        clone.style.pageBreakBefore = "always";
+        clone.style.breakBefore = "page";
+      }
+      tempHost.appendChild(clone);
+    });
+    document.body.appendChild(tempHost);
+
+    if (typeof html2pdf !== "undefined") {
+      const opt = {
+        margin: 0,
+        filename: targetFilename,
+        image: { type: "jpeg", quality: 0.96 },
+        html2canvas: { scale: 2, useCORS: true, logging: false },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+        pagebreak: { mode: ["css", "legacy"] }
+      };
+
+      const pdfBlob = await html2pdf().set(opt).from(tempHost).outputPdf("blob");
+      document.body.removeChild(tempHost);
+
+      const pdfFile = new File([pdfBlob], targetFilename, { type: "application/pdf" });
+
+      // 1. iPhone / iPad 原生分享選單 (可直接「儲存到檔案」、AirDrop 或 WhatsApp 發送)
+      if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
+        await navigator.share({
+          files: [pdfFile],
+          title: targetFilename
+        });
+        showToast("✓ PDF 已匯出！");
+      } else {
+        // 2. 標準瀏覽器直接下載 .pdf 檔案
+        const blobUrl = URL.createObjectURL(pdfBlob);
+        const a = document.createElement("a");
+        a.href = blobUrl;
+        a.download = targetFilename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
+        showToast("✓ 已下載 " + targetFilename);
+      }
+    } else {
+      document.body.removeChild(tempHost);
+      window.print();
+    }
+  } catch (err) {
+    if (err && err.name !== "AbortError") {
+      console.warn("PDF export fallback to print:", err);
+      window.print();
+    }
+  } finally {
+    if (exportBtn) {
+      exportBtn.disabled = false;
+      exportBtn.textContent = origBtnText;
+    }
+    fitA4PreviewToScreen(false);
+  }
 }
 
 window.addEventListener("afterprint", () => {
   document.title = DEFAULT_APP_TITLE;
+  fitA4PreviewToScreen(false);
 });
 
 function togglePreview(show, bypassWarning = false) {
   if (show) {
-    const canExport = (currentTabIdx === 3 && workflowSaved);
+    const canExport = !!workflowSaved;
     performAutoSave();
     renderReportPages();
     document.title = canExport ? buildExportPdfFilename() : DEFAULT_APP_TITLE;
@@ -4165,6 +5932,7 @@ function togglePreview(show, bypassWarning = false) {
     const actRow = document.getElementById("topbarActionsRow");
     if (actRow) actRow.classList.remove("active");
     window.scrollTo(0, 0);
+    requestAnimationFrame(() => fitA4PreviewToScreen(true));
   } else {
     document.title = DEFAULT_APP_TITLE;
     document.getElementById("print-preview-wrapper").classList.remove("active");
