@@ -1601,7 +1601,7 @@
 
       </div>
       <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v95</span>
+        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v97</span>
         <span id="cloudSyncBadge" class="cloud-status-orb syncing" title="雲端連線中..." aria-label="雲端連線狀態">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
@@ -2578,6 +2578,9 @@ function updateWorkflowStatusUI() {
   updateBottomBarActionBtn();
   if (typeof updateBottomUnifiedProgressBar === "function") {
     updateBottomUnifiedProgressBar();
+  }
+  if (typeof updateBottomBarActionBtn === "function") {
+    updateBottomBarActionBtn();
   }
 }
 
@@ -3662,10 +3665,35 @@ function renderHomeCustomerList() {
 
 let currentTabIdx = 0;
 
+function isEntireReportReadyForExport() {
+  // 1. 客戶資料必填項齊全
+  if (typeof getMissingCustomerFields === "function" && getMissingCustomerFields().length > 0) {
+    return false;
+  }
+  // 2. 檢查清單 26 項全部已剔選 + 檢查人員簽名已填寫
+  const allChecksDone = CATEGORIES.every(cat =>
+    cat.items.every(it => !!(checkState[it.code] && checkState[it.code].status))
+  );
+  if (!allChecksDone || !sigDataUrl) {
+    return false;
+  }
+  // 3. 現場相片 8 張已齊（或已明確確認跳過剩餘相片）
+  const uploadedPhotos = photosState.filter(p => !!(p && p.img)).length;
+  if (uploadedPhotos < 8 && !photosConfirmed) {
+    return false;
+  }
+  // 4. 離場核對 24 項全部填滿 + 已按「儲存離場核對」
+  if (typeof getMissingWorkflowItems === "function") {
+    const wfRes = getMissingWorkflowItems();
+    if (wfRes.missing.length > 0) return false;
+  }
+  return !!workflowSaved;
+}
+
 function updateBottomBarActionBtn() {
   const btn = document.getElementById("bottomPreviewBtn");
   if (!btn) return;
-  if (workflowSaved) {
+  if (isEntireReportReadyForExport()) {
     btn.className = "btn";
     btn.style.background = "linear-gradient(135deg, #22C55E 0%, #16A34A 100%)";
     btn.style.border = "1.6px solid #15803D";
@@ -4378,6 +4406,9 @@ function updateCustomerFieldHighlights() {
   if (typeof syncInspectionCountersUI === "function") {
     syncInspectionCountersUI();
   }
+  if (typeof updateBottomBarActionBtn === "function") {
+    updateBottomBarActionBtn();
+  }
 }
 
 // ================= 精準寬度計算：限制 Remark 單行盡頭 & 備註 3 行盡頭 =================
@@ -4822,6 +4853,9 @@ function updatePhotoStatusUI() {
   if (navBtn2) {
     navBtn2.innerHTML = `3. 相片(${uploadedCount}/8) <span class="lamp-dot ${isAllDone ? 'green' : 'red'}" id="tabLamp1" style="margin-left:2px;"></span>`;
   }
+  if (typeof updateBottomBarActionBtn === "function") {
+    updateBottomBarActionBtn();
+  }
   if (typeof updateBottomUnifiedProgressBar === "function") {
     updateBottomUnifiedProgressBar();
   }
@@ -4853,6 +4887,7 @@ function renderPhotoUI() {
 function removePhoto(e, idx) {
   if (e) e.stopPropagation();
   photosState[idx].img = "";
+  photosConfirmed = false;
   const fileInput = document.getElementById(`fileInput-${idx}`);
   if (fileInput) fileInput.value = "";
   const thumb = document.getElementById(`thumb-${idx}`);
@@ -5371,6 +5406,9 @@ function initSignaturePad() {
   window.addEventListener("pointerup", () => {
     if (drawing) {
       drawing = false;
+      if (typeof updateBottomBarActionBtn === "function") {
+        updateBottomBarActionBtn();
+      }
       performAutoSave();
       const stEl = document.getElementById("presetSigStatus");
       if (stEl) stEl.textContent = "✓ 已自動儲存手寫簽名（按「設為預設簽名」可永久保存供下次自動帶入）";
@@ -5416,6 +5454,9 @@ function setSignatureImage(dataUrl) {
   if (prevImg) {
     prevImg.src = dataUrl;
     prevImg.style.display = "block";
+  }
+  if (typeof updateBottomBarActionBtn === "function") {
+    updateBottomBarActionBtn();
   }
 }
 
@@ -5612,6 +5653,9 @@ function clearSignature() {
     prevImg.style.display = "none";
   }
   sigDataUrl = "";
+  if (typeof updateBottomBarActionBtn === "function") {
+    updateBottomBarActionBtn();
+  }
   scheduleAutoSave(true);
 }
 
@@ -6016,9 +6060,32 @@ function buildStandaloneReportBlob() {
   return new Blob([cleanDocHtml], { type: "text/html;charset=utf-8" });
 }
 
+function isDesktopBrowserEnv() {
+  const ua = navigator.userAgent || "";
+  const isTouchMac = /Macintosh/i.test(ua) && navigator.maxTouchPoints && navigator.maxTouchPoints > 1;
+  const isMobileOrTablet = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua) || isTouchMac;
+  return !isMobileOrTablet;
+}
+
+function triggerNativeBrowserPrintPDF() {
+  const cleanTitle = buildExportPdfFilename();
+  document.title = cleanTitle;
+  resetA4PreviewScaleForPrint();
+  showToast("請於列印視窗揀選「另存為 PDF」（建議勾選「背景圖形」）");
+  setTimeout(() => {
+    window.print();
+  }, 120);
+}
+
 async function exportReportPDF() {
-  if (!workflowSaved) {
-    showToast("⚠️ 請先在「4. 離場核對」按「儲存離場核對」方可匯出！");
+  if (!isEntireReportReadyForExport()) {
+    showToast("⚠️ 報告仍有未完成項目，請補齊後再匯出 PDF！");
+    return;
+  }
+
+  // 電腦版瀏覽器直接呼叫系統原生向量列印 / 另存為 PDF（文字與圖示100%向量高清，絕不會出現 3KB 空白截圖檔）
+  if (isDesktopBrowserEnv()) {
+    triggerNativeBrowserPrintPDF();
     return;
   }
 
@@ -6035,15 +6102,17 @@ async function exportReportPDF() {
   // 暫時還原 100% 原始 A4 比例以確保清晰度
   resetA4PreviewScaleForPrint();
 
+  let tempHost = null;
   try {
-    // 組合所有要匯出的 A4 頁面到暫存容器
     const showP3 = document.getElementById("includePage3")?.checked;
-    const tempHost = document.createElement("div");
+    tempHost = document.createElement("div");
     tempHost.style.position = "fixed";
-    tempHost.style.left = "-9999px";
+    tempHost.style.left = "0";
     tempHost.style.top = "0";
     tempHost.style.width = "210mm";
     tempHost.style.background = "#ffffff";
+    tempHost.style.zIndex = "-1";
+    tempHost.style.pointerEvents = "none";
 
     [1, 2, 3].forEach(num => {
       if (num === 3 && !showP3) return;
@@ -6068,13 +6137,23 @@ async function exportReportPDF() {
         margin: 0,
         filename: targetFilename,
         image: { type: "jpeg", quality: 0.96 },
-        html2canvas: { scale: 2, useCORS: true, logging: false },
+        html2canvas: { scale: 2, useCORS: true, logging: false, scrollX: 0, scrollY: 0 },
         jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
         pagebreak: { mode: ["css", "legacy"] }
       };
 
       const pdfBlob = await html2pdf().set(opt).from(tempHost).outputPdf("blob");
-      document.body.removeChild(tempHost);
+      if (tempHost && tempHost.parentNode) {
+        tempHost.parentNode.removeChild(tempHost);
+        tempHost = null;
+      }
+
+      // 防呆保護：若生成的 PDF 體積過細（< 15KB，即代表截圖畫布空白），自動切換至系統原生列印 PDF
+      if (!pdfBlob || pdfBlob.size < 15360) {
+        console.warn("Generated PDF blob too small (" + (pdfBlob ? pdfBlob.size : 0) + " bytes), falling back to native print.");
+        triggerNativeBrowserPrintPDF();
+        return;
+      }
 
       const pdfFile = new File([pdfBlob], targetFilename, { type: "application/pdf" });
 
@@ -6098,13 +6177,20 @@ async function exportReportPDF() {
         showToast("✓ 已下載 " + targetFilename);
       }
     } else {
-      document.body.removeChild(tempHost);
-      window.print();
+      if (tempHost && tempHost.parentNode) {
+        tempHost.parentNode.removeChild(tempHost);
+        tempHost = null;
+      }
+      triggerNativeBrowserPrintPDF();
     }
   } catch (err) {
+    if (tempHost && tempHost.parentNode) {
+      tempHost.parentNode.removeChild(tempHost);
+      tempHost = null;
+    }
     if (err && err.name !== "AbortError") {
       console.warn("PDF export fallback to print:", err);
-      window.print();
+      triggerNativeBrowserPrintPDF();
     }
   } finally {
     if (exportBtn) {
@@ -6122,7 +6208,7 @@ window.addEventListener("afterprint", () => {
 
 function togglePreview(show, bypassWarning = false) {
   if (show) {
-    const canExport = !!workflowSaved;
+    const canExport = isEntireReportReadyForExport();
     performAutoSave();
     renderReportPages();
     document.title = canExport ? buildExportPdfFilename() : DEFAULT_APP_TITLE;
