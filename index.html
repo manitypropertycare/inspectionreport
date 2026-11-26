@@ -1601,7 +1601,7 @@
 
       </div>
       <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v97</span>
+        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v98</span>
         <span id="cloudSyncBadge" class="cloud-status-orb syncing" title="雲端連線中..." aria-label="雲端連線狀態">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
@@ -6077,17 +6077,32 @@ function triggerNativeBrowserPrintPDF() {
   }, 120);
 }
 
+function downloadBlobDirectly(blob, filename) {
+  const blobUrl = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = blobUrl;
+  a.download = filename;
+  a.rel = "noopener";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(blobUrl), 15000);
+}
+
 async function exportReportPDF() {
   if (!isEntireReportReadyForExport()) {
     showToast("⚠️ 報告仍有未完成項目，請補齊後再匯出 PDF！");
     return;
   }
 
-  // 電腦版瀏覽器直接呼叫系統原生向量列印 / 另存為 PDF（文字與圖示100%向量高清，絕不會出現 3KB 空白截圖檔）
+  // 電腦版瀏覽器直接呼叫系統原生向量列印 / 另存為 PDF（文字與圖示100%向量高清）
   if (isDesktopBrowserEnv()) {
     triggerNativeBrowserPrintPDF();
     return;
   }
+
+  // 手機版（iPhone / Android / iPad）：先確保預覽 DOM 已完整渲染最新數據
+  renderReportPages();
 
   const targetFilename = buildExportPdfFilename() + ".pdf";
   const exportBtn = document.getElementById("toolbarExportBtn");
@@ -6095,87 +6110,107 @@ async function exportReportPDF() {
 
   if (exportBtn) {
     exportBtn.disabled = true;
-    exportBtn.textContent = "⏳ 正在生成 PDF...";
+    exportBtn.textContent = "⏳ 生成 PDF 中...";
   }
-  showToast("正在生成高清 A4 PDF 檔案，請稍候...");
+  showToast("⏳ 正在生成高清 A4 PDF 檔案，請稍候...");
 
-  // 暫時還原 100% 原始 A4 比例以確保清晰度
+  // 暫時還原預覽頁面 100% 原始尺寸，避免複製節點受 CSS transform 縮放影響
   resetA4PreviewScaleForPrint();
 
   let tempHost = null;
   try {
     const showP3 = document.getElementById("includePage3")?.checked;
+    // 建立位於正常文檔流頂部、無縮放、明確 A4 像素寬高（794px x 1122px）的純白離屏容器，徹底避免 iOS/Android 截出 3KB 空白畫布
     tempHost = document.createElement("div");
-    tempHost.style.position = "fixed";
+    tempHost.style.position = "absolute";
     tempHost.style.left = "0";
     tempHost.style.top = "0";
-    tempHost.style.width = "210mm";
+    tempHost.style.width = "794px";
     tempHost.style.background = "#ffffff";
-    tempHost.style.zIndex = "-1";
-    tempHost.style.pointerEvents = "none";
+    tempHost.style.zIndex = "99998";
+    tempHost.style.overflow = "visible";
 
-    [1, 2, 3].forEach(num => {
-      if (num === 3 && !showP3) return;
+    const pageNums = showP3 ? [1, 2, 3] : [1, 2];
+    pageNums.forEach((num, idx) => {
       const srcPage = document.getElementById(`a4-page-${num}`);
       if (!srcPage) return;
       const clone = srcPage.cloneNode(true);
+      clone.removeAttribute("id");
+      clone.classList.remove("hide-p3");
+      clone.style.display = "flex";
       clone.style.transform = "none";
       clone.style.margin = "0";
       clone.style.boxShadow = "none";
-      clone.style.width = "210mm";
-      clone.style.height = "296.8mm";
-      if (num > 1) {
+      clone.style.width = "794px";
+      clone.style.height = "1122px";
+      clone.style.minHeight = "1122px";
+      clone.style.maxHeight = "1122px";
+      if (idx > 0) {
         clone.style.pageBreakBefore = "always";
         clone.style.breakBefore = "page";
       }
       tempHost.appendChild(clone);
     });
+
     document.body.appendChild(tempHost);
+    // 等待一幀讓瀏覽器完成排版與 Base64 相片解碼
+    await new Promise(resolve => requestAnimationFrame(() => setTimeout(resolve, 180)));
 
     if (typeof html2pdf !== "undefined") {
       const opt = {
         margin: 0,
         filename: targetFilename,
-        image: { type: "jpeg", quality: 0.96 },
-        html2canvas: { scale: 2, useCORS: true, logging: false, scrollX: 0, scrollY: 0 },
-        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+        image: { type: "jpeg", quality: 0.95 },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: "#ffffff",
+          logging: false,
+          width: 794,
+          windowWidth: 794,
+          scrollX: 0,
+          scrollY: 0
+        },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait", compress: true },
         pagebreak: { mode: ["css", "legacy"] }
       };
 
       const pdfBlob = await html2pdf().set(opt).from(tempHost).outputPdf("blob");
+
       if (tempHost && tempHost.parentNode) {
         tempHost.parentNode.removeChild(tempHost);
         tempHost = null;
       }
 
-      // 防呆保護：若生成的 PDF 體積過細（< 15KB，即代表截圖畫布空白），自動切換至系統原生列印 PDF
-      if (!pdfBlob || pdfBlob.size < 15360) {
-        console.warn("Generated PDF blob too small (" + (pdfBlob ? pdfBlob.size : 0) + " bytes), falling back to native print.");
-        triggerNativeBrowserPrintPDF();
-        return;
+      if (!pdfBlob || pdfBlob.size < 10240) {
+        throw new Error("PDF_BLOB_EMPTY");
       }
 
       const pdfFile = new File([pdfBlob], targetFilename, { type: "application/pdf" });
 
-      // 1. iPhone / iPad 原生分享選單 (可直接「儲存到檔案」、AirDrop 或 WhatsApp 發送)
-      if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
-        await navigator.share({
-          files: [pdfFile],
-          title: targetFilename
-        });
-        showToast("✓ PDF 已匯出！");
-      } else {
-        // 2. 標準瀏覽器直接下載 .pdf 檔案
-        const blobUrl = URL.createObjectURL(pdfBlob);
-        const a = document.createElement("a");
-        a.href = blobUrl;
-        a.download = targetFilename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
-        showToast("✓ 已下載 " + targetFilename);
+      // 優先呼叫 iPhone / Android 原生分享選單（可直接分享至 WhatsApp、電郵、AirDrop 或「儲存到檔案」）
+      if (typeof navigator.share === "function") {
+        let canShareFiles = false;
+        try {
+          canShareFiles = !!(navigator.canShare && navigator.canShare({ files: [pdfFile] }));
+        } catch (e) {
+          canShareFiles = false;
+        }
+
+        if (canShareFiles) {
+          await navigator.share({
+            files: [pdfFile],
+            title: targetFilename
+          });
+          showToast("✓ PDF 已生成並開啟分享選單！");
+          return;
+        }
       }
+
+      // 若瀏覽器不支援檔案分享 API，則直接下載 .pdf 檔案到手機
+      downloadBlobDirectly(pdfBlob, targetFilename);
+      showToast("✓ 已儲存 " + targetFilename + " 至下載資料夾");
     } else {
       if (tempHost && tempHost.parentNode) {
         tempHost.parentNode.removeChild(tempHost);
@@ -6188,10 +6223,13 @@ async function exportReportPDF() {
       tempHost.parentNode.removeChild(tempHost);
       tempHost = null;
     }
-    if (err && err.name !== "AbortError") {
-      console.warn("PDF export fallback to print:", err);
-      triggerNativeBrowserPrintPDF();
+    if (err && err.name === "AbortError") {
+      // 用戶自行關閉分享選單，屬正常取消操作
+      return;
     }
+    console.warn("Mobile PDF export error:", err);
+    showToast("⚠️ 無法自動開啟分享選單，正嘗試列印模式...");
+    triggerNativeBrowserPrintPDF();
   } finally {
     if (exportBtn) {
       exportBtn.disabled = false;
