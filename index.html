@@ -914,14 +914,14 @@
     display: flex;
     align-items: center;
     padding: 5px 6px;
-    border-radius: 10px;
-    border: 1.5px solid #FCA5A5;
-    background: #FEE2E2;
+    border-radius: 8px;
+    border: 1px solid var(--navy);
+    background: #ffffff;
     transition: all 0.2s ease;
     gap: 5px;
   }
   .bottom-unified-progress.all-done {
-    border-color: #22C55E;
+    border-color: #16A34A;
     background: #DCFCE7;
   }
   .bprog-seg {
@@ -932,28 +932,29 @@
     justify-content: center;
     cursor: pointer;
     padding: 3px 4px;
-    border-radius: 7px;
+    border-radius: 6px;
+    background: #ffffff;
     transition: background 0.2s ease;
   }
   .bprog-seg.done {
-    background: #BBF7D0;
+    background: #DCFCE7;
     box-shadow: inset 0 0 0 1px #86EFAC;
   }
   .bprog-seg.wf-seg {
     flex: 0.92;
   }
   .bprog-divider {
-    width: 1.5px;
+    width: 1px;
     align-self: stretch;
-    background: rgba(148, 163, 184, 0.42);
+    background: #CCD2DA;
     border-radius: 1px;
     flex-shrink: 0;
     margin: 1px 0;
   }
   .bprog-lbl {
     font-size: 11px;
-    font-weight: 800;
-    color: #DC2626;
+    font-weight: 700;
+    color: var(--navy);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -963,7 +964,8 @@
     gap: 3px;
   }
   .bprog-seg.done .bprog-lbl {
-    color: #16A34A;
+    color: #15803D;
+    font-weight: 800;
   }
   .bprog-lbl .lamp-dot {
     width: 7px;
@@ -981,7 +983,7 @@
     flex: 1;
     height: 6px;
     border-radius: 2.5px;
-    background: #FCA5A5;
+    background: #E2E8F0;
     transition: background 0.2s ease;
   }
   .bprog-tick.done {
@@ -1099,7 +1101,7 @@
     overflow: hidden;
   }
   .meta-insp-row { display: flex; align-items: baseline; min-height: 4.8mm; white-space: nowrap; }
-  .meta-insp-val { font-weight: 700; min-width: 5.5mm; text-align: center; }
+  .meta-insp-val { font-weight: 600; color: #111; min-width: 5.5mm; text-align: center; }
 
   /* 深藍圓角標題橫條 */
   .navy-bar {
@@ -1263,7 +1265,7 @@
     min-height: 4.5mm;
   }
 
-  /* 第 2 頁：8 格金色圓角相框 (按黃金比例 1.618:1 收細相片並完整顯示) */
+  /* 第 2 頁：8 格金色圓角相框 (按黃金比例 1.618:1 收細相片並保留四周明確留白，兼容 html2canvas 匯出) */
   .p2-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1279,11 +1281,8 @@
     overflow: hidden;
     background: #FDFCFA;
     width: 100%;
-    aspect-ratio: 1.618 / 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3.2mm;
+    height: 56.8mm;
+    box-sizing: border-box;
   }
   .gold-photo-num {
     position: absolute;
@@ -1295,13 +1294,25 @@
     z-index: 2;
     text-shadow: 0 0 3px #fff, 0 0 3px #fff;
   }
+  .gold-photo-inner {
+    position: absolute;
+    top: 4.8mm;
+    bottom: 6.2mm;
+    left: 7mm;
+    right: 7mm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .gold-photo-inner img,
   .gold-photo-frame img {
-    max-width: 84%;
-    max-height: 82%;
+    max-width: 100%;
+    max-height: 100%;
     width: auto;
     height: auto;
     object-fit: contain;
     border-radius: 1.5mm;
+    display: block;
   }
   .gold-photo-cap {
     position: absolute;
@@ -1473,8 +1484,8 @@
 
   <div id="confirmClearModal" class="pwd-modal-backdrop" onclick="if(event.target===this) closeConfirmClearModal()">
     <div class="pwd-modal-box" style="border-top-color: #D97706;">
-      <div class="pwd-modal-title">確認全部清除？</div>
-      <div class="pwd-modal-desc">此操作將會清空目前頁面上填寫的所有檢查剔選、備註、相片及輸入內容，確定要全部清除嗎？</div>
+      <div class="pwd-modal-title" id="confirmClearTitle">確認全部清除？</div>
+      <div class="pwd-modal-desc" id="confirmClearDesc">此操作將會清空本分頁的所有輸入內容，確定要清除嗎？</div>
       <div style="display:flex; gap:8px; margin-top:14px;">
         <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeConfirmClearModal()">取消</button>
         <button type="button" class="btn" style="flex:1; background:#D97706; color:#fff;" onclick="executeClearAllFormInputs()">確認清除</button>
@@ -1507,7 +1518,7 @@
         </div>
       </div>
       <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v81</span>
+        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v83</span>
         <span id="cloudSyncBadge" class="cloud-status-orb syncing" title="雲端連線中..." aria-label="雲端連線狀態">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
@@ -1518,8 +1529,7 @@
     <div class="topbar-actions-row" id="topbarActionsRow">
       <button type="button" class="btn btn-sm" id="btnBackHome" style="flex:0 0 auto; padding:6px 12px; background:#F4F6F9; color:var(--navy); border:1px solid #D5DCE4;" onclick="goHome()">← 返回主頁</button>
       <div style="margin-left:auto; display:flex; align-items:center; gap:6px;">
-        <button type="button" class="btn btn-compact" id="btnTopClearAll" style="background:#FFFBEB; color:#B45309; border:1px solid #FDE68A;" onclick="clearAllFormInputs()">全部清除</button>
-        <button type="button" class="btn btn-compact" id="btnTopDeletePage" style="background:#FEF2F2; color:#DC2626; border:1px solid #FECACA;" onclick="deleteCurrentPeriodPage()">刪除此頁</button>
+        <button type="button" class="btn btn-compact" id="btnTopDeletePage" style="background:#FEF2F2; color:#DC2626; border:1px solid #FECACA;" onclick="deleteCurrentPeriodPage()">刪除巡查</button>
       </div>
     </div>
   </div>
@@ -1660,6 +1670,7 @@
       <div class="card">
         <div class="card-title">
           <span>檢查清單 (第 1 頁)</span>
+          <button type="button" class="btn btn-compact" style="background:#FFFBEB; color:#B45309; border:1px solid #FDE68A; padding:4px 9px; font-size:11px; flex-shrink:0;" onclick="clearCurrentTabInputs('checklist')">全部清除</button>
         </div>
         <div id="checklistFormContainer"></div>
       </div>
@@ -1706,8 +1717,11 @@
     <!-- TAB 3: 8 張相片 -->
     <div class="tab-panel" id="tab2">
       <div class="card">
-        <div class="card-title">
+        <div class="card-title" style="margin-bottom:6px;">
           <span>Photo Attachment (第 2 頁相片附件)</span>
+          <button type="button" class="btn btn-compact" style="background:#FFFBEB; color:#B45309; border:1px solid #FDE68A; padding:4px 9px; font-size:11px; flex-shrink:0;" onclick="clearCurrentTabInputs('photos')">全部清除</button>
+        </div>
+        <div style="display:flex; justify-content:flex-end; margin-bottom:8px;">
           <span class="cat-done-badge pending" id="photoHeaderBadge"><span class="lamp-dot red"></span>0/8</span>
         </div>
         <div class="photo-status-banner pending" id="photoStatusBanner">
@@ -1725,8 +1739,11 @@
     <!-- TAB 4: Workflow for internal use -->
     <div class="tab-panel" id="tab3">
       <div class="card">
-        <div class="card-title">
+        <div class="card-title" style="margin-bottom:6px;">
           <span>Workflow for internal use (第 3 頁)</span>
+          <button type="button" class="btn btn-compact" style="background:#FFFBEB; color:#B45309; border:1px solid #FDE68A; padding:4px 9px; font-size:11px; flex-shrink:0;" onclick="clearCurrentTabInputs('workflow')">全部清除</button>
+        </div>
+        <div style="display:flex; justify-content:flex-end; margin-bottom:8px;">
           <span class="cat-done-badge pending" id="wfHeaderBadge"><span class="lamp-dot red"></span>未儲存</span>
         </div>
         <div style="background:linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); border:1.8px solid #F59E0B; box-shadow:0 2px 6px rgba(245, 158, 11, 0.22); padding:10px 0 10px 11px; border-radius:9px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; gap:8px;">
@@ -3789,9 +3806,29 @@ function handlePeriodStartChange() {
   scheduleAutoSave(true);
 }
 
-// 全部清除按鈕（彈出確認提示視窗，確認後抹走當前表單所有輸入、剔選、備註、相片及簽名）
-function clearAllFormInputs() {
+// 全部清除按鈕（僅清除當前分頁：檢查清單 / 相片 / 離場核對，絕不影響客戶資料）
+let _pendingClearTabScope = "checklist";
+
+function clearCurrentTabInputs(scope) {
+  _pendingClearTabScope = scope || "checklist";
+  const titleEl = document.getElementById("confirmClearTitle");
+  const descEl = document.getElementById("confirmClearDesc");
+  if (_pendingClearTabScope === "checklist") {
+    if (titleEl) titleEl.textContent = "確認清除「檢查清單」？";
+    if (descEl) descEl.textContent = "此操作只會清空本頁（2. 檢查清單）的所有項目剔選、項目備註、整體備註及簽名，不會影響客戶資料及其他分頁。確定要清除嗎？";
+  } else if (_pendingClearTabScope === "photos") {
+    if (titleEl) titleEl.textContent = "確認清除「現場相片」？";
+    if (descEl) descEl.textContent = "此操作只會清空本頁（3. 相片）的所有已上載相片及相片說明，不會影響客戶資料及其他分頁。確定要清除嗎？";
+  } else if (_pendingClearTabScope === "workflow") {
+    if (titleEl) titleEl.textContent = "確認清除「離場核對」？";
+    if (descEl) descEl.textContent = "此操作只會清空本頁（4. 離場核對）的所有剔選方框及數量輸入，不會影響客戶資料及其他分頁。確定要清除嗎？";
+  }
   document.getElementById("confirmClearModal").classList.add("active");
+}
+
+function clearAllFormInputs() {
+  const scopes = ["customer", "checklist", "photos", "workflow"];
+  clearCurrentTabInputs(scopes[currentTabIndex] || "checklist");
 }
 
 function closeConfirmClearModal() {
@@ -3800,33 +3837,38 @@ function closeConfirmClearModal() {
 
 function executeClearAllFormInputs() {
   closeConfirmClearModal();
-  _activeCustomerKey = "";
-  ["refNo", "custTitle", "custName", "custPhone", "custEmail", "roomNo", "floorNo", "address", "program", "period", "periodStart", "periodEnd", "periodStartDisplay", "periodEndDisplay", "generalNotes", "inspTotal"].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = "";
-  });
-  document.getElementById("inspNo").value = "1";
-  document.getElementById("inspDate").value = new Date().toISOString().split("T")[0];
-  document.getElementById("includePage3").checked = false;
+  const scope = _pendingClearTabScope;
 
-  Object.keys(checkState).forEach(code => {
-    checkState[code] = { status: "", remark: "" };
-    updatePillUI(code);
-    const remEl = document.getElementById(`rem-${code}`);
-    if (remEl) remEl.value = "";
-    updateRemarkCounterUI(code, "");
-  });
-
-  photosState = Array(8).fill(null).map(() => ({ img: "", caption: "" }));
-  renderPhotoUI();
-  renderWorkflowUI();
-  workflowSaved = false;
-  updateWorkflowStatusUI();
-  clearSignature();
-  handleNotesInput(document.getElementById("generalNotes"));
-  updateCustomerFieldHighlights();
-  performAutoSave();
-  showToast("✓ 已全部清除並重設表單！");
+  if (scope === "checklist") {
+    Object.keys(checkState).forEach(code => {
+      checkState[code] = { status: "", remark: "" };
+      updatePillUI(code);
+      const remEl = document.getElementById(`rem-${code}`);
+      if (remEl) remEl.value = "";
+      updateRemarkCounterUI(code, "");
+    });
+    const notesEl = document.getElementById("generalNotes");
+    if (notesEl) {
+      notesEl.value = "";
+      handleNotesInput(notesEl);
+    }
+    clearSignature();
+    performAutoSave();
+    showToast("✓ 已清除「檢查清單」本頁資料！");
+  } else if (scope === "photos") {
+    photosState = Array(8).fill(null).map(() => ({ img: "", caption: "" }));
+    renderPhotoUI();
+    performAutoSave();
+    showToast("✓ 已清除「現場相片」本頁資料！");
+  } else if (scope === "workflow") {
+    const incP3 = document.getElementById("includePage3");
+    if (incP3) incP3.checked = false;
+    renderWorkflowUI();
+    workflowSaved = false;
+    updateWorkflowStatusUI();
+    performAutoSave();
+    showToast("✓ 已清除「離場核對」本頁資料！");
+  }
 }
 
 // 刪除此頁（刪除當前這一次/這一期的歷史存檔紀錄，需輸入管理員密碼 manityadmin，刪除後主頁該期格子變回未檢查）
@@ -3836,8 +3878,8 @@ function deleteCurrentPeriodPage() {
   const label = ref ? `[${ref}] 第 ${inspNo} 次` : `目前第 ${inspNo} 次`;
 
   requireAdminPwd(
-    "刪除此頁紀錄驗證",
-    `確定要永久刪除 ${label} 的報告紀錄嗎？刪除後主頁將不再保留此期紀錄。請輸入管理員密碼確認：`,
+    "刪除巡查紀錄驗證",
+    `確定要永久刪除 ${label} 的巡查紀錄嗎？刪除後主頁將不再保留此期紀錄。請輸入管理員密碼確認：`,
     () => {
       _isRestoring = true;
       if (ref) {
@@ -5521,10 +5563,10 @@ function buildMetaHTML() {
         <span class="meta-zh-r">檢查次數</span>
         <span class="meta-colon">:</span>
         <span class="meta-insp-val">${inspNo}</span>
-        <span style="font-weight:500; color:#333;">of Total</span>
+        <span style="font-weight:600; color:#111;">of Total</span>
         <span class="meta-insp-val">${inspTotal}</span>
-        <span style="margin-left:1.5mm; font-weight:500; color:#333;">Date 到訪日</span>
-        <span class="meta-colon">:</span>
+        <span style="margin-left:1.5mm; font-weight:600; color:#111;">Date 到訪日</span>
+        <span class="meta-colon" style="font-weight:600; color:#111;">:</span>
         <span style="font-weight:600; color:#111; padding-left:0.5mm;">${fmtDate}</span>
       </div>
     </div>
@@ -5577,7 +5619,9 @@ function renderReportPages() {
   document.getElementById("p2PhotoGrid").innerHTML = photosState.map((p, i) => `
     <div class="gold-photo-frame">
       <div class="gold-photo-num">${i + 1}</div>
-      ${p.img ? `<img src="${p.img}">` : ""}
+      <div class="gold-photo-inner">
+        ${p.img ? `<img src="${p.img}">` : ""}
+      </div>
       ${p.caption ? `<div class="gold-photo-cap">${p.caption}</div>` : ""}
     </div>
   `).join("");
