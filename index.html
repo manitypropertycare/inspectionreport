@@ -1692,7 +1692,7 @@
 
       </div>
       <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v120</span>
+        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v121</span>
         <span id="cloudSyncBadge" class="cloud-status-orb syncing" title="雲端連線中..." aria-label="雲端連線狀態">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
@@ -2081,6 +2081,7 @@
 <!-- Firebase App & Cloud Firestore SDK (Instant Multi-Device Real-Time Sync) -->
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
@@ -6645,11 +6646,67 @@ function getImageNaturalSize(dataUrl) {
   });
 }
 
-async function generateMobileVectorPdfBlob() {
-  const JsPDFCtor = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF;
-  if (!JsPDFCtor) {
-    throw new Error("JSPDF_UNAVAILABLE");
+function ensureJsPdfLoaded() {
+  return new Promise((resolve, reject) => {
+    const existing = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF;
+    if (existing) {
+      resolve(existing);
+      return;
+    }
+    const cdnUrls = [
+      "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js",
+      "https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"
+    ];
+    let idx = 0;
+    const tryNext = () => {
+      const found = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF;
+      if (found) { resolve(found); return; }
+      if (idx >= cdnUrls.length) {
+        reject(new Error("無法載入 PDF 引擎，請檢查網絡後再試"));
+        return;
+      }
+      const s = document.createElement("script");
+      s.src = cdnUrls[idx++];
+      s.onload = () => {
+        const loaded = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF;
+        if (loaded) resolve(loaded);
+        else tryNext();
+      };
+      s.onerror = tryNext;
+      document.head.appendChild(s);
+    };
+    tryNext();
+  });
+}
+
+async function normalizeImageToSafeDataUrl(dataUrl) {
+  if (!dataUrl || typeof dataUrl !== "string") return null;
+  if (/^data:image\/(png|jpeg|jpg);base64,/i.test(dataUrl)) {
+    const fmt = /^data:image\/png/i.test(dataUrl) ? "PNG" : "JPEG";
+    return { dataUrl, format: fmt };
   }
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      try {
+        const c = document.createElement("canvas");
+        c.width = img.naturalWidth || 400;
+        c.height = img.naturalHeight || 300;
+        const ctx = c.getContext("2d");
+        ctx.drawImage(img, 0, 0, c.width, c.height);
+        resolve({ dataUrl: c.toDataURL("image/png"), format: "PNG" });
+      } catch (e) {
+        resolve(null);
+      }
+    };
+    img.onerror = () => resolve(null);
+    img.src = dataUrl;
+  });
+}
+
+async function generateMobileVectorPdfBlob() {
+  const JsPDFCtor = await ensureJsPdfLoaded();
 
   const doc = new JsPDFCtor({ unit: "mm", format: "a4", orientation: "portrait", compress: true });
   const pageW = 210;
@@ -6916,17 +6973,20 @@ async function generateMobileVectorPdfBlob() {
 
   if (sigDataUrl) {
     try {
-      const sigDim = await getImageNaturalSize(sigDataUrl);
-      const maxSigW = 40;
-      const maxSigH = 11.5;
-      let sw = maxSigW;
-      let sh = maxSigH;
-      if (sigDim && sigDim.w && sigDim.h) {
-        const ratio = Math.min(maxSigW / sigDim.w, maxSigH / sigDim.h);
-        sw = sigDim.w * ratio;
-        sh = sigDim.h * ratio;
+      const safeSig = await normalizeImageToSafeDataUrl(sigDataUrl);
+      if (safeSig) {
+        const sigDim = await getImageNaturalSize(safeSig.dataUrl);
+        const maxSigW = 40;
+        const maxSigH = 11.5;
+        let sw = maxSigW;
+        let sh = maxSigH;
+        if (sigDim && sigDim.w && sigDim.h) {
+          const ratio = Math.min(maxSigW / sigDim.w, maxSigH / sigDim.h);
+          sw = sigDim.w * ratio;
+          sh = sigDim.h * ratio;
+        }
+        doc.addImage(safeSig.dataUrl, safeSig.format, signLineX + 4, footY + 11.2 - sh, sw, sh);
       }
-      doc.addImage(sigDataUrl, "PNG", signLineX + 4, footY + 11.2 - sh, sw, sh);
     } catch (e) {}
   }
 
@@ -6988,8 +7048,10 @@ async function generateMobileVectorPdfBlob() {
           dw = dim.w * r;
           dh = dim.h * r;
         }
-        const imgFormat = /^data:image\/png/i.test(pItem.img) ? "PNG" : "JPEG";
-        doc.addImage(pItem.img, imgFormat, bx + (boxW - dw) / 2, by + padTop + (availH - dh) / 2, dw, dh);
+        const safePhoto = await normalizeImageToSafeDataUrl(pItem.img);
+        if (safePhoto) {
+          doc.addImage(safePhoto.dataUrl, safePhoto.format, bx + (boxW - dw) / 2, by + padTop + (availH - dh) / 2, dw, dh);
+        }
       } catch (e) {}
     }
 
@@ -7119,12 +7181,22 @@ async function exportReportPDF() {
       }
 
       if (canShareFiles) {
-        await navigator.share({
-          files: [pdfFile],
-          title: targetFilename
-        });
-        showToast("✓ PDF 已開啟分享選單！");
-        return;
+        try {
+          await navigator.share({
+            files: [pdfFile],
+            title: targetFilename
+          });
+          showToast("✓ PDF 已開啟分享選單！");
+          return;
+        } catch (shareErr) {
+          if (shareErr && shareErr.name === "AbortError") {
+            showToast("已取消分享，可隨時點擊上方綠色列重新分享或儲存。");
+            return;
+          }
+          // iPhone Safari 若因非同步生成超過系統即時手勢時限，會出現綠色快捷列，點一下「📤 分享」即可即時彈出原生分享窗
+          showToast("✓ PDF 已生成！請點上方「📤 分享」或「📥 儲存 PDF」");
+          return;
+        }
       }
     }
 
@@ -7136,8 +7208,9 @@ async function exportReportPDF() {
       showToast("已取消分享，可隨時點擊上方綠色列重新分享或儲存。");
       return;
     }
-    console.warn("Mobile vector PDF error:", err);
-    showToast("⚠️ 生成失敗，請重試一次");
+    console.error("Mobile vector PDF error:", err);
+    const reason = (err && err.message) ? ` (${err.message})` : "";
+    showToast("⚠️ 生成失敗" + reason);
   } finally {
     if (exportBtn) {
       exportBtn.disabled = false;
@@ -7434,15 +7507,9 @@ async function exportFullSystemJsonBackup(e) {
 
   const jsonStr = JSON.stringify(backupPayload, null, 2);
   const blob = new Blob([jsonStr], { type: "application/json;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
   const dateTag = new Date().toISOString().slice(0, 10);
-  a.href = url;
-  a.download = `Manity_Full_Backup_${dateTag}.json`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(url), 2000);
+  const jsonFilename = `Manity_Full_Backup_${dateTag}.json`;
+  downloadBlobDirectly(blob, jsonFilename);
 
   showToast(`✓ 已下載完整系統備份檔（${Object.keys(customers).length} 位客戶）`);
 }
