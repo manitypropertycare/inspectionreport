@@ -1676,6 +1676,285 @@
     line-height: 1;
   }
 
+
+  /* ================= 新客戶發票 (Invoice) 編輯與 A4 版面 ================= */
+  .inv-section-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    border: 1px solid #EAECEF;
+  }
+  .inv-pkg-pill-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 7px;
+    margin-top: 6px;
+  }
+  .inv-pkg-pill {
+    border: 1.5px solid #D5C49A;
+    border-radius: 10px;
+    padding: 8px 6px;
+    background: #FDFBF7;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .inv-pkg-pill.active {
+    background: linear-gradient(135deg, #1E3250 0%, #2A456D 100%);
+    border-color: #1E3250;
+    color: #fff;
+    box-shadow: 0 3px 8px rgba(30, 50, 80, 0.22);
+  }
+  .inv-pkg-pill .pkg-en { font-size: 11.5px; font-weight: 800; display: block; }
+  .inv-pkg-pill .pkg-zh { font-size: 10.5px; opacity: 0.85; display: block; margin-top: 1px; }
+  .inv-pkg-pill .pkg-price { font-size: 11px; font-weight: 800; color: #9E7C32; display: block; margin-top: 3px; }
+  .inv-pkg-pill.active .pkg-price { color: #F3E7CA; }
+
+  .inv-contents-preview {
+    margin-top: 8px;
+    padding: 9px 11px;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-left: 3.5px solid var(--gold);
+    border-radius: 8px;
+    font-size: 12px;
+    color: #334155;
+  }
+  .inv-content-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 2.5px 0;
+    border-bottom: 1px dashed #E2E8F0;
+  }
+  .inv-content-row:last-child { border-bottom: none; }
+
+  .inv-sig-canvas {
+    width: 100%;
+    height: 105px;
+    border: 1.5px dashed #B0B8C4;
+    border-radius: 8px;
+    background: #FAFBFC;
+    touch-action: none;
+    display: block;
+  }
+
+  /* A4 Invoice 列印與預覽精準排版 (100% 還原 Canva Invoice_template.pdf) */
+  .a4-invoice-page {
+    width: 210mm;
+    height: 297mm;
+    background: #ffffff;
+    padding: 9mm 10mm 8mm 10mm;
+    position: relative;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    color: #222;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang HK", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  }
+  .inv-a4-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 2.5mm;
+    border-bottom: 1pt solid #BDAB7D;
+  }
+  .inv-a4-title {
+    font-size: 21pt;
+    font-weight: 800;
+    color: #1E3250;
+    letter-spacing: 0.5px;
+    line-height: 1;
+    padding-bottom: 1mm;
+  }
+  .inv-a4-meta {
+    display: grid;
+    grid-template-columns: 58% 42%;
+    padding: 3.2mm 2mm 3mm 2mm;
+    border-bottom: 1pt solid #BDAB7D;
+    font-size: 9pt;
+    line-height: 5.4mm;
+  }
+  .inv-a4-mrow {
+    display: flex;
+    align-items: flex-start;
+    min-height: 5.4mm;
+  }
+  .inv-a4-mlbl {
+    width: 39mm;
+    flex-shrink: 0;
+    font-weight: 500;
+    color: #333;
+    white-space: nowrap;
+  }
+  .inv-a4-mlbl-r {
+    width: 28mm;
+    flex-shrink: 0;
+    font-weight: 500;
+    color: #333;
+    white-space: nowrap;
+  }
+  .inv-a4-mcolon {
+    width: 3mm;
+    flex-shrink: 0;
+    font-weight: 600;
+    color: #333;
+  }
+  .inv-a4-mval {
+    flex: 1;
+    font-weight: 600;
+    color: #111;
+    word-break: break-word;
+  }
+
+  .inv-a4-table-box {
+    margin-top: 3.5mm;
+    border: 0.9pt solid #BDAB7D;
+    border-radius: 3mm;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .inv-a4-thead {
+    display: grid;
+    grid-template-columns: 1fr 22mm 30mm 30mm;
+    padding: 2.6mm 4mm;
+    border-bottom: 0.9pt solid #BDAB7D;
+    background: #FDFBF7;
+    font-size: 9pt;
+    font-weight: 700;
+    color: #222;
+  }
+  .inv-a4-thead div:nth-child(2) { text-align: center; }
+  .inv-a4-thead div:nth-child(3),
+  .inv-a4-thead div:nth-child(4) { text-align: right; }
+
+  .inv-a4-tbody {
+    flex: 1;
+    padding: 3.5mm 4mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .inv-a4-item-grid {
+    display: grid;
+    grid-template-columns: 1fr 22mm 30mm 30mm;
+    align-items: start;
+    font-size: 9pt;
+  }
+  .inv-a4-item-grid .c-qty { text-align: center; font-weight: 600; }
+  .inv-a4-item-grid .c-price,
+  .inv-a4-item-grid .c-tot { text-align: right; font-weight: 600; }
+
+  .inv-a4-pkg-sublist {
+    margin-top: 2mm;
+    padding-left: 2mm;
+    font-size: 8.6pt;
+    line-height: 4.9mm;
+    color: #222;
+  }
+  .inv-a4-pkg-subrow {
+    display: grid;
+    grid-template-columns: 50mm 28mm 20mm;
+  }
+
+  .inv-a4-totals-area {
+    margin-top: 3mm;
+    padding-top: 2.5mm;
+    border-top: 1pt solid #BDAB7D;
+    display: grid;
+    grid-template-columns: 52% 48%;
+    align-items: end;
+    font-size: 9pt;
+  }
+  .inv-a4-sum-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 1.2mm 2mm;
+    font-size: 9pt;
+  }
+  .inv-a4-sum-row.grand {
+    margin-top: 1.5mm;
+    padding-top: 2mm;
+    border-top: 1.2pt solid #1E3250;
+    font-size: 10.5pt;
+    font-weight: 800;
+    color: #1E3250;
+  }
+
+  .inv-a4-sign-area {
+    margin-top: 4mm;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14mm;
+    padding: 0 3mm;
+  }
+  .inv-a4-sign-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .inv-a4-sign-pad {
+    width: 100%;
+    height: 18mm;
+    border-bottom: 1.2pt solid #BDAB7D;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .inv-a4-sign-pad img {
+    max-height: 16.5mm;
+    max-width: 58mm;
+    object-fit: contain;
+    margin-bottom: 0.5mm;
+  }
+  .inv-a4-sign-lbl {
+    font-size: 8.8pt;
+    font-weight: 700;
+    color: #222;
+    margin-top: 1.5mm;
+  }
+  .inv-a4-sign-sub {
+    font-size: 8pt;
+    color: #444;
+    margin-top: 0.8mm;
+    text-align: center;
+  }
+  .inv-a4-footer-pay {
+    margin-top: 3.5mm;
+    padding-top: 2mm;
+    border-top: 0.7pt dashed #BDAB7D;
+    font-size: 8pt;
+    line-height: 4.3mm;
+    color: #333;
+  }
+
+  @media print {
+    #print-preview-wrapper.invoice-preview-mode #slot-page-1,
+    #print-preview-wrapper.invoice-preview-mode #slot-page-2,
+    #print-preview-wrapper.invoice-preview-mode #slot-page-3 {
+      display: none !important;
+    }
+    #print-preview-wrapper.invoice-preview-mode #slot-invoice-page {
+      display: block !important;
+      width: 210mm !important;
+      height: 296.5mm !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    #print-preview-wrapper.invoice-preview-mode #a4-invoice-page {
+      width: 210mm !important;
+      height: 296.5mm !important;
+      margin: 0 !important;
+      box-shadow: none !important;
+      transform: none !important;
+    }
+  }
+
   /* 列印 / 匯出 PDF 專用媒體查詢 (自動還原 100% 原始 A4 尺寸) */
   @media print {
     @page { size: A4 portrait; margin: 0; }
@@ -1835,7 +2114,7 @@
 
       </div>
       <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v137</span>
+        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v138</span>
         <span id="cloudSyncBadge" class="cloud-status-orb syncing" title="雲端連線中..." aria-label="雲端連線狀態">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
@@ -1877,11 +2156,18 @@
   <!-- ================= 主頁：按參考編號 (Ref no.) 揀選客戶 ================= -->
   <div class="container" id="homeScreen" style="padding-top:14px;">
     <div class="card" style="padding:16px 14px 14px 14px; border-top:4px solid var(--gold); background:linear-gradient(180deg, #FFFFFF 0%, #FCFBF7 100%);">
-      <div style="text-align:left; font-size:21px; font-weight:800; color:var(--navy); letter-spacing:0.3px; line-height:1.25;">Manity Inspection Report</div>
-      <div style="margin-top:12px; display:flex; justify-content:flex-start;">
-        <button type="button" class="btn" style="padding:8px 18px; font-size:13px; font-weight:700; border-radius:999px; background:linear-gradient(135deg, #2A6F7F 0%, #1E5666 100%); color:#fff; box-shadow:0 3px 10px rgba(30, 86, 102, 0.22);" onclick="startNewCustomerFromHome()">
+      <div style="text-align:left; font-size:21px; font-weight:800; color:var(--navy); letter-spacing:0.3px; line-height:1.25;">Manity Property Care</div>
+      <div style="margin-top:12px; display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-start;">
+        <button type="button" class="btn" style="padding:8px 15px; font-size:12.5px; font-weight:700; border-radius:999px; background:linear-gradient(135deg, #2A6F7F 0%, #1E5666 100%); color:#fff; box-shadow:0 3px 10px rgba(30, 86, 102, 0.22);" onclick="startNewCustomerFromHome()">
           ＋ 新增客戶報告
         </button>
+        <button type="button" class="btn" style="padding:8px 15px; font-size:12.5px; font-weight:700; border-radius:999px; background:linear-gradient(135deg, #C6A456 0%, #9E7C32 100%); color:#fff; box-shadow:0 3px 10px rgba(158, 124, 50, 0.24);" onclick="startNewInvoiceFromHome()">
+          🧾 新客戶發票 (Invoice)
+        </button>
+      </div>
+      <div style="margin-top:10px; display:flex; gap:6px;">
+        <button type="button" id="homeModeTabReports" class="btn btn-sm" style="flex:1; background:var(--navy); color:#fff; border-radius:8px;" onclick="switchHomeListMode('reports')">📋 現有客戶報告庫</button>
+        <button type="button" id="homeModeTabInvoices" class="btn btn-sm" style="flex:1; background:#F1F5F9; color:var(--navy); border:1px solid #CBD5E1; border-radius:8px;" onclick="switchHomeListMode('invoices')">🧾 新客戶發票庫 (<span id="invoiceCountPill">0</span>)</button>
       </div>
       <div style="margin-top:12px; padding-top:11px; border-top:1px dashed #E5D4A8;">
         <input type="text" id="homeSearchInput" placeholder="🔍 搜尋參考編號 (Ref no.)、客戶姓名或單位..." oninput="renderHomeCustomerList()">
@@ -1891,8 +2177,11 @@
       </div>
     </div>
 
-    <div class="card" style="padding-top:12px;">
+    <div class="card" id="homeReportsCard" style="padding-top:12px;">
       <div id="homeCustomerList"></div>
+    </div>
+    <div class="card" id="homeInvoicesCard" style="padding-top:12px; display:none;">
+      <div id="homeInvoiceList"></div>
     </div>
   </div>
 
@@ -2119,6 +2408,231 @@
 
   </div>
 
+
+  <!-- ================= 新客戶發票 (Invoice) 編輯器 ================= -->
+  <div class="container" id="invoiceEditorContainer" style="display:none; padding-top:12px;">
+    <div class="inv-section-card" style="border-top:4px solid var(--gold);">
+      <div class="card-title">
+        <span>🧾 新客戶發票資料 (Invoice)</span>
+        <button type="button" class="btn btn-compact" style="background:#FFFBEB; color:#B45309; border:1px solid #FDE68A; padding:4px 9px; font-size:11px;" onclick="resetInvoiceForm(true)">清空重填</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Ref no. | 參考編號*</label>
+          <input type="text" id="invRefNo" placeholder="C0012XX" oninput="handleInvoiceFieldChange()">
+        </div>
+        <div class="form-group">
+          <label>Date | 發票日期</label>
+          <div style="position:relative; display:flex; align-items:center;">
+            <input type="text" id="invDateDisplay" placeholder="18 Nov 2026" style="padding-right:28px;" oninput="handleInvoiceFieldChange()">
+            <input type="date" id="invDatePicker" style="position:absolute; right:4px; width:26px; height:28px; opacity:0; cursor:pointer;" onchange="handleInvoiceDatePicked(this.value)">
+            <span style="position:absolute; right:7px; pointer-events:none; font-size:13px;">📅</span>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label>Customer Name | 客戶姓名</label>
+          <div style="display:flex; gap:6px;">
+            <select id="invCustTitle" style="width:76px; flex-shrink:0;" onchange="handleInvoiceFieldChange()">
+              <option value="">稱謂</option>
+              <option value="Mr.">Mr.</option>
+              <option value="Ms.">Ms.</option>
+              <option value="Mrs.">Mrs.</option>
+            </select>
+            <input type="text" id="invCustName" placeholder="Chan Tai Man" oninput="handleInvoiceFieldChange()">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Contact no. | 聯絡號碼</label>
+          <input type="text" id="invCustPhone" placeholder="+852 9123 4567" oninput="handleInvoiceFieldChange()">
+        </div>
+        <div class="form-group">
+          <label>Email | 電郵</label>
+          <input type="text" id="invCustEmail" placeholder="client@gmail.com" oninput="handleInvoiceFieldChange()">
+        </div>
+        <div class="form-group full">
+          <label>Address | 地址</label>
+          <input type="text" id="invAddress" placeholder="例如: 0000000 (3/F) The Origin Sukhumvit 105, Sukhumvit 105 Alley, Bang Na" oninput="handleInvoiceFieldChange()">
+        </div>
+        <div class="form-group full">
+          <label>Issuer | 發件人</label>
+          <input type="text" id="invIssuer" value="Ms Namthip" placeholder="Ms Namthip" oninput="handleInvoiceFieldChange()">
+        </div>
+      </div>
+    </div>
+
+    <!-- 服務套餐與服務期 -->
+    <div class="inv-section-card">
+      <div class="card-title">
+        <span>📦 揀選服務套餐 (Package)</span>
+        <span id="invPkgPriceBadge" style="font-size:12px; font-weight:800; color:var(--navy); background:#FAF6EC; border:1px solid var(--gold-light); padding:2px 8px; border-radius:8px;">2,488 HKD</span>
+      </div>
+      <div class="inv-pkg-pill-grid">
+        <div class="inv-pkg-pill active" id="invPkgBtn_essential" onclick="selectInvoicePackage('essential')">
+          <span class="pkg-en">Essential Care</span>
+          <span class="pkg-zh">基礎方案</span>
+          <span class="pkg-price">2,488 HKD</span>
+        </div>
+        <div class="inv-pkg-pill" id="invPkgBtn_plus" onclick="selectInvoicePackage('plus')">
+          <span class="pkg-en">Plus Care</span>
+          <span class="pkg-zh">全面方案</span>
+          <span class="pkg-price">4,888 HKD</span>
+        </div>
+        <div class="inv-pkg-pill" id="invPkgBtn_premium" onclick="selectInvoicePackage('premium')">
+          <span class="pkg-en">Premium Care</span>
+          <span class="pkg-zh">尊貴方案</span>
+          <span class="pkg-price">6,888 HKD</span>
+        </div>
+      </div>
+
+      <div class="form-grid" style="margin-top:10px;">
+        <div class="form-group full">
+          <label>Service Period 服務期 (自動計算一年或手動修改)</label>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <div style="position:relative; flex:1; display:flex; align-items:center;">
+              <input type="text" id="invPeriodStartText" placeholder="1 Dec 2026" style="padding-right:26px;" oninput="handleInvoiceFieldChange()">
+              <input type="date" id="invPeriodStartPicker" style="position:absolute; right:3px; width:24px; height:26px; opacity:0; cursor:pointer;" onchange="handleInvoicePeriodStartPicked(this.value)">
+              <span style="position:absolute; right:6px; pointer-events:none; font-size:13px;">📅</span>
+            </div>
+            <span style="font-weight:700; color:#555;">-</span>
+            <div style="position:relative; flex:1; display:flex; align-items:center;">
+              <input type="text" id="invPeriodEndText" placeholder="30 Nov 2027" style="padding-right:26px;" oninput="handleInvoiceFieldChange()">
+              <input type="date" id="invPeriodEndPicker" style="position:absolute; right:3px; width:24px; height:26px; opacity:0; cursor:pointer;" onchange="handleInvoicePeriodEndPicked(this.value)">
+              <span style="position:absolute; right:6px; pointer-events:none; font-size:13px;">📅</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Package Quantity 數量</label>
+          <input type="number" id="invPkgQty" value="1" min="1" oninput="handleInvoiceFieldChange()">
+        </div>
+        <div class="form-group">
+          <label>Package Unit Price 單價 (HKD)</label>
+          <input type="number" id="invPkgPrice" value="2488" min="0" oninput="handleInvoiceFieldChange()">
+        </div>
+      </div>
+
+      <div class="inv-contents-preview" id="invPkgContentsPreview"></div>
+    </div>
+
+    <!-- Add-on Service 增值服務 & Advance Payment 預付款項 & 總計 -->
+    <div class="inv-section-card">
+      <div class="card-title">
+        <span>💰 增值服務、預付款項及總額</span>
+      </div>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Add-on Service 增值服務 (留空或 Nil 則不計費)</label>
+          <input type="text" id="invAddonDesc" value="Nil" placeholder="Nil 或輸入額外服務項目" oninput="handleInvoiceFieldChange()">
+        </div>
+        <div class="form-group">
+          <label>增值服務數量</label>
+          <input type="number" id="invAddonQty" value="0" min="0" oninput="handleInvoiceFieldChange()">
+        </div>
+        <div class="form-group">
+          <label>增值服務單價 (HKD)</label>
+          <input type="number" id="invAddonPrice" value="0" min="0" oninput="handleInvoiceFieldChange()">
+        </div>
+
+        <div class="form-group full" style="margin-top:4px; padding-top:8px; border-top:1px dashed #E2E8F0;">
+          <label>Advance Payment 預付款項項目</label>
+          <input type="text" id="invAdvDesc" value="Miscellaneous Fees 水電及其他雜費" oninput="handleInvoiceFieldChange()">
+        </div>
+        <div class="form-group">
+          <label>預付款數量</label>
+          <input type="number" id="invAdvQty" value="1" min="0" oninput="handleInvoiceFieldChange()">
+        </div>
+        <div class="form-group">
+          <label>預付款單價 (HKD)</label>
+          <input type="number" id="invAdvPrice" value="500" min="0" oninput="handleInvoiceFieldChange()">
+        </div>
+
+        <div class="form-group">
+          <label>Other | 其他金額 (HKD)</label>
+          <input type="number" id="invOtherAmount" value="0" min="0" oninput="handleInvoiceFieldChange()">
+        </div>
+        <div class="form-group">
+          <label>Currency 貨幣單位</label>
+          <select id="invCurrency" onchange="handleInvoiceFieldChange()">
+            <option value="HKD">HKD</option>
+            <option value="THB">THB</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-top:10px; padding:10px 12px; background:#FAF7F0; border:1px solid #E5D4A8; border-radius:9px; font-size:13px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+          <span style="color:#555;">Subtotal | 小計：</span>
+          <strong id="invSubtotalText">2,988 HKD</strong>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+          <span style="color:#555;">Other | 其他：</span>
+          <strong id="invOtherText">0 HKD</strong>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding-top:6px; border-top:1px solid #D5C49A; font-size:15px; color:var(--navy);">
+          <span style="font-weight:800;">Total Amount | 總額 (Grand Total)：</span>
+          <strong id="invGrandTotalText">2,988 HKD</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- 雙簽名區：Customer Signature & Authorized Signature -->
+    <div class="inv-section-card">
+      <div class="card-title">
+        <span>✍️ 客戶與受托人簽署</span>
+      </div>
+
+      <div style="margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+          <label style="font-size:12.5px; color:var(--navy);">1. Customer Signature 客戶簽署</label>
+          <div style="display:flex; gap:5px;">
+            <input type="file" accept="image/*" id="invCustSigFile" style="display:none;" onchange="handleInvSigUpload('cust', event)">
+            <button type="button" class="btn btn-outline btn-sm" style="padding:4px 8px; font-size:11px;" onclick="document.getElementById('invCustSigFile').click()">📷 上載圖</button>
+            <button type="button" class="btn btn-outline btn-sm" style="padding:4px 8px; font-size:11px;" onclick="clearInvSignature('cust')">清除</button>
+          </div>
+        </div>
+        <canvas id="invCustSigCanvas" class="inv-sig-canvas"></canvas>
+        <div class="form-grid" style="margin-top:6px;">
+          <div class="form-group">
+            <label>客戶簽署顯示名稱</label>
+            <input type="text" id="invCustSignName" placeholder="自動帶入客戶姓名" oninput="handleInvoiceFieldChange()">
+          </div>
+          <div class="form-group">
+            <label>客戶簽署日期</label>
+            <input type="text" id="invCustSignDate" placeholder="例如: 18 Nov 2026" oninput="handleInvoiceFieldChange()">
+          </div>
+        </div>
+      </div>
+
+      <div style="padding-top:10px; border-top:1px dashed #DCE1E8;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+          <label style="font-size:12.5px; color:var(--navy);">2. Authorized Signature 受托人簽署</label>
+          <div style="display:flex; gap:5px;">
+            <input type="file" accept="image/*" id="invAuthSigFile" style="display:none;" onchange="handleInvSigUpload('auth', event)">
+            <button type="button" class="btn btn-navy btn-sm" style="padding:4px 8px; font-size:11px;" onclick="applyPresetSignatureToInvoice()">套用預設簽名</button>
+            <button type="button" class="btn btn-outline btn-sm" style="padding:4px 8px; font-size:11px;" onclick="document.getElementById('invAuthSigFile').click()">📷 上載圖</button>
+            <button type="button" class="btn btn-outline btn-sm" style="padding:4px 8px; font-size:11px;" onclick="clearInvSignature('auth')">清除</button>
+          </div>
+        </div>
+        <canvas id="invAuthSigCanvas" class="inv-sig-canvas"></canvas>
+        <div class="form-grid" style="margin-top:6px;">
+          <div class="form-group">
+            <label>受托人簽署顯示名稱</label>
+            <input type="text" id="invAuthSignName" value="Ms Namthip" placeholder="Ms Namthip" oninput="handleInvoiceFieldChange()">
+          </div>
+          <div class="form-group">
+            <label>受托人簽署日期</label>
+            <input type="text" id="invAuthSignDate" placeholder="例如: 18-Nov-2026" oninput="handleInvoiceFieldChange()">
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:14px; display:flex; gap:8px;">
+        <button type="button" class="btn btn-navy" style="flex:1;" onclick="saveCurrentInvoiceRecord(false)">💾 儲存發票紀錄</button>
+        <button type="button" class="btn btn-gold" style="flex:1;" onclick="toggleInvoicePreview(true)">👁️ 預覽 / 匯出 PDF</button>
+      </div>
+    </div>
+  </div>
+
   <!-- 底部固定操作按鈕 (左側：整合清單 + 相片 + 離場核對三段式進度條；右側：預覽 / 匯出 PDF) -->
   <div class="bottom-bar" id="editorBottomBar" style="display:none;">
     <div class="bottom-unified-progress" id="bottomUnifiedProgress">
@@ -2156,6 +2670,33 @@
     </div>
 
     <div class="a4-zoom-viewport" id="a4ZoomViewport">
+
+    <!-- INVOICE A4 PAGE -->
+    <div class="a4-scale-slot" id="slot-invoice-page" style="display:none;">
+      <div class="a4-invoice-page" id="a4-invoice-page">
+        <div class="inv-a4-topbar">
+          <img id="invA4LogoImg" src="" alt="Manity PROPERTY CARE" class="exact-logo-img">
+          <div class="inv-a4-title">Invoice</div>
+        </div>
+        <div class="inv-a4-meta" id="invA4MetaGrid"></div>
+        <div class="inv-a4-table-box">
+          <div class="inv-a4-thead">
+            <div>Item Description 項目名稱</div>
+            <div>Quantity 數量</div>
+            <div>Unit Price 價格</div>
+            <div>Total 合計</div>
+          </div>
+          <div class="inv-a4-tbody" id="invA4TableBody"></div>
+        </div>
+        <div class="inv-a4-sign-area" id="invA4SignArea"></div>
+        <div class="inv-a4-footer-pay">
+          <div><strong>Accepted Payment Method 繳費方法</strong></div>
+          <div>Hong Kong: FPS, Cash / Thailand: PromptPay, Cash (according to the exchange rate at that time)</div>
+          <div><strong>Contact Number 聯絡號碼:</strong> +6662064 1601 &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Email 電郵:</strong> manity.propertycare@gmail.com</div>
+        </div>
+      </div>
+    </div>
+
     <!-- PAGE 1 -->
     <div class="a4-scale-slot" id="slot-page-1">
     <div class="a4-page" id="a4-page-1">
@@ -2418,6 +2959,34 @@ function initFirebaseRealtimeSync() {
       }
     }, err => {
       console.warn("Firestore reports listener error:", err);
+    });
+
+    // 2.5 即時監聽所有新客戶發票 (invoices)
+    fbDb.collection("invoices").onSnapshot(snapshot => {
+      const invDb = getInvoicesDb();
+      let invChanged = false;
+      snapshot.docChanges().forEach(change => {
+        const data = change.doc.data();
+        if (!data || !data.invId) return;
+        const id = String(data.invId).trim();
+        if (change.type === "removed") {
+          if (invDb[id]) {
+            delete invDb[id];
+            invChanged = true;
+          }
+        } else {
+          invDb[id] = data;
+          invChanged = true;
+        }
+      });
+      if (invChanged) {
+        setInvoicesDb(invDb);
+        if (typeof renderHomeInvoiceList === "function") {
+          renderHomeInvoiceList();
+        }
+      }
+    }, err => {
+      console.warn("Firestore invoices listener error:", err);
     });
 
     // 3. 同步預設簽名庫 (settings/preset_signature，支援多個具名簽名)
@@ -3549,6 +4118,10 @@ function goHome() {
   renderHomeCustomerList();
   document.getElementById("homeScreen").style.display = "block";
   document.getElementById("editorContainer").style.display = "none";
+  const invEd = document.getElementById("invoiceEditorContainer");
+  if (invEd) invEd.style.display = "none";
+  _isInvoicePreviewMode = false;
+  if (typeof renderHomeInvoiceList === "function") renderHomeInvoiceList();
   document.getElementById("mainTabs").style.display = "none";
   document.getElementById("editorBottomBar").style.display = "none";
   const actRow = document.getElementById("topbarActionsRow");
@@ -6717,6 +7290,28 @@ function fitA4PreviewToScreen(resetZoom = false) {
   if (!wrapper || !wrapper.classList.contains("active")) return;
   if (resetZoom) _previewUserZoom = 1;
 
+  if (_isInvoicePreviewMode) {
+    const invSlot = document.getElementById("slot-invoice-page");
+    const invPage = document.getElementById("a4-invoice-page");
+    if (!invSlot || !invPage) return;
+    [1, 2, 3].forEach(n => {
+      const s = document.getElementById(`slot-page-${n}`);
+      if (s) s.style.display = "none";
+    });
+    invSlot.style.display = "block";
+    const rawW = invPage.offsetWidth || 794;
+    const rawH = invPage.offsetHeight || 1123;
+    const availW = Math.max(260, (wrapper.clientWidth || window.innerWidth) - 16);
+    _previewBaseScale = Math.min(1, availW / rawW);
+    const effectiveScale = _previewBaseScale * _previewUserZoom;
+    invPage.style.transform = `scale(${effectiveScale})`;
+    invSlot.style.width = `${Math.round(rawW * effectiveScale)}px`;
+    invSlot.style.height = `${Math.round(rawH * effectiveScale)}px`;
+    return;
+  }
+  const invSlotHide = document.getElementById("slot-invoice-page");
+  if (invSlotHide) invSlotHide.style.display = "none";
+
   const refPage = _previewOnlyPage3
     ? (document.getElementById("a4-page-3") || document.getElementById("a4-page-1"))
     : document.getElementById("a4-page-1");
@@ -7510,6 +8105,10 @@ async function generateMobileVectorPdfBlob(onlyPage3 = false) {
 }
 
 async function exportReportPDF() {
+  if (_isInvoicePreviewMode) {
+    await exportInvoicePDF();
+    return;
+  }
   if (!_previewOnlyPage3 && !isEntireReportReadyForExport()) {
     showToast("⚠️ 報告仍有未完成項目，請補齊後再匯出 PDF！");
     return;
@@ -7691,6 +8290,21 @@ function togglePreview(show, bypassWarning = false, onlyPage3 = false) {
     if (readyBar) readyBar.style.display = "none";
     document.title = DEFAULT_APP_TITLE;
     wrapper.classList.remove("active");
+    wrapper.classList.remove("invoice-preview-mode");
+    const invSlot = document.getElementById("slot-invoice-page");
+    if (invSlot) invSlot.style.display = "none";
+    if (_isInvoicePreviewMode) {
+      document.getElementById("homeScreen").style.display = "none";
+      document.getElementById("editorContainer").style.display = "none";
+      document.getElementById("mainTabs").style.display = "none";
+      document.getElementById("editorBottomBar").style.display = "none";
+      const invEd = document.getElementById("invoiceEditorContainer");
+      if (invEd) invEd.style.display = "block";
+      const actRow = document.getElementById("topbarActionsRow");
+      if (actRow) actRow.classList.add("active");
+      window.scrollTo(0, 0);
+      return;
+    }
     document.getElementById("editorContainer").style.display = "block";
     document.getElementById("mainTabs").style.display = "flex";
     document.getElementById("editorBottomBar").style.display = "flex";
@@ -7701,7 +8315,7 @@ function togglePreview(show, bypassWarning = false, onlyPage3 = false) {
 </script>
 
 <script>
-// ================= 全庫統一多客戶分頁 Excel 匯出 + 完整系統 JSON 備份與還原 (v137) =================
+// ================= 全庫統一多客戶分頁 Excel 匯出 + 完整系統 JSON 備份與還原 (v138) =================
 function toggleHomeBackupMenu(e) {
   if (e) e.stopPropagation();
   const menu = document.getElementById("homeBackupDropdown");
@@ -7948,11 +8562,12 @@ async function exportFullSystemJsonBackup(e) {
 
   const backupPayload = {
     app: "Manity Inspection Report",
-    version: "v137",
+    version: "v138",
     exportedAt: new Date().toISOString(),
     customersCount: Object.keys(customers).length,
     customers: customers,
     reportsHistory: reports,
+    invoicesDb: getInvoicesDb(),
     presetSignatures: presetSigs
   };
 
@@ -8017,6 +8632,20 @@ function handleRestoreJsonFileSelected(event) {
       });
       setReportsHistory(curReports);
 
+      if (parsed.invoicesDb && typeof parsed.invoicesDb === "object") {
+        const curInv = getInvoicesDb();
+        Object.keys(parsed.invoicesDb).forEach(k => {
+          curInv[k] = parsed.invoicesDb[k];
+        });
+        setInvoicesDb(curInv);
+        for (const k of Object.keys(parsed.invoicesDb)) {
+          if (typeof syncInvoiceToCloud === "function") {
+            await syncInvoiceToCloud(parsed.invoicesDb[k]);
+          }
+        }
+        if (typeof renderHomeInvoiceList === "function") renderHomeInvoiceList();
+      }
+
       if (Array.isArray(parsed.presetSignatures) && parsed.presetSignatures.length > 0) {
         window._presetSigListMem = parsed.presetSignatures;
         try {
@@ -8051,6 +8680,838 @@ function handleRestoreJsonFileSelected(event) {
   };
   reader.readAsText(file);
 }
+
+// ================= 新客戶發票 (Invoice) 完整系統邏輯 (v138 First Stage) =================
+const INVOICES_STORAGE_KEY = "manity_invoices_db_v1";
+let _isInvoicePreviewMode = false;
+let _currentInvoiceId = "";
+let _currentInvoicePkgKey = "essential";
+let _invCustSigDataUrl = "";
+let _invAuthSigDataUrl = "";
+let _invSaveTimer = null;
+
+const INVOICE_PACKAGES = {
+  essential: {
+    key: "essential",
+    programName: "Essential Care 基礎方案",
+    titleLine: "Package - Manity Essential Care",
+    price: 2488,
+    items: [
+      { en: "Key Holding", zh: "鎖匙保管", freq: "" },
+      { en: "Room Inspection", zh: "房間檢查", freq: "4x/yr" },
+      { en: "Mailbox Checking", zh: "信箱檢查", freq: "4x/yr" },
+      { en: "Bill Payment Handling", zh: "繳費代繳", freq: "12x/yr" },
+      { en: "Room Cleaning", zh: "房間清潔", freq: "2x/yr" },
+      { en: "Photographic Inspection Report", zh: "照片報告", freq: "4x/yr" }
+    ]
+  },
+  plus: {
+    key: "plus",
+    programName: "Plus Care 全面方案",
+    titleLine: "Package - Manity Plus Care",
+    price: 4888,
+    items: [
+      { en: "Key Holding", zh: "鎖匙保管", freq: "" },
+      { en: "Room Inspection", zh: "房間檢查", freq: "6x/yr" },
+      { en: "Mailbox Checking", zh: "信箱檢查", freq: "6x/yr" },
+      { en: "Bill Payment Handling", zh: "繳費代繳", freq: "12x/yr" },
+      { en: "Room Cleaning", zh: "房間清潔", freq: "4x/yr" },
+      { en: "Photographic Inspection Report", zh: "照片報告", freq: "6x/yr" },
+      { en: "Air Conditioner Cleaning", zh: "冷氣清潔", freq: "1x/yr" },
+      { en: "Key Pick-up & Handover Service", zh: "鎖匙代取/交還", freq: "1x/yr" },
+      { en: "Parcel Receiving & Handling", zh: "代收包裹", freq: "2x/yr" }
+    ]
+  },
+  premium: {
+    key: "premium",
+    programName: "Premium Care 尊貴方案",
+    titleLine: "Package - Manity Premium Care",
+    price: 6888,
+    items: [
+      { en: "Key Holding", zh: "鎖匙保管", freq: "" },
+      { en: "Room Inspection", zh: "房間檢查", freq: "8x/yr" },
+      { en: "Mailbox Checking", zh: "信箱檢查", freq: "8x/yr" },
+      { en: "Bill Payment Handling", zh: "繳費代繳", freq: "12x/yr" },
+      { en: "Room Cleaning", zh: "房間清潔", freq: "6x/yr" },
+      { en: "Photographic Inspection Report", zh: "照片報告", freq: "8x/yr" },
+      { en: "Air Conditioner Cleaning", zh: "冷氣清潔", freq: "2x/yr" },
+      { en: "Key Pick-up & Handover Service", zh: "鎖匙代取/交還", freq: "2x/yr" },
+      { en: "Parcel Receiving & Handling", zh: "代收包裹", freq: "4x/yr" },
+      { en: "Washing Machine Cleaning", zh: "洗衣機清洗", freq: "1x/yr" },
+      { en: "Airport Transfer Service", zh: "機場接送", freq: "2x/yr" }
+    ]
+  }
+};
+
+function getInvoicesDb() {
+  try {
+    return JSON.parse(localStorage.getItem(INVOICES_STORAGE_KEY) || "{}");
+  } catch (e) {
+    return window._invoicesDbMem || {};
+  }
+}
+
+function setInvoicesDb(obj) {
+  window._invoicesDbMem = obj;
+  try {
+    localStorage.setItem(INVOICES_STORAGE_KEY, JSON.stringify(obj));
+  } catch (e) {}
+}
+
+async function syncInvoiceToCloud(invObj) {
+  if (!fbDb || !invObj || !invObj.invId) return;
+  try {
+    setCloudSyncBadge("syncing", "☁️ 同步發票中...");
+    await fbDb.collection("invoices").doc(encodeFbId(invObj.invId)).set({
+      ...invObj,
+      updatedAtMs: Date.now()
+    }, { merge: true });
+    setCloudSyncBadge("ok", "☁️ 雲端即時同步");
+  } catch (e) {
+    console.warn("syncInvoiceToCloud error:", e);
+    setCloudSyncBadge("err", "⚠️ 發票同步失敗");
+  }
+}
+
+function formatEnglishShortDate(dateObj) {
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const d = dateObj instanceof Date && !isNaN(dateObj) ? dateObj : new Date();
+  return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+function formatMoneyCommas(num) {
+  const n = Math.round((Number(num) || 0) * 100) / 100;
+  return n.toLocaleString("en-US");
+}
+
+function switchHomeListMode(mode) {
+  const repCard = document.getElementById("homeReportsCard");
+  const invCard = document.getElementById("homeInvoicesCard");
+  const btnRep = document.getElementById("homeModeTabReports");
+  const btnInv = document.getElementById("homeModeTabInvoices");
+  if (mode === "invoices") {
+    if (repCard) repCard.style.display = "none";
+    if (invCard) invCard.style.display = "block";
+    if (btnRep) { btnRep.style.background = "#F1F5F9"; btnRep.style.color = "var(--navy)"; btnRep.style.border = "1px solid #CBD5E1"; }
+    if (btnInv) { btnInv.style.background = "var(--navy)"; btnInv.style.color = "#fff"; btnInv.style.border = "none"; }
+    renderHomeInvoiceList();
+  } else {
+    if (repCard) repCard.style.display = "block";
+    if (invCard) invCard.style.display = "none";
+    if (btnRep) { btnRep.style.background = "var(--navy)"; btnRep.style.color = "#fff"; btnRep.style.border = "none"; }
+    if (btnInv) { btnInv.style.background = "#F1F5F9"; btnInv.style.color = "var(--navy)"; btnInv.style.border = "1px solid #CBD5E1"; }
+    renderHomeCustomerList();
+  }
+}
+
+function openInvoiceEditor() {
+  document.getElementById("homeScreen").style.display = "none";
+  document.getElementById("editorContainer").style.display = "none";
+  document.getElementById("mainTabs").style.display = "none";
+  document.getElementById("editorBottomBar").style.display = "none";
+  document.getElementById("print-preview-wrapper").classList.remove("active");
+  const invEd = document.getElementById("invoiceEditorContainer");
+  if (invEd) invEd.style.display = "block";
+  const actRow = document.getElementById("topbarActionsRow");
+  if (actRow) actRow.classList.add("active");
+  const lockBtn = document.getElementById("btnTopLockToggle");
+  const delBtn = document.getElementById("btnTopDeletePage");
+  if (lockBtn) lockBtn.style.display = "none";
+  if (delBtn) delBtn.style.display = "none";
+  initInvoiceSignaturePads();
+  window.scrollTo(0, 0);
+}
+
+function restoreTopbarReportButtons() {
+  const lockBtn = document.getElementById("btnTopLockToggle");
+  const delBtn = document.getElementById("btnTopDeletePage");
+  if (lockBtn) lockBtn.style.display = "inline-flex";
+  if (delBtn) delBtn.style.display = "inline-flex";
+}
+
+const _origOpenEditor = openEditor;
+openEditor = function() {
+  const invEd = document.getElementById("invoiceEditorContainer");
+  if (invEd) invEd.style.display = "none";
+  restoreTopbarReportButtons();
+  _origOpenEditor();
+};
+
+const _origGoHome = goHome;
+goHome = function() {
+  restoreTopbarReportButtons();
+  _origGoHome();
+};
+
+function startNewInvoiceFromHome() {
+  openInvoiceEditor();
+  resetInvoiceForm(false);
+}
+
+function resetInvoiceForm(showNotify) {
+  _currentInvoiceId = "INV_" + Date.now();
+  const today = new Date();
+  const todayStr = formatEnglishShortDate(today);
+  const nextYear = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate() - 1);
+
+  document.getElementById("invRefNo").value = "";
+  document.getElementById("invDatePicker").value = today.toISOString().split("T")[0];
+  document.getElementById("invDateDisplay").value = todayStr;
+  document.getElementById("invCustTitle").value = "";
+  document.getElementById("invCustName").value = "";
+  document.getElementById("invCustPhone").value = "+852 ";
+  document.getElementById("invCustEmail").value = "";
+  document.getElementById("invAddress").value = "";
+  document.getElementById("invIssuer").value = "Ms Namthip";
+
+  document.getElementById("invPeriodStartPicker").value = today.toISOString().split("T")[0];
+  document.getElementById("invPeriodStartText").value = todayStr;
+  document.getElementById("invPeriodEndPicker").value = nextYear.toISOString().split("T")[0];
+  document.getElementById("invPeriodEndText").value = formatEnglishShortDate(nextYear);
+
+  document.getElementById("invPkgQty").value = "1";
+  document.getElementById("invAddonDesc").value = "Nil";
+  document.getElementById("invAddonQty").value = "0";
+  document.getElementById("invAddonPrice").value = "0";
+  document.getElementById("invAdvDesc").value = "Miscellaneous Fees 水電及其他雜費";
+  document.getElementById("invAdvQty").value = "1";
+  document.getElementById("invAdvPrice").value = "500";
+  document.getElementById("invOtherAmount").value = "0";
+  document.getElementById("invCurrency").value = "HKD";
+
+  document.getElementById("invCustSignName").value = "";
+  document.getElementById("invCustSignDate").value = todayStr;
+  document.getElementById("invAuthSignName").value = "Ms Namthip";
+  document.getElementById("invAuthSignDate").value = todayStr.replace(/\s+/g, "-");
+
+  clearInvSignature("cust", true);
+  clearInvSignature("auth", true);
+  selectInvoicePackage("essential", true);
+  if (showNotify) showToast("✓ 已清空新客戶發票表單");
+}
+
+function selectInvoicePackage(pkgKey, skipSave) {
+  const pkg = INVOICE_PACKAGES[pkgKey] || INVOICE_PACKAGES.essential;
+  _currentInvoicePkgKey = pkg.key;
+
+  ["essential", "plus", "premium"].forEach(k => {
+    const el = document.getElementById(`invPkgBtn_${k}`);
+    if (el) el.classList.toggle("active", k === pkg.key);
+  });
+
+  document.getElementById("invPkgPrice").value = pkg.price;
+  const badge = document.getElementById("invPkgPriceBadge");
+  const cur = document.getElementById("invCurrency")?.value || "HKD";
+  if (badge) badge.textContent = `${formatMoneyCommas(pkg.price)} ${cur}`;
+
+  const previewBox = document.getElementById("invPkgContentsPreview");
+  if (previewBox) {
+    previewBox.innerHTML = `<div style="font-weight:800; color:var(--navy); margin-bottom:4px;">${pkg.titleLine} 服務內容：</div>` +
+      pkg.items.map(it => `<div class="inv-content-row"><span>${it.en} <span style="color:#64748B;">${it.zh}</span></span><strong style="color:var(--navy);">${it.freq || "✓"}</strong></div>`).join("");
+  }
+
+  recalculateInvoiceTotals();
+  if (!skipSave) scheduleInvoiceAutoSave();
+}
+
+function handleInvoiceDatePicked(isoVal) {
+  if (!isoVal) return;
+  const d = new Date(isoVal + "T00:00:00");
+  const formatted = formatEnglishShortDate(d);
+  document.getElementById("invDateDisplay").value = formatted;
+  if (!document.getElementById("invCustSignDate").value.trim()) {
+    document.getElementById("invCustSignDate").value = formatted;
+  }
+  document.getElementById("invAuthSignDate").value = formatted.replace(/\s+/g, "-");
+  scheduleInvoiceAutoSave();
+}
+
+function handleInvoicePeriodStartPicked(isoVal) {
+  if (!isoVal) return;
+  const d = new Date(isoVal + "T00:00:00");
+  document.getElementById("invPeriodStartText").value = formatEnglishShortDate(d);
+  const endD = new Date(d.getFullYear() + 1, d.getMonth(), d.getDate() - 1);
+  document.getElementById("invPeriodEndPicker").value = endD.toISOString().split("T")[0];
+  document.getElementById("invPeriodEndText").value = formatEnglishShortDate(endD);
+  scheduleInvoiceAutoSave();
+}
+
+function handleInvoicePeriodEndPicked(isoVal) {
+  if (!isoVal) return;
+  const d = new Date(isoVal + "T00:00:00");
+  document.getElementById("invPeriodEndText").value = formatEnglishShortDate(d);
+  scheduleInvoiceAutoSave();
+}
+
+function recalculateInvoiceTotals() {
+  const cur = document.getElementById("invCurrency")?.value || "HKD";
+  const pkgQty = Math.max(0, Number(document.getElementById("invPkgQty")?.value || 0));
+  const pkgPrice = Math.max(0, Number(document.getElementById("invPkgPrice")?.value || 0));
+  const pkgTotal = pkgQty * pkgPrice;
+
+  const addonQty = Math.max(0, Number(document.getElementById("invAddonQty")?.value || 0));
+  const addonPrice = Math.max(0, Number(document.getElementById("invAddonPrice")?.value || 0));
+  const addonTotal = addonQty * addonPrice;
+
+  const advQty = Math.max(0, Number(document.getElementById("invAdvQty")?.value || 0));
+  const advPrice = Math.max(0, Number(document.getElementById("invAdvPrice")?.value || 0));
+  const advTotal = advQty * advPrice;
+
+  const otherAmt = Math.max(0, Number(document.getElementById("invOtherAmount")?.value || 0));
+  const subtotal = pkgTotal + addonTotal + advTotal;
+  const grandTotal = subtotal + otherAmt;
+
+  const badge = document.getElementById("invPkgPriceBadge");
+  if (badge) badge.textContent = `${formatMoneyCommas(pkgPrice)} ${cur}`;
+
+  document.getElementById("invSubtotalText").textContent = `${formatMoneyCommas(subtotal)} ${cur}`;
+  document.getElementById("invOtherText").textContent = `${formatMoneyCommas(otherAmt)} ${cur}`;
+  document.getElementById("invGrandTotalText").textContent = `${formatMoneyCommas(grandTotal)} ${cur}`;
+
+  return { cur, pkgQty, pkgPrice, pkgTotal, addonQty, addonPrice, addonTotal, advQty, advPrice, advTotal, otherAmt, subtotal, grandTotal };
+}
+
+function handleInvoiceFieldChange() {
+  const title = (document.getElementById("invCustTitle")?.value || "").trim();
+  const name = (document.getElementById("invCustName")?.value || "").trim();
+  const signNameEl = document.getElementById("invCustSignName");
+  if (signNameEl && !signNameEl.dataset.manualEdited) {
+    signNameEl.value = [title, name].filter(Boolean).join(" ");
+  }
+  recalculateInvoiceTotals();
+  scheduleInvoiceAutoSave();
+}
+
+function collectCurrentInvoiceData() {
+  const totals = recalculateInvoiceTotals();
+  const refNo = (document.getElementById("invRefNo")?.value || "").trim();
+  if (!_currentInvoiceId) _currentInvoiceId = refNo || ("INV_" + Date.now());
+  return {
+    invId: _currentInvoiceId,
+    refNo: refNo,
+    invDate: (document.getElementById("invDateDisplay")?.value || "").trim(),
+    custTitle: (document.getElementById("invCustTitle")?.value || "").trim(),
+    custName: (document.getElementById("invCustName")?.value || "").trim(),
+    custPhone: (document.getElementById("invCustPhone")?.value || "").trim(),
+    custEmail: (document.getElementById("invCustEmail")?.value || "").trim(),
+    address: (document.getElementById("invAddress")?.value || "").trim(),
+    issuer: (document.getElementById("invIssuer")?.value || "").trim(),
+    pkgKey: _currentInvoicePkgKey,
+    periodStart: (document.getElementById("invPeriodStartText")?.value || "").trim(),
+    periodEnd: (document.getElementById("invPeriodEndText")?.value || "").trim(),
+    pkgQty: totals.pkgQty,
+    pkgPrice: totals.pkgPrice,
+    addonDesc: (document.getElementById("invAddonDesc")?.value || "").trim(),
+    addonQty: totals.addonQty,
+    addonPrice: totals.addonPrice,
+    advDesc: (document.getElementById("invAdvDesc")?.value || "").trim(),
+    advQty: totals.advQty,
+    advPrice: totals.advPrice,
+    otherAmount: totals.otherAmt,
+    currency: totals.cur,
+    subtotal: totals.subtotal,
+    grandTotal: totals.grandTotal,
+    custSigDataUrl: _invCustSigDataUrl || "",
+    custSignName: (document.getElementById("invCustSignName")?.value || "").trim(),
+    custSignDate: (document.getElementById("invCustSignDate")?.value || "").trim(),
+    authSigDataUrl: _invAuthSigDataUrl || "",
+    authSignName: (document.getElementById("invAuthSignName")?.value || "").trim(),
+    authSignDate: (document.getElementById("invAuthSignDate")?.value || "").trim(),
+    updatedAt: formatDateTimeDeviceLocal(Date.now()),
+    updatedAtMs: Date.now()
+  };
+}
+
+function scheduleInvoiceAutoSave() {
+  clearTimeout(_invSaveTimer);
+  _invSaveTimer = setTimeout(() => {
+    saveCurrentInvoiceRecord(true);
+  }, 500);
+}
+
+function saveCurrentInvoiceRecord(silent = false) {
+  const data = collectCurrentInvoiceData();
+  if (!data.refNo && !data.custName && silent) return;
+  if (!data.refNo && !silent) {
+    showToast("⚠️ 請先填寫 Ref no. 參考編號！");
+    document.getElementById("invRefNo")?.focus();
+    return;
+  }
+  const db = getInvoicesDb();
+  db[data.invId] = data;
+  setInvoicesDb(db);
+  syncInvoiceToCloud(data);
+  renderHomeInvoiceList();
+  if (!silent) showToast(`✓ 已儲存發票 (${data.refNo || data.custName})`);
+}
+
+function loadInvoiceIntoEditor(invId) {
+  const db = getInvoicesDb();
+  const data = db[invId];
+  if (!data) return;
+  openInvoiceEditor();
+  _currentInvoiceId = data.invId;
+  document.getElementById("invRefNo").value = data.refNo || "";
+  document.getElementById("invDateDisplay").value = data.invDate || "";
+  document.getElementById("invCustTitle").value = data.custTitle || "";
+  document.getElementById("invCustName").value = data.custName || "";
+  document.getElementById("invCustPhone").value = data.custPhone || "";
+  document.getElementById("invCustEmail").value = data.custEmail || "";
+  document.getElementById("invAddress").value = data.address || "";
+  document.getElementById("invIssuer").value = data.issuer || "Ms Namthip";
+
+  document.getElementById("invPeriodStartText").value = data.periodStart || "";
+  document.getElementById("invPeriodEndText").value = data.periodEnd || "";
+  selectInvoicePackage(data.pkgKey || "essential", true);
+
+  document.getElementById("invPkgQty").value = data.pkgQty !== undefined ? data.pkgQty : 1;
+  document.getElementById("invPkgPrice").value = data.pkgPrice !== undefined ? data.pkgPrice : (INVOICE_PACKAGES[data.pkgKey || "essential"].price);
+  document.getElementById("invAddonDesc").value = data.addonDesc || "Nil";
+  document.getElementById("invAddonQty").value = data.addonQty || 0;
+  document.getElementById("invAddonPrice").value = data.addonPrice || 0;
+  document.getElementById("invAdvDesc").value = data.advDesc || "Miscellaneous Fees 水電及其他雜費";
+  document.getElementById("invAdvQty").value = data.advQty !== undefined ? data.advQty : 1;
+  document.getElementById("invAdvPrice").value = data.advPrice !== undefined ? data.advPrice : 500;
+  document.getElementById("invOtherAmount").value = data.otherAmount || 0;
+  document.getElementById("invCurrency").value = data.currency || "HKD";
+
+  document.getElementById("invCustSignName").value = data.custSignName || "";
+  document.getElementById("invCustSignDate").value = data.custSignDate || "";
+  document.getElementById("invAuthSignName").value = data.authSignName || "";
+  document.getElementById("invAuthSignDate").value = data.authSignDate || "";
+
+  setInvSignatureImage("cust", data.custSigDataUrl || "");
+  setInvSignatureImage("auth", data.authSigDataUrl || "");
+  recalculateInvoiceTotals();
+}
+
+function deleteInvoiceRecord(invId, e) {
+  if (e) e.stopPropagation();
+  const db = getInvoicesDb();
+  const item = db[invId];
+  if (!item) return;
+  requireAdminPwd(
+    "刪除新客戶發票",
+    `確定要永久刪除「${item.refNo || ""} ${item.custName || ""}」的發票紀錄嗎？`,
+    async () => {
+      delete db[invId];
+      setInvoicesDb(db);
+      renderHomeInvoiceList();
+      if (fbDb) {
+        try { await fbDb.collection("invoices").doc(encodeFbId(invId)).delete(); } catch (err) {}
+      }
+      showToast("🗑️ 已刪除發票紀錄");
+    }
+  );
+}
+
+function renderHomeInvoiceList() {
+  const db = getInvoicesDb();
+  const q = (document.getElementById("homeSearchInput")?.value || "").trim().toLowerCase();
+  const all = Object.values(db).sort((a, b) => (b.updatedAtMs || 0) - (a.updatedAtMs || 0));
+  const pill = document.getElementById("invoiceCountPill");
+  if (pill) pill.textContent = String(all.length);
+
+  const listEl = document.getElementById("homeInvoiceList");
+  if (!listEl) return;
+
+  const filtered = all.filter(inv => {
+    if (!q) return true;
+    const hay = `${inv.refNo || ""} ${inv.custTitle || ""} ${inv.custName || ""} ${inv.address || ""}`.toLowerCase();
+    return hay.includes(q);
+  });
+
+  if (filtered.length === 0) {
+    listEl.innerHTML = `<div style="text-align:center; padding:24px 10px; color:#64748B; font-size:13px;">暫無新客戶發票紀錄<br><span style="font-size:11.5px; color:#94A3B8;">點擊上方「🧾 新客戶發票 (Invoice)」即可建立</span></div>`;
+    return;
+  }
+
+  listEl.innerHTML = filtered.map(inv => {
+    const pkg = INVOICE_PACKAGES[inv.pkgKey] || INVOICE_PACKAGES.essential;
+    const fullName = [inv.custTitle, inv.custName].filter(Boolean).join(" ") || "未填寫客戶姓名";
+    const cur = inv.currency || "HKD";
+    return `
+      <div class="cust-card-v21" onclick="loadInvoiceIntoEditor('${inv.invId}')" style="cursor:pointer;">
+        <div class="cust-card-header-band">
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+            <span class="cust-ref-pill" style="margin:0;">${inv.refNo || "未編訂 Ref"}</span>
+            <span style="font-size:11.5px; font-weight:800; color:#8C6D23;">${pkg.programName}</span>
+          </div>
+          <button type="button" class="btn btn-sm" style="padding:3px 8px; font-size:11px; background:#FEE2E2; color:#DC2626;" onclick="deleteInvoiceRecord('${inv.invId}', event)">刪除</button>
+        </div>
+        <div class="cust-card-body">
+          <div style="font-size:14px; font-weight:800; color:var(--navy);">${fullName}</div>
+          <div class="cust-meta-sub" style="margin-top:3px;">📍 ${inv.address || "未填寫地址"}</div>
+          <div style="margin-top:6px; display:flex; justify-content:space-between; align-items:center; font-size:11.5px; color:#475569;">
+            <span>📅 ${inv.invDate || "-"}</span>
+            <strong style="color:var(--navy); font-size:13px;">總額：${formatMoneyCommas(inv.grandTotal || 0)} ${cur}</strong>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+// ================= 發票雙簽名板繪圖與預設套用 =================
+let _invPadsInited = false;
+function initInvoiceSignaturePads() {
+  if (_invPadsInited) return;
+  _invPadsInited = true;
+  setupSingleInvCanvas("invCustSigCanvas", "cust");
+  setupSingleInvCanvas("invAuthSigCanvas", "auth");
+}
+
+function setupSingleInvCanvas(canvasId, role) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  const resize = () => {
+    const rect = canvas.getBoundingClientRect();
+    const w = rect.width || 320;
+    const h = rect.height || 105;
+    if (canvas.width !== Math.round(w * 2)) {
+      canvas.width = Math.round(w * 2);
+      canvas.height = Math.round(h * 2);
+      ctx.scale(2, 2);
+      ctx.lineWidth = 2.1;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.strokeStyle = "#1E3250";
+      const savedUrl = role === "cust" ? _invCustSigDataUrl : _invAuthSigDataUrl;
+      if (savedUrl) setInvSignatureImage(role, savedUrl);
+    }
+  };
+  resize();
+
+  let drawing = false;
+  const getPos = (e) => {
+    const r = canvas.getBoundingClientRect();
+    const t = e.touches ? e.touches[0] : e;
+    return { x: t.clientX - r.left, y: t.clientY - r.top };
+  };
+  const start = (e) => {
+    resize();
+    drawing = true;
+    const p = getPos(e);
+    ctx.beginPath();
+    ctx.moveTo(p.x, p.y);
+    if (e.cancelable) e.preventDefault();
+  };
+  const move = (e) => {
+    if (!drawing) return;
+    const p = getPos(e);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+    if (e.cancelable) e.preventDefault();
+  };
+  const end = () => {
+    if (!drawing) return;
+    drawing = false;
+    const dataUrl = canvas.toDataURL("image/png");
+    if (role === "cust") _invCustSigDataUrl = dataUrl;
+    else _invAuthSigDataUrl = dataUrl;
+    scheduleInvoiceAutoSave();
+  };
+
+  canvas.addEventListener("mousedown", start);
+  canvas.addEventListener("mousemove", move);
+  window.addEventListener("mouseup", end);
+  canvas.addEventListener("touchstart", start, { passive: false });
+  canvas.addEventListener("touchmove", move, { passive: false });
+  canvas.addEventListener("touchend", end);
+}
+
+function setInvSignatureImage(role, dataUrl) {
+  if (role === "cust") _invCustSigDataUrl = dataUrl || "";
+  else _invAuthSigDataUrl = dataUrl || "";
+  const canvas = document.getElementById(role === "cust" ? "invCustSigCanvas" : "invAuthSigCanvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  const rect = canvas.getBoundingClientRect();
+  const w = rect.width || 320;
+  const h = rect.height || 105;
+  ctx.save();
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.restore();
+  if (!dataUrl) return;
+  const img = new Image();
+  img.onload = () => {
+    const ratio = Math.min((w * 0.85) / img.width, (h * 0.85) / img.height);
+    const dw = img.width * ratio;
+    const dh = img.height * ratio;
+    ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
+  };
+  img.src = dataUrl;
+}
+
+function clearInvSignature(role, silent = false) {
+  setInvSignatureImage(role, "");
+  if (!silent) scheduleInvoiceAutoSave();
+}
+
+function handleInvSigUpload(role, event) {
+  const file = event?.target?.files?.[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    setInvSignatureImage(role, ev.target.result);
+    scheduleInvoiceAutoSave();
+    showToast("✓ 已上載簽名圖像");
+  };
+  reader.readAsDataURL(file);
+}
+
+function applyPresetSignatureToInvoice() {
+  const list = typeof getPresetSignatureList === "function" ? getPresetSignatureList() : [];
+  if (!list || list.length === 0) {
+    showToast("⚠️ 尚未儲存任何預設簽名，請先於檢查報告簽名區設定或直接手寫簽署");
+    return;
+  }
+  setInvSignatureImage("auth", list[0].sigDataUrl);
+  scheduleInvoiceAutoSave();
+  showToast(`✓ 已套用預設簽名「${list[0].name || "預設簽名"}」`);
+}
+
+// ================= A4 Invoice 渲染與匯出 PDF =================
+function renderInvoiceA4Page() {
+  const data = collectCurrentInvoiceData();
+  const pkg = INVOICE_PACKAGES[data.pkgKey] || INVOICE_PACKAGES.essential;
+  const logoImg = document.getElementById("invA4LogoImg");
+  if (logoImg) logoImg.src = EXACT_COMPANY_LOGO;
+
+  const fullName = [data.custTitle, data.custName].filter(Boolean).join(" ");
+  const metaHtml = `
+    <div>
+      <div class="inv-a4-mrow"><span class="inv-a4-mlbl">Customer Name | 客戶姓名</span><span class="inv-a4-mcolon">:</span><span class="inv-a4-mval">${escapeHtmlSafe(fullName)}</span></div>
+      <div class="inv-a4-mrow"><span class="inv-a4-mlbl">Contact no. | 聯絡號碼</span><span class="inv-a4-mcolon">:</span><span class="inv-a4-mval">${escapeHtmlSafe(data.custPhone)}</span></div>
+      <div class="inv-a4-mrow"><span class="inv-a4-mlbl">Email | 電郵</span><span class="inv-a4-mcolon">:</span><span class="inv-a4-mval">${escapeHtmlSafe(data.custEmail)}</span></div>
+      <div class="inv-a4-mrow"><span class="inv-a4-mlbl">Address | 地址</span><span class="inv-a4-mcolon">:</span><span class="inv-a4-mval">${escapeHtmlSafe(data.address)}</span></div>
+      <div class="inv-a4-mrow"><span class="inv-a4-mlbl">Issuer | 發件人</span><span class="inv-a4-mcolon">:</span><span class="inv-a4-mval">${escapeHtmlSafe(data.issuer)}</span></div>
+    </div>
+    <div>
+      <div class="inv-a4-mrow"><span class="inv-a4-mlbl-r">Ref no. | 參考編號</span><span class="inv-a4-mcolon">:</span><span class="inv-a4-mval">${escapeHtmlSafe(data.refNo)}</span></div>
+      <div class="inv-a4-mrow"><span class="inv-a4-mlbl-r">Date | 日期</span><span class="inv-a4-mcolon">:</span><span class="inv-a4-mval">${escapeHtmlSafe(data.invDate)}</span></div>
+    </div>
+  `;
+  document.getElementById("invA4MetaGrid").innerHTML = metaHtml;
+
+  const cur = data.currency || "HKD";
+  const pkgTot = data.pkgQty * data.pkgPrice;
+  const addonTot = data.addonQty * data.addonPrice;
+  const advTot = data.advQty * data.advPrice;
+
+  const pkgSubRows = pkg.items.map(it => `
+    <div class="inv-a4-pkg-subrow">
+      <span>${escapeHtmlSafe(it.en)}</span>
+      <span>${escapeHtmlSafe(it.zh)}</span>
+      <span>${it.freq ? "• " + escapeHtmlSafe(it.freq) : ""}</span>
+    </div>
+  `).join("");
+
+  const addonBlock = (!data.addonDesc || data.addonDesc.toLowerCase() === "nil")
+    ? `<div style="margin-top:4mm;">
+         <div style="font-weight:700; color:#1E3250;">Add-on Service 增值服務</div>
+         <div style="padding-left:2mm; margin-top:1mm;">Nil</div>
+       </div>`
+    : `<div style="margin-top:4mm;">
+         <div style="font-weight:700; color:#1E3250;">Add-on Service 增值服務</div>
+         <div class="inv-a4-item-grid" style="margin-top:1mm;">
+           <div style="padding-left:2mm;">${escapeHtmlSafe(data.addonDesc)}</div>
+           <div class="c-qty">${data.addonQty}</div>
+           <div class="c-price">${formatMoneyCommas(data.addonPrice)} ${cur}</div>
+           <div class="c-tot">${formatMoneyCommas(addonTot)} ${cur}</div>
+         </div>
+       </div>`;
+
+  const advBlock = `
+    <div style="margin-top:4mm;">
+      <div style="font-weight:700; color:#1E3250;">Advance Payment 預付款項</div>
+      <div class="inv-a4-item-grid" style="margin-top:1mm;">
+        <div style="padding-left:2mm;">${escapeHtmlSafe(data.advDesc || "Miscellaneous Fees 水電及其他雜費")}</div>
+        <div class="c-qty">${data.advQty}</div>
+        <div class="c-price">${formatMoneyCommas(data.advPrice)} ${cur}</div>
+        <div class="c-tot">${formatMoneyCommas(advTot)} ${cur}</div>
+      </div>
+    </div>
+  `;
+
+  const totalsBlock = `
+    <div class="inv-a4-totals-area">
+      <div style="font-size:10pt; font-weight:800; color:#1E3250; padding-bottom:2mm;">
+        Grand Total 應付總額
+      </div>
+      <div>
+        <div class="inv-a4-sum-row">
+          <span>Subtotal | 小計</span>
+          <strong>${formatMoneyCommas(data.subtotal)} ${cur}</strong>
+        </div>
+        <div class="inv-a4-sum-row">
+          <span>Other | 其他</span>
+          <strong>${formatMoneyCommas(data.otherAmount)} ${cur}</strong>
+        </div>
+        <div class="inv-a4-sum-row grand">
+          <span>Total Amount | 總額</span>
+          <span>${formatMoneyCommas(data.grandTotal)} ${cur}</span>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("invA4TableBody").innerHTML = `
+    <div>
+      <div class="inv-a4-item-grid">
+        <div>
+          <div style="font-weight:800; color:#1E3250;">${escapeHtmlSafe(pkg.titleLine)}</div>
+          <div style="font-size:8.6pt; color:#333; margin-top:0.6mm;">Service Period 服務期: <strong>${escapeHtmlSafe(data.periodStart)} - ${escapeHtmlSafe(data.periodEnd)}</strong></div>
+        </div>
+        <div class="c-qty">${data.pkgQty}</div>
+        <div class="c-price">${formatMoneyCommas(data.pkgPrice)} ${cur}</div>
+        <div class="c-tot">${formatMoneyCommas(pkgTot)} ${cur}</div>
+      </div>
+      <div style="font-weight:700; color:#1E3250; margin-top:3mm; font-size:8.8pt;">Package Contents 套餐內容</div>
+      <div class="inv-a4-pkg-sublist">${pkgSubRows}</div>
+      ${addonBlock}
+      ${advBlock}
+    </div>
+    ${totalsBlock}
+  `;
+
+  document.getElementById("invA4SignArea").innerHTML = `
+    <div class="inv-a4-sign-box">
+      <div class="inv-a4-sign-pad">
+        ${data.custSigDataUrl ? `<img src="${data.custSigDataUrl}" alt="Customer Signature">` : ""}
+      </div>
+      <div class="inv-a4-sign-lbl">Customer Signature 客戶簽署</div>
+      <div class="inv-a4-sign-sub">(${escapeHtmlSafe(data.custSignName || fullName || "Customer Name")} &nbsp;|&nbsp; Date 日期: ${escapeHtmlSafe(data.custSignDate || data.invDate)})</div>
+    </div>
+    <div class="inv-a4-sign-box">
+      <div class="inv-a4-sign-pad">
+        ${data.authSigDataUrl ? `<img src="${data.authSigDataUrl}" alt="Authorized Signature">` : ""}
+      </div>
+      <div class="inv-a4-sign-lbl">Authorized Signature 受托人簽署</div>
+      <div class="inv-a4-sign-sub">(${escapeHtmlSafe(data.authSignName || data.issuer || "Authorized Person")} &nbsp;|&nbsp; Date 日期: ${escapeHtmlSafe(data.authSignDate || "")})</div>
+    </div>
+  `;
+}
+
+function escapeHtmlSafe(str) {
+  return String(str || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function toggleInvoicePreview(show) {
+  const wrapper = document.getElementById("print-preview-wrapper");
+  if (!show) {
+    togglePreview(false);
+    return;
+  }
+  saveCurrentInvoiceRecord(true);
+  _isInvoicePreviewMode = true;
+  _previewOnlyPage3 = false;
+  renderInvoiceA4Page();
+
+  const data = collectCurrentInvoiceData();
+  const safeRef = (data.refNo || "Invoice").replace(/[^a-zA-Z0-9_-]/g, "_");
+  const safeName = (data.custName || "Client").replace(/\s+/g, "_");
+  document.title = `${safeRef}_${safeName}_Invoice`;
+
+  const exportBtn = document.getElementById("toolbarExportBtn");
+  if (exportBtn) {
+    exportBtn.style.display = "inline-flex";
+    exportBtn.textContent = "列印 / 匯出發票 PDF";
+  }
+  const readyBar = document.getElementById("mobilePdfReadyBar");
+  if (readyBar) readyBar.style.display = "none";
+
+  wrapper.classList.remove("only-p3-mode");
+  wrapper.classList.add("active");
+  wrapper.classList.add("invoice-preview-mode");
+  document.getElementById("homeScreen").style.display = "none";
+  document.getElementById("editorContainer").style.display = "none";
+  document.getElementById("invoiceEditorContainer").style.display = "none";
+  document.getElementById("mainTabs").style.display = "none";
+  document.getElementById("editorBottomBar").style.display = "none";
+  const actRow = document.getElementById("topbarActionsRow");
+  if (actRow) actRow.classList.remove("active");
+  window.scrollTo(0, 0);
+  requestAnimationFrame(() => fitA4PreviewToScreen(true));
+}
+
+async function exportInvoicePDF() {
+  if (isDesktopBrowserEnv()) {
+    triggerNativeBrowserPrintPDF();
+    return;
+  }
+  const data = collectCurrentInvoiceData();
+  const safeRef = (data.refNo || "Invoice").replace(/[^a-zA-Z0-9_-]/g, "_");
+  const safeName = (data.custName || "Client").replace(/\s+/g, "_");
+  const filename = `${safeRef}_${safeName}_Invoice.pdf`;
+
+  const exportBtn = document.getElementById("toolbarExportBtn");
+  const origText = exportBtn ? exportBtn.textContent : "列印 / 匯出發票 PDF";
+  if (exportBtn) {
+    exportBtn.disabled = true;
+    exportBtn.textContent = "⏳ 生成中...";
+  }
+
+  try {
+    const invEl = document.getElementById("a4-invoice-page");
+    const origTransform = invEl.style.transform;
+    invEl.style.transform = "none";
+    const opt = {
+      margin: 0,
+      filename: filename,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, logging: false },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+    };
+    const pdfBlob = await html2pdf().set(opt).from(invEl).outputPdf("blob");
+    invEl.style.transform = origTransform;
+
+    _lastGeneratedPdfBlob = pdfBlob;
+    _lastGeneratedPdfFilename = filename;
+
+    const readyBar = document.getElementById("mobilePdfReadyBar");
+    const readyText = document.getElementById("mobilePdfReadyText");
+    if (readyBar) readyBar.style.display = "flex";
+    if (readyText) {
+      const kb = Math.max(1, Math.round(pdfBlob.size / 1024));
+      readyText.textContent = `✓ 發票 PDF 已生成 (${kb} KB)`;
+    }
+
+    const pdfFile = new File([pdfBlob], filename, { type: "application/pdf" });
+    if (typeof navigator.share === "function" && navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
+      try {
+        await navigator.share({ files: [pdfFile], title: filename });
+        showToast("✓ 發票 PDF 已開啟分享選單！");
+        return;
+      } catch (shareErr) {
+        if (shareErr && shareErr.name === "AbortError") return;
+        showToast("✓ 發票 PDF 已生成！請點上方「📤 分享」或「📥 儲存 PDF」");
+        return;
+      }
+    }
+    downloadBlobDirectly(pdfBlob, filename);
+    showToast("✓ 已儲存 " + filename);
+  } catch (err) {
+    console.error("Invoice PDF error:", err);
+    showToast("⚠️ 匯出發票 PDF 失敗，請改用列印功能");
+  } finally {
+    if (exportBtn) {
+      exportBtn.disabled = false;
+      exportBtn.textContent = origText;
+    }
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderHomeInvoiceList();
+});
+
 </script>
 
 </body>
