@@ -1835,7 +1835,7 @@
 
       </div>
       <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v134</span>
+        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v137</span>
         <span id="cloudSyncBadge" class="cloud-status-orb syncing" title="雲端連線中..." aria-label="雲端連線狀態">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
@@ -2403,7 +2403,8 @@ function initFirebaseRealtimeSync() {
             photosConfirmed: !!data.photosConfirmed,
             isLocked: data.isLocked !== undefined ? !!data.isLocked : !!data.workflowSaved,
             sigDataUrl: data.sigDataUrl || "",
-            updatedAt: data.updatedAt || ""
+            updatedAt: data.updatedAt || "",
+            updatedAtMs: data.updatedAtMs || existing.updatedAtMs || 0
           };
           changed = true;
         }
@@ -2510,7 +2511,7 @@ async function syncReportAndPhotosToCloud(ref, rec) {
       isLocked: !!rec.isLocked,
       sigDataUrl: rec.sigDataUrl || "",
       updatedAt: rec.updatedAt || "",
-      updatedAtMs: Date.now()
+      updatedAtMs: rec.updatedAtMs || Date.now()
     };
 
     await fbDb.collection("reports").doc(baseId).set(reportMetaDoc, { merge: true });
@@ -2874,22 +2875,69 @@ function markWorkflowDirty() {
 let isReportLocked = false;
 let shouldLockOnNextOpen = false;
 let currentReportUpdatedAt = "";
+let currentReportUpdatedAtMs = 0;
 
-function formatNowDateTimeHK() {
-  const d = new Date();
+function getLocalTimeZoneTag() {
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+    if (tz === "Asia/Hong_Kong" || tz === "Asia/Macau" || tz === "Asia/Taipei" || tz === "Asia/Shanghai") return "HKT";
+    if (tz === "Asia/Bangkok" || tz === "Asia/Ho_Chi_Minh" || tz === "Asia/Phnom_Penh" || tz === "Asia/Vientiane") return "BKK";
+    const offsetMin = -new Date().getTimezoneOffset();
+    if (offsetMin === 480) return "HKT";
+    if (offsetMin === 420) return "BKK";
+    const sign = offsetMin >= 0 ? "+" : "-";
+    const absH = Math.floor(Math.abs(offsetMin) / 60);
+    const absM = Math.abs(offsetMin) % 60;
+    return `UTC${sign}${absH}${absM ? ":" + String(absM).padStart(2, "0") : ""}`;
+  } catch (e) {
+    const offsetMin = -new Date().getTimezoneOffset();
+    if (offsetMin === 480) return "HKT";
+    if (offsetMin === 420) return "BKK";
+    return "當地時間";
+  }
+}
+
+function formatDateTimeDeviceLocal(msInput) {
+  const ms = (typeof msInput === "number" && msInput > 0) ? msInput : Date.now();
+  // 自動跟隨使用者當前裝置／GPS 所在地時區換算（香港自動顯示 HKT，泰國自動顯示 BKK 曼谷時間）
+  const d = new Date(ms);
   const dd = String(d.getDate()).padStart(2, "0");
   const mm = String(d.getMonth() + 1).padStart(2, "0");
   const yyyy = d.getFullYear();
   const hh = String(d.getHours()).padStart(2, "0");
   const min = String(d.getMinutes()).padStart(2, "0");
-  return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
+  return `${dd}/${mm}/${yyyy} ${hh}:${min} (${getLocalTimeZoneTag()})`;
+}
+
+function getFormattedLastEditedLabel() {
+  if (currentReportUpdatedAtMs && currentReportUpdatedAtMs > 0) {
+    return formatDateTimeDeviceLocal(currentReportUpdatedAtMs);
+  }
+  const raw = (currentReportUpdatedAt || "").trim();
+  if (!raw) return "";
+  // 兼容舊版僅存有字串而未有 ms 時間戳的歷史紀錄：嘗試解析成時間戳並轉為當地時區
+  const m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/.exec(raw);
+  if (m) {
+    const dd = parseInt(m[1], 10);
+    const mm = parseInt(m[2], 10) - 1;
+    const yyyy = parseInt(m[3], 10);
+    const hh = m[4] !== undefined ? parseInt(m[4], 10) : 0;
+    const min = m[5] !== undefined ? parseInt(m[5], 10) : 0;
+    // 舊版紀錄為香港時間 (UTC+8)，換算為標準時間戳後再用當前裝置時區顯示
+    const utcMs = Date.UTC(yyyy, mm, dd, hh - 8, min, 0);
+    if (!isNaN(utcMs) && m[4] !== undefined) {
+      return formatDateTimeDeviceLocal(utcMs);
+    }
+  }
+  return raw;
 }
 
 function updateLastEditedBannerUI() {
   const footerEl = document.getElementById("lastEditedFooterText");
   if (footerEl) {
-    footerEl.textContent = currentReportUpdatedAt
-      ? `最後編輯：${currentReportUpdatedAt}`
+    const label = getFormattedLastEditedLabel();
+    footerEl.textContent = label
+      ? `最後編輯：${label}`
       : "最後編輯：尚未儲存";
   }
 }
@@ -3077,7 +3125,10 @@ function saveCurrentReportToHistory() {
     photosConfirmed: !!photosConfirmed,
     isLocked: !!(shouldLockOnNextOpen || workflowSaved),
     sigDataUrl: sigDataUrl || "",
-    updatedAt: (!isReportLocked || !currentReportUpdatedAt) ? (currentReportUpdatedAt = formatNowDateTimeHK()) : currentReportUpdatedAt
+    updatedAt: (!isReportLocked || !currentReportUpdatedAt)
+      ? (currentReportUpdatedAt = formatDateTimeDeviceLocal(currentReportUpdatedAtMs = Date.now()))
+      : currentReportUpdatedAt,
+    updatedAtMs: currentReportUpdatedAtMs || Date.now()
   };
   updateLastEditedBannerUI();
   setReportsHistory(hist);
@@ -3157,6 +3208,7 @@ function applyReportRecordToEditor(ref, rec) {
   }
 
   currentReportUpdatedAt = rec.updatedAt || "";
+  currentReportUpdatedAtMs = rec.updatedAtMs || 0;
   const autoLockThisReport = !!(rec.isLocked || rec.workflowSaved);
   shouldLockOnNextOpen = autoLockThisReport;
   setReportLockState(autoLockThisReport, false);
@@ -5848,6 +5900,7 @@ function loadCustomer(ref, overrideInspNo = null) {
   specialNotesSaved = false;
   updateNotesAndSpecialStatusUI();
 
+  updateLastEditedBannerUI();
   updateCustomerFieldHighlights();
   showToast(`已開啟 ${c.refNo}（第 ${nextNo} 次報告）`);
 }
@@ -5887,6 +5940,7 @@ function newCustomer() {
   clearSignature();
   loadSavedPresetSignature(true);
   currentReportUpdatedAt = "";
+  currentReportUpdatedAtMs = 0;
   shouldLockOnNextOpen = false;
   setReportLockState(false, false);
 
