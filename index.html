@@ -55,7 +55,7 @@
     -webkit-tap-highlight-color: transparent;
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang HK", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
   }
-  body, button, input, select, textarea {
+  body, button, input, select, textarea, .a4-page, .a4-page *, .a4-invoice-page, .a4-invoice-page * {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang HK", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
   }
   body {
@@ -339,10 +339,96 @@
     color: #94A3B8;
     letter-spacing: 0.1px;
   }
-  #tab0 .btn {
+  #tab0 .btn,
+  #invoiceEditorContainer .btn {
     font-size: 13.5px;
     font-weight: 700;
     letter-spacing: 0.3px;
+  }
+  #invoiceEditorContainer, #invoiceEditorContainer * {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang HK", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  }
+  #invoiceEditorContainer .card-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--navy);
+    letter-spacing: 0.4px;
+    flex-wrap: nowrap;
+  }
+  #invoiceEditorContainer input.header-visit-date-input {
+    width: 82px !important;
+    min-width: 82px !important;
+    max-width: 82px !important;
+    height: 22px !important;
+    min-height: 22px !important;
+    padding: 0 2px !important;
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 4px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    color: var(--navy) !important;
+    text-align: center;
+    letter-spacing: 0.2px;
+  }
+  #invoiceEditorContainer input.header-visit-date-input:focus {
+    background: rgba(255, 255, 255, 0.85) !important;
+    outline: none !important;
+  }
+  #invoiceEditorContainer .header-visit-cal-trigger input[type="date"] {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    opacity: 0;
+    cursor: pointer;
+    margin: 0;
+    padding: 0 !important;
+    border: none !important;
+  }
+  #invoiceEditorContainer label {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: 0.2px;
+    line-height: 1.3;
+  }
+  #invoiceEditorContainer input[type="text"],
+  #invoiceEditorContainer input[type="date"],
+  #invoiceEditorContainer input[type="number"],
+  #invoiceEditorContainer select {
+    font-size: 13px;
+    font-weight: 500;
+    color: #1A202C;
+    letter-spacing: 0.15px;
+    line-height: 1.2;
+    padding: 5px 8.5px;
+    min-height: 31px;
+    height: 31px;
+    border: 1.2px solid #CBD5E1;
+    border-radius: 7px;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  }
+  #invoiceEditorContainer input[type="text"]:focus,
+  #invoiceEditorContainer input[type="date"]:focus,
+  #invoiceEditorContainer input[type="number"]:focus,
+  #invoiceEditorContainer select:focus {
+    border-color: var(--navy);
+    box-shadow: 0 0 0 2.5px rgba(30, 50, 80, 0.10);
+  }
+  #invoiceEditorContainer input::placeholder {
+    font-size: 12.5px;
+    font-weight: 400;
+    color: #94A3B8;
+    letter-spacing: 0.1px;
+  }
+  .topbar-action-pill.pill-clear {
+    border: 1.2px solid #FDE68A;
+    background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+    color: #B45309;
   }
   .field-pending-yellow {
     background: #FEF9C3 !important;
@@ -1246,20 +1332,20 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    padding-bottom: 1.8mm;
-    border-bottom: 1.1pt solid var(--gold);
+    padding-bottom: 2.5mm;
+    border-bottom: 1pt solid #BDAB7D;
   }
   .exact-logo-img {
     height: 14.8mm;
-    width: auto;
-    max-width: 72mm;
+    width: 57.22mm;
     object-fit: contain;
     display: block;
+    flex-shrink: 0;
   }
   .rpt-title {
     font-size: 16.5pt;
     font-weight: 700;
-    color: #2B2E34;
+    color: #1E3250;
     padding-bottom: 0.8mm;
   }
 
@@ -1279,9 +1365,9 @@
   .meta-en-r { width: 15.5mm; font-weight: 500; color: #333; flex-shrink: 0; white-space: nowrap; line-height: 4.8mm; }
   .meta-zh-r { width: 12.2mm; font-weight: 500; color: #333; flex-shrink: 0; text-align: left; white-space: nowrap; line-height: 4.8mm; }
   .meta-colon { width: 1.8mm; text-align: left; font-weight: 600; color: #333; flex-shrink: 0; line-height: 4.8mm; }
-  .meta-val { font-weight: 600; color: #111; flex: 1; padding-left: 1.5mm; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 4.8mm; }
+  .meta-val { font-weight: 500; color: #111; flex: 1; padding-left: 1.5mm; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 4.8mm; }
   .meta-val-addr {
-    font-weight: 600;
+    font-weight: 500;
     color: #111;
     flex: 1;
     padding-left: 1.5mm;
@@ -1293,7 +1379,7 @@
     overflow: hidden;
   }
   .meta-insp-row { display: flex; align-items: center; height: 4.8mm; min-height: 4.8mm; white-space: nowrap; line-height: 4.8mm; }
-  .meta-insp-val { font-weight: 600; color: #111; min-width: 2.5mm; text-align: center; line-height: 4.8mm; }
+  .meta-insp-val { font-weight: 500; color: #111; min-width: 2.5mm; text-align: center; line-height: 4.8mm; }
 
   /* 深藍圓角標題橫條 */
   .navy-bar {
@@ -1347,8 +1433,8 @@
   .cat-items-cell { width: 68mm; padding: 1.75mm 2mm 1.55mm 2mm !important; }
   .cat-heading {
     font-size: 8.9pt;
-    font-weight: 800;
-    color: #111;
+    font-weight: 700;
+    color: #1E3250;
     line-height: 1.2;
     margin-top: 0;
     margin-bottom: 1.65mm;
@@ -1357,9 +1443,9 @@
     display: flex;
     align-items: center;
     height: 4.18mm;
-    font-size: 7.65pt;
-    letter-spacing: 0.3pt;
-    color: #222;
+    font-size: 7.8pt;
+    font-weight: 500;
+    color: #111;
   }
   .sub-code { width: 7.5mm; flex-shrink: 0; letter-spacing: 0; }
   .sub-text { flex: 1; }
@@ -1395,8 +1481,9 @@
   .remark-line {
     height: 4.18mm;
     font-size: 7.2pt;
+    font-weight: 500;
     line-height: 4.18mm;
-    color: #1E3250;
+    color: #111;
     border-bottom: 0.65pt dashed #B8BFC8;
     white-space: nowrap;
     overflow: hidden;
@@ -1409,9 +1496,9 @@
     grid-template-columns: 52% 48%;
     padding-top: 4.2mm;
     min-height: 29.5mm;
-    font-size: 8.3pt;
-    font-weight: 700;
-    color: #222;
+    font-size: 8.2pt;
+    font-weight: 500;
+    color: #333;
   }
   .p1-notes-box { padding-left: 1.5mm; padding-right: 4mm; position: relative; }
   .p1-notes-block {
@@ -1435,8 +1522,8 @@
     justify-content: space-between;
     align-items: flex-end;
     font-size: 8.2pt;
-    font-weight: 700;
-    color: #222;
+    font-weight: 500;
+    color: #333;
     line-height: 4.1mm;
     white-space: nowrap;
     padding-right: 1.2mm;
@@ -1450,7 +1537,7 @@
   .p1-notes-val {
     position: absolute;
     top: 0; left: 16.2mm; right: 0;
-    font-weight: 400; font-size: 7.8pt; line-height: 4.1mm; color: #222;
+    font-weight: 500; font-size: 7.8pt; line-height: 4.1mm; color: #111;
     white-space: pre-wrap;
     max-height: 12.3mm;
     overflow: hidden;
@@ -1483,7 +1570,8 @@
     border-bottom: 0.8pt dashed #666;
     text-align: center;
     padding: 0 2mm;
-    font-weight: 600;
+    font-weight: 500;
+    color: #111;
     font-size: 8.5pt;
     min-height: 4.5mm;
   }
@@ -1543,8 +1631,8 @@
     background: rgba(255,255,255,0.88);
     font-size: 7.5pt;
     padding: 1mm 2.5mm;
-    color: #1E3250;
-    font-weight: 600;
+    color: #111;
+    font-weight: 500;
   }
 
   /* 第 3 頁：Workflow for internal use (雙欄卡片化表格式排版，客戶資料區完全保留原樣) */
@@ -1593,8 +1681,8 @@
     border-left: 2.8pt solid var(--navy);
     padding: 1.8mm 3mm;
     font-size: 9pt;
-    font-weight: 800;
-    color: var(--navy);
+    font-weight: 700;
+    color: #1E3250;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1623,7 +1711,7 @@
   }
   .p3-row-lbl {
     flex: 1;
-    color: #1E293B;
+    color: #111;
     font-weight: 500;
   }
   .p3-sq {
@@ -1689,44 +1777,179 @@
   .inv-pkg-pill-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 7px;
+    gap: 8px;
     margin-top: 6px;
   }
   .inv-pkg-pill {
     border: 1.5px solid #D5C49A;
-    border-radius: 10px;
-    padding: 8px 6px;
-    background: #FDFBF7;
+    border-radius: 11px;
+    padding: 12px 6px;
+    background: linear-gradient(180deg, #FFFFFF 0%, #FBF6EA 100%);
     text-align: center;
     cursor: pointer;
-    transition: all 0.15s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-height: 68px;
+    box-shadow: 0 2px 5px rgba(30, 50, 80, 0.05);
+    transition: all 0.18s ease;
+  }
+  .inv-pkg-pill:active {
+    transform: scale(0.97);
   }
   .inv-pkg-pill.active {
-    background: linear-gradient(135deg, #1E3250 0%, #2A456D 100%);
-    border-color: #1E3250;
+    background: linear-gradient(135deg, #1E3250 0%, #2C4872 100%);
+    border-color: var(--gold);
     color: #fff;
-    box-shadow: 0 3px 8px rgba(30, 50, 80, 0.22);
+    box-shadow: 0 4px 12px rgba(30, 50, 80, 0.26);
   }
-  .inv-pkg-pill .pkg-en { font-size: 11.5px; font-weight: 800; display: block; }
-  .inv-pkg-pill .pkg-zh { font-size: 10.5px; opacity: 0.85; display: block; margin-top: 1px; }
-  .inv-pkg-pill .pkg-price { font-size: 11px; font-weight: 800; color: #9E7C32; display: block; margin-top: 3px; }
-  .inv-pkg-pill.active .pkg-price { color: #F3E7CA; }
+  .inv-pkg-pill .pkg-en {
+    font-size: 12.5px;
+    font-weight: 800;
+    letter-spacing: 0.25px;
+    line-height: 1.2;
+    color: var(--navy);
+    display: block;
+  }
+  .inv-pkg-pill.active .pkg-en {
+    color: #FFFFFF;
+  }
+  .inv-pkg-pill .pkg-zh {
+    font-size: 16.5px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    line-height: 1.25;
+    color: #8C6D23;
+    display: block;
+    margin-top: 1px;
+  }
+  .inv-pkg-pill.active .pkg-zh {
+    color: #F3E7CA;
+  }
 
   .inv-contents-preview {
-    margin-top: 8px;
-    padding: 9px 11px;
+    margin-top: 10px;
+    padding: 10px 12px;
     background: #F8FAFC;
     border: 1px solid #E2E8F0;
     border-left: 3.5px solid var(--gold);
     border-radius: 8px;
     font-size: 12px;
     color: #334155;
+    min-height: 332px;
+    height: 332px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    box-sizing: border-box;
   }
   .inv-content-row {
     display: flex;
     justify-content: space-between;
     padding: 2.5px 0;
     border-bottom: 1px dashed #E2E8F0;
+  }
+  .addon-catalog-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 4px;
+  }
+  .addon-item-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    padding: 4.5px 8px;
+    border-radius: 7px;
+    border: 1.1px solid #DCE1E8;
+    background: #FFFFFF;
+    transition: all 0.14s ease;
+    min-height: 31px;
+  }
+  .addon-item-card.selected {
+    border-color: var(--gold);
+    background: linear-gradient(135deg, #FBF6EA 0%, #F5E9CC 100%);
+    box-shadow: 0 1px 4px rgba(182, 154, 88, 0.15);
+  }
+  .addon-item-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    flex: 1;
+    min-width: 0;
+    cursor: pointer;
+    user-select: none;
+  }
+  .addon-item-info {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 6px;
+    flex: 1;
+    min-width: 0;
+  }
+  .addon-item-title {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .addon-item-sub {
+    font-size: 11px;
+    font-weight: 700;
+    color: #8C6D23;
+    line-height: 1.2;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .addon-qty-stepper {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    flex-shrink: 0;
+    background: #F8FAFC;
+    border: 1px solid #CBD5E1;
+    border-radius: 999px;
+    padding: 1px 4px;
+  }
+  .addon-item-card.selected .addon-qty-stepper {
+    background: #FFFFFF;
+    border-color: var(--gold);
+  }
+  .addon-step-btn {
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    border: none;
+    background: var(--navy);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+  }
+  .addon-step-btn:disabled {
+    background: #CBD5E1;
+    color: #94A3B8;
+    cursor: default;
+  }
+  .addon-qty-val {
+    min-width: 16px;
+    text-align: center;
+    font-size: 11.5px;
+    font-weight: 800;
+    color: var(--navy);
   }
   .inv-content-row:last-child { border-bottom: none; }
 
@@ -1745,72 +1968,122 @@
     width: 210mm;
     height: 297mm;
     background: #ffffff;
-    padding: 9mm 10mm 8mm 10mm;
+    padding: 6.5mm 9.5mm 5.5mm 9.5mm;
     position: relative;
     box-shadow: 0 4px 16px rgba(0,0,0,0.35);
     display: flex;
     flex-direction: column;
     overflow: hidden;
     color: #222;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang HK", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
   }
   .inv-a4-topbar {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    padding-bottom: 2.5mm;
+    padding-bottom: 1.6mm;
     border-bottom: 1pt solid #BDAB7D;
   }
   .inv-a4-title {
-    font-size: 21pt;
+    font-size: 20pt;
     font-weight: 800;
     color: #1E3250;
     letter-spacing: 0.5px;
     line-height: 1;
-    padding-bottom: 1mm;
+    padding-bottom: 0.8mm;
   }
   .inv-a4-meta {
     display: grid;
-    grid-template-columns: 58% 42%;
-    padding: 3.2mm 2mm 3mm 2mm;
+    grid-template-columns: 64% 36%;
+    padding: 2.1mm 0mm 2.1mm 0.5mm;
     border-bottom: 1pt solid #BDAB7D;
-    font-size: 9pt;
-    line-height: 5.4mm;
+    font-size: 8.5pt;
+    line-height: 5.1mm;
+  }
+  .inv-a4-meta-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-right: 0.5mm;
   }
   .inv-a4-mrow {
     display: flex;
     align-items: flex-start;
-    min-height: 5.4mm;
+    height: 5.1mm;
+    min-height: 5.1mm;
   }
-  .inv-a4-mlbl {
-    width: 39mm;
+  .inv-a4-mrow.addr-2row {
+    height: 10.2mm;
+    min-height: 10.2mm;
+  }
+  .inv-a4-en-l {
+    width: 25mm;
     flex-shrink: 0;
     font-weight: 500;
     color: #333;
     white-space: nowrap;
   }
-  .inv-a4-mlbl-r {
-    width: 28mm;
+  .inv-a4-zh-l {
+    width: 14mm;
     flex-shrink: 0;
     font-weight: 500;
     color: #333;
+    text-align: left;
+    white-space: nowrap;
+  }
+  .inv-a4-en-r {
+    width: 14.5mm;
+    flex-shrink: 0;
+    font-weight: 500;
+    color: #333;
+    white-space: nowrap;
+  }
+  .inv-a4-zh-r {
+    width: 14mm;
+    flex-shrink: 0;
+    font-weight: 500;
+    color: #333;
+    text-align: left;
     white-space: nowrap;
   }
   .inv-a4-mcolon {
-    width: 3mm;
+    width: 2.5mm;
     flex-shrink: 0;
     font-weight: 600;
     color: #333;
+    text-align: left;
   }
   .inv-a4-mval {
     flex: 1;
-    font-weight: 600;
+    font-weight: 500;
     color: #111;
+    padding-left: 1.2mm;
     word-break: break-word;
+  }
+  .inv-a4-mval-r {
+    width: 25mm;
+    flex-shrink: 0;
+    font-weight: 500;
+    color: #111;
+    padding-left: 1.2mm;
+    white-space: nowrap;
+    text-align: left;
+  }
+  .inv-a4-mval-addr {
+    flex: 1;
+    font-weight: 500;
+    color: #111;
+    padding-left: 1.2mm;
+    word-break: break-word;
+    line-height: 5.1mm;
+    height: 10.2mm;
+    min-height: 10.2mm;
+    max-height: 10.2mm;
+    overflow: hidden;
+    padding-right: 2mm;
   }
 
   .inv-a4-table-box {
-    margin-top: 3.5mm;
+    margin-top: 2mm;
     border: 0.9pt solid #BDAB7D;
     border-radius: 3mm;
     flex: 1;
@@ -1820,13 +2093,14 @@
   }
   .inv-a4-thead {
     display: grid;
-    grid-template-columns: 1fr 22mm 30mm 30mm;
-    padding: 2.6mm 4mm;
+    grid-template-columns: 1fr 24mm 27.5mm 24mm;
+    padding: 1.85mm 3.6mm;
     border-bottom: 0.9pt solid #BDAB7D;
     background: #FDFBF7;
-    font-size: 9pt;
+    font-size: 8.4pt;
     font-weight: 700;
-    color: #222;
+    color: #1E3250;
+    white-space: nowrap;
   }
   .inv-a4-thead div:nth-child(2) { text-align: center; }
   .inv-a4-thead div:nth-child(3),
@@ -1834,102 +2108,215 @@
 
   .inv-a4-tbody {
     flex: 1;
-    padding: 3.5mm 4mm;
+    padding: 2.6mm 3.6mm 2.15mm 3.6mm;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
+  .inv-a4-sec-block {
+    margin-top: 3.2mm;
+  }
+  .inv-a4-sec-title {
+    font-size: 9pt;
+    font-weight: 700;
+    color: #1E3250;
+    line-height: 1.31;
+    margin-bottom: 0.9mm;
+  }
+  .inv-a4-pkg-style-b {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 2.2mm;
+  }
+  .inv-a4-pkg-lbl-b {
+    font-size: 9pt;
+    font-weight: 700;
+    color: #1E3250;
+    line-height: 1.31;
+    white-space: nowrap;
+  }
+  .inv-a4-pkg-div-b {
+    color: #B69A58;
+    font-weight: 400;
+    font-size: 9.5pt;
+    line-height: 1.31;
+  }
+  .inv-a4-pkg-name-b {
+    font-size: 9.6pt;
+    font-weight: 700;
+    color: #1E3250;
+    letter-spacing: 0.25px;
+    line-height: 1.31;
+    white-space: nowrap;
+  }
   .inv-a4-item-grid {
     display: grid;
-    grid-template-columns: 1fr 22mm 30mm 30mm;
+    grid-template-columns: 1fr 24mm 27.5mm 24mm;
     align-items: start;
-    font-size: 9pt;
+    font-size: 8.2pt;
+    font-weight: 500;
+    line-height: 1.41;
+    color: #111;
   }
-  .inv-a4-item-grid .c-qty { text-align: center; font-weight: 600; }
+  .inv-a4-item-grid .c-qty { text-align: center; font-weight: 500; color: #111; white-space: nowrap; }
   .inv-a4-item-grid .c-price,
-  .inv-a4-item-grid .c-tot { text-align: right; font-weight: 600; }
+  .inv-a4-item-grid .c-tot { text-align: right; font-weight: 500; color: #111; white-space: nowrap; }
+  .inv-a4-sub-indent {
+    padding-left: 4mm;
+    font-weight: 500;
+    color: #111;
+  }
+  .inv-a4-bilingual-row {
+    display: grid;
+    grid-template-columns: 47mm 1fr;
+    align-items: baseline;
+  }
+  .inv-a4-bilingual-row span {
+    white-space: nowrap;
+  }
 
   .inv-a4-pkg-sublist {
-    margin-top: 2mm;
-    padding-left: 2mm;
-    font-size: 8.6pt;
-    line-height: 4.9mm;
-    color: #222;
+    margin-top: 0.95mm;
+    padding-left: 4mm;
+    font-size: 8.1pt;
+    font-weight: 500;
+    line-height: 4.65mm;
+    color: #111;
   }
   .inv-a4-pkg-subrow {
     display: grid;
-    grid-template-columns: 50mm 28mm 20mm;
+    grid-template-columns: 47mm 25mm 18mm;
   }
 
   .inv-a4-totals-area {
-    margin-top: 3mm;
-    padding-top: 2.5mm;
+    margin-top: 2.0mm;
+    padding-top: 1.7mm;
     border-top: 1pt solid #BDAB7D;
     display: grid;
-    grid-template-columns: 52% 48%;
+    grid-template-columns: 44% 56%;
     align-items: end;
-    font-size: 9pt;
+    font-size: 8.6pt;
   }
   .inv-a4-sum-row {
     display: flex;
     justify-content: space-between;
-    padding: 1.2mm 2mm;
-    font-size: 9pt;
+    align-items: baseline;
+    padding: 0.9mm 0mm 0.9mm 1.5mm;
+    font-size: 8.5pt;
+    font-weight: 400;
+    color: #222;
+    white-space: nowrap;
+  }
+  .inv-a4-sum-row .sum-val {
+    font-weight: 600;
+    color: #111;
+  }
+  .inv-a4-sum-lbl {
+    display: inline-grid;
+    grid-template-columns: 26mm 12mm;
+    align-items: baseline;
+    white-space: nowrap;
+  }
+  .inv-a4-sum-lbl span {
+    white-space: nowrap;
   }
   .inv-a4-sum-row.grand {
-    margin-top: 1.5mm;
-    padding-top: 2mm;
+    margin-top: 0.8mm;
+    padding-top: 1.2mm;
     border-top: 1.2pt solid #1E3250;
-    font-size: 10.5pt;
-    font-weight: 800;
+    font-size: 9.8pt;
+    font-weight: 700;
+    color: #1E3250;
+  }
+  .inv-a4-sum-row.grand .sum-val {
+    font-weight: 700;
     color: #1E3250;
   }
 
   .inv-a4-sign-area {
-    margin-top: 4mm;
+    margin-top: 2.5mm;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14mm;
-    padding: 0 3mm;
+    grid-template-columns: 62mm 62mm;
+    justify-content: space-between;
+    padding-left: 4mm;
+    padding-right: 4mm;
   }
   .inv-a4-sign-box {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
   }
   .inv-a4-sign-pad {
     width: 100%;
-    height: 18mm;
+    height: 17.5mm;
     border-bottom: 1.2pt solid #BDAB7D;
     position: relative;
     display: flex;
     align-items: flex-end;
-    justify-content: center;
+    justify-content: flex-start;
   }
   .inv-a4-sign-pad img {
-    max-height: 16.5mm;
-    max-width: 58mm;
+    max-height: 16mm;
+    max-width: 60mm;
     object-fit: contain;
     margin-bottom: 0.5mm;
   }
   .inv-a4-sign-lbl {
-    font-size: 8.8pt;
+    font-size: 8.4pt;
     font-weight: 700;
-    color: #222;
-    margin-top: 1.5mm;
+    color: #1E3250;
+    margin-top: 1.1mm;
+    text-align: left;
   }
-  .inv-a4-sign-sub {
-    font-size: 8pt;
-    color: #444;
+  .inv-a4-sign-field-row {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    min-height: 4.6mm;
     margin-top: 0.8mm;
-    text-align: center;
-  }
-  .inv-a4-footer-pay {
-    margin-top: 3.5mm;
-    padding-top: 2mm;
-    border-top: 0.7pt dashed #BDAB7D;
     font-size: 8pt;
     line-height: 4.3mm;
+    color: #222;
+  }
+  .inv-a4-sign-en {
+    width: 9.5mm;
+    flex-shrink: 0;
+    font-weight: 500;
+    color: #333;
+    white-space: nowrap;
+  }
+  .inv-a4-sign-zh {
+    width: 8mm;
+    flex-shrink: 0;
+    font-weight: 500;
+    color: #333;
+    white-space: nowrap;
+  }
+  .inv-a4-sign-colon {
+    width: 2.2mm;
+    flex-shrink: 0;
+    font-weight: 600;
+    color: #333;
+    text-align: left;
+  }
+  .inv-a4-sign-val-line {
+    flex: 1;
+    border-bottom: 0.65pt dashed #C5CBD3;
+    padding-left: 1.5mm;
+    padding-bottom: 0.2mm;
+    font-weight: 600;
+    color: #111;
+    min-height: 4.2mm;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .inv-a4-footer-pay {
+    margin-top: 2.5mm;
+    padding-top: 1.5mm;
+    border-top: 0.7pt dashed #BDAB7D;
+    font-size: 7.6pt;
+    line-height: 3.8mm;
     color: #333;
   }
 
@@ -2114,7 +2501,7 @@
 
       </div>
       <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v138</span>
+        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v179</span>
         <span id="cloudSyncBadge" class="cloud-status-orb syncing" title="雲端連線中..." aria-label="雲端連線狀態">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
@@ -2149,6 +2536,7 @@
       <div style="margin-left:auto; display:flex; align-items:center; gap:7px;">
         <button type="button" class="topbar-action-pill lock-unlocked" id="btnTopLockToggle" onclick="toggleReportLockState()" title="點擊鎖定或解鎖編輯">🔓 編輯中</button>
         <button type="button" class="topbar-action-pill pill-delete" id="btnTopDeletePage" onclick="deleteCurrentPeriodPage()" title="刪除此期巡查紀錄">🗑️ 刪除巡查</button>
+        <button type="button" class="topbar-action-pill pill-delete" id="btnTopDeleteInvoice" style="display:none;" onclick="deleteCurrentInvoicePage()" title="刪除此張發票紀錄">🗑️ 刪除發票</button>
       </div>
     </div>
   </div>
@@ -2191,6 +2579,14 @@
     <button type="button" class="tab-btn" id="tabNavBtn1" onclick="switchTab(1)">2. 檢查清單 <span class="lamp-dot red" id="tabLamp0" style="margin-left:2px;"></span></button>
     <button type="button" class="tab-btn" id="tabNavBtn2" onclick="switchTab(2)">3. 相片(0/8) <span class="lamp-dot red" id="tabLamp1" style="margin-left:2px;"></span></button>
     <button type="button" class="tab-btn" id="tabNavBtn3" onclick="switchTab(3)">4. 離場核對 <span class="lamp-dot red" id="tabLamp3" style="margin-left:2px;"></span></button>
+  </div>
+
+  <!-- 新客戶發票 4 欄導航 (1. 客戶資料 / 2. 服務套餐 / 3. 增值/預繳/總額 / 4. 雙方簽署) -->
+  <div class="tabs" id="invoiceTabs" style="display:none;">
+    <button type="button" class="tab-btn inv-tab-btn active" id="invTabNavBtn0" onclick="switchInvoiceTab(0)">1. 客戶資料 <span class="lamp-dot red" id="invTabLamp0" style="margin-left:2px;"></span></button>
+    <button type="button" class="tab-btn inv-tab-btn" id="invTabNavBtn1" onclick="switchInvoiceTab(1)">2. 服務套餐 <span class="lamp-dot green" id="invTabLamp1" style="margin-left:2px;"></span></button>
+    <button type="button" class="tab-btn inv-tab-btn" id="invTabNavBtn2" onclick="switchInvoiceTab(2)">3. 增值及總額 <span class="lamp-dot green" id="invTabLamp2" style="margin-left:2px;"></span></button>
+    <button type="button" class="tab-btn inv-tab-btn" id="invTabNavBtn3" onclick="switchInvoiceTab(3)">4. 雙方簽署 <span class="lamp-dot red" id="invTabLamp3" style="margin-left:2px;"></span></button>
   </div>
 
   <!-- 手機填寫區 (進入編輯頁時顯示) -->
@@ -2302,7 +2698,7 @@
       <div class="card">
         <div class="card-title">
           <span>檢查清單 (第 1 頁)</span>
-          <button type="button" class="btn btn-compact" style="background:#FFFBEB; color:#B45309; border:1px solid #FDE68A; padding:4px 9px; font-size:11px; flex-shrink:0;" onclick="clearCurrentTabInputs('checklist')">全部清除</button>
+          <button type="button" class="btn btn-compact" style="background:#FFFBEB; color:#B45309; border:1px solid #FDE68A; padding:4px 11px; height:27px; border-radius:999px; font-size:11px; font-weight:700; flex-shrink:0;" onclick="clearCurrentTabInputs('checklist')">全部清除</button>
         </div>
         <div id="checklistFormContainer"></div>
       </div>
@@ -2367,7 +2763,7 @@
       <div class="card">
         <div class="card-title" style="margin-bottom:6px;">
           <span>Photo Attachment (第 2 頁相片附件)</span>
-          <button type="button" class="btn btn-compact" style="background:#FFFBEB; color:#B45309; border:1px solid #FDE68A; padding:4px 9px; font-size:11px; flex-shrink:0;" onclick="clearCurrentTabInputs('photos')">全部清除</button>
+          <button type="button" class="btn btn-compact" style="background:#FFFBEB; color:#B45309; border:1px solid #FDE68A; padding:4px 11px; height:27px; border-radius:999px; font-size:11px; font-weight:700; flex-shrink:0;" onclick="clearCurrentTabInputs('photos')">全部清除</button>
         </div>
         <div style="display:flex; justify-content:flex-end; margin-bottom:8px;">
           <span class="cat-done-badge pending" id="photoHeaderBadge"><span class="lamp-dot red"></span>0/8</span>
@@ -2389,7 +2785,7 @@
       <div class="card">
         <div class="card-title" style="margin-bottom:6px;">
           <span>Workflow for internal use (第 3 頁)</span>
-          <button type="button" class="btn btn-compact" style="background:#FFFBEB; color:#B45309; border:1px solid #FDE68A; padding:4px 9px; font-size:11px; flex-shrink:0;" onclick="clearCurrentTabInputs('workflow')">全部清除</button>
+          <button type="button" class="btn btn-compact" style="background:#FFFBEB; color:#B45309; border:1px solid #FDE68A; padding:4px 11px; height:27px; border-radius:999px; font-size:11px; font-weight:700; flex-shrink:0;" onclick="clearCurrentTabInputs('workflow')">全部清除</button>
         </div>
         <div style="display:flex; justify-content:flex-end; margin-bottom:8px;">
           <span class="cat-done-badge pending" id="wfHeaderBadge"><span class="lamp-dot red"></span>未儲存</span>
@@ -2409,228 +2805,296 @@
   </div>
 
 
-  <!-- ================= 新客戶發票 (Invoice) 編輯器 ================= -->
-  <div class="container" id="invoiceEditorContainer" style="display:none; padding-top:12px;">
-    <div class="inv-section-card" style="border-top:4px solid var(--gold);">
-      <div class="card-title">
-        <span>🧾 新客戶發票資料 (Invoice)</span>
-        <button type="button" class="btn btn-compact" style="background:#FFFBEB; color:#B45309; border:1px solid #FDE68A; padding:4px 9px; font-size:11px;" onclick="resetInvoiceForm(true)">清空重填</button>
-      </div>
-      <div class="form-grid">
-        <div class="form-group">
-          <label>Ref no. | 參考編號*</label>
-          <input type="text" id="invRefNo" placeholder="C0012XX" oninput="handleInvoiceFieldChange()">
-        </div>
-        <div class="form-group">
-          <label>Date | 發票日期</label>
-          <div style="position:relative; display:flex; align-items:center;">
-            <input type="text" id="invDateDisplay" placeholder="18 Nov 2026" style="padding-right:28px;" oninput="handleInvoiceFieldChange()">
-            <input type="date" id="invDatePicker" style="position:absolute; right:4px; width:26px; height:28px; opacity:0; cursor:pointer;" onchange="handleInvoiceDatePicked(this.value)">
-            <span style="position:absolute; right:7px; pointer-events:none; font-size:13px;">📅</span>
+  <!-- ================= 新客戶發票 (Invoice) 編輯器 (4 欄分頁版面) ================= -->
+  <div class="container" id="invoiceEditorContainer" style="display:none;">
+
+    <!-- INV TAB 1: 客戶資料 -->
+    <div class="tab-panel inv-tab-panel active" id="invTab0">
+      <div class="card">
+        <div class="card-title">
+          <span style="white-space:nowrap;">新客戶發票資料</span>
+          <div id="invDateHeaderPill" class="header-visit-date-pill" title="點擊月曆圖示選擇或直接輸入日/月/年">
+            <span class="header-visit-cal-trigger" onclick="openInvHeaderDatePicker(event)" title="開啟日曆選擇">
+              <span style="font-size:12px; line-height:1; pointer-events:none;">📅</span>
+              <input type="date" id="invDatePicker" onchange="handleInvoiceDatePicked(this.value)">
+            </span>
+            <span class="header-visit-date-lbl">發票日期</span>
+            <input type="text" id="invDateDisplay" class="header-visit-date-input" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" oninput="handleInvDMYTextInput(this)" onfocus="this.select()">
           </div>
         </div>
-        <div class="form-group full">
-          <label>Customer Name | 客戶姓名</label>
-          <div style="display:flex; gap:6px;">
-            <select id="invCustTitle" style="width:76px; flex-shrink:0;" onchange="handleInvoiceFieldChange()">
-              <option value="">稱謂</option>
-              <option value="Mr.">Mr.</option>
-              <option value="Ms.">Ms.</option>
-              <option value="Mrs.">Mrs.</option>
-            </select>
-            <input type="text" id="invCustName" placeholder="Chan Tai Man" oninput="handleInvoiceFieldChange()">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Ref no. 參考編號*</label>
+            <input type="text" id="invRefNo" placeholder="C100XXXX" oninput="handleInvRefNoInput(this)" onblur="handleInvRefNoInput(this)">
           </div>
-        </div>
-        <div class="form-group">
-          <label>Contact no. | 聯絡號碼</label>
-          <input type="text" id="invCustPhone" placeholder="+852 9123 4567" oninput="handleInvoiceFieldChange()">
-        </div>
-        <div class="form-group">
-          <label>Email | 電郵</label>
-          <input type="text" id="invCustEmail" placeholder="client@gmail.com" oninput="handleInvoiceFieldChange()">
-        </div>
-        <div class="form-group full">
-          <label>Address | 地址</label>
-          <input type="text" id="invAddress" placeholder="例如: 0000000 (3/F) The Origin Sukhumvit 105, Sukhumvit 105 Alley, Bang Na" oninput="handleInvoiceFieldChange()">
-        </div>
-        <div class="form-group full">
-          <label>Issuer | 發件人</label>
-          <input type="text" id="invIssuer" value="Ms Namthip" placeholder="Ms Namthip" oninput="handleInvoiceFieldChange()">
-        </div>
-      </div>
-    </div>
-
-    <!-- 服務套餐與服務期 -->
-    <div class="inv-section-card">
-      <div class="card-title">
-        <span>📦 揀選服務套餐 (Package)</span>
-        <span id="invPkgPriceBadge" style="font-size:12px; font-weight:800; color:var(--navy); background:#FAF6EC; border:1px solid var(--gold-light); padding:2px 8px; border-radius:8px;">2,488 HKD</span>
-      </div>
-      <div class="inv-pkg-pill-grid">
-        <div class="inv-pkg-pill active" id="invPkgBtn_essential" onclick="selectInvoicePackage('essential')">
-          <span class="pkg-en">Essential Care</span>
-          <span class="pkg-zh">基礎方案</span>
-          <span class="pkg-price">2,488 HKD</span>
-        </div>
-        <div class="inv-pkg-pill" id="invPkgBtn_plus" onclick="selectInvoicePackage('plus')">
-          <span class="pkg-en">Plus Care</span>
-          <span class="pkg-zh">全面方案</span>
-          <span class="pkg-price">4,888 HKD</span>
-        </div>
-        <div class="inv-pkg-pill" id="invPkgBtn_premium" onclick="selectInvoicePackage('premium')">
-          <span class="pkg-en">Premium Care</span>
-          <span class="pkg-zh">尊貴方案</span>
-          <span class="pkg-price">6,888 HKD</span>
-        </div>
-      </div>
-
-      <div class="form-grid" style="margin-top:10px;">
-        <div class="form-group full">
-          <label>Service Period 服務期 (自動計算一年或手動修改)</label>
-          <div style="display:flex; align-items:center; gap:6px;">
-            <div style="position:relative; flex:1; display:flex; align-items:center;">
-              <input type="text" id="invPeriodStartText" placeholder="1 Dec 2026" style="padding-right:26px;" oninput="handleInvoiceFieldChange()">
-              <input type="date" id="invPeriodStartPicker" style="position:absolute; right:3px; width:24px; height:26px; opacity:0; cursor:pointer;" onchange="handleInvoicePeriodStartPicked(this.value)">
-              <span style="position:absolute; right:6px; pointer-events:none; font-size:13px;">📅</span>
-            </div>
-            <span style="font-weight:700; color:#555;">-</span>
-            <div style="position:relative; flex:1; display:flex; align-items:center;">
-              <input type="text" id="invPeriodEndText" placeholder="30 Nov 2027" style="padding-right:26px;" oninput="handleInvoiceFieldChange()">
-              <input type="date" id="invPeriodEndPicker" style="position:absolute; right:3px; width:24px; height:26px; opacity:0; cursor:pointer;" onchange="handleInvoicePeriodEndPicked(this.value)">
-              <span style="position:absolute; right:6px; pointer-events:none; font-size:13px;">📅</span>
+          <div class="form-group">
+            <label>Issuer 發件人</label>
+            <input type="text" id="invIssuer" value="Ms Namthip" placeholder="Ms Namthip" oninput="handleInvoiceFieldChange()">
+          </div>
+          <div class="form-group full">
+            <label>Customer Name 客戶姓名</label>
+            <div style="display:flex; gap:6px; align-items:center;">
+              <select id="invCustTitle" style="width:74px; flex-shrink:0; padding:5px 4px; font-weight:600;" onchange="handleInvoiceFieldChange()">
+                <option value="">稱謂</option>
+                <option value="Mr.">Mr.</option>
+                <option value="Ms.">Ms.</option>
+                <option value="Mrs.">Mrs.</option>
+              </select>
+              <input type="text" id="invCustName" style="flex:1; min-width:0;" placeholder="Chan Tai Man / John Chan" oninput="handleInvoiceFieldChange()">
             </div>
           </div>
+          <div class="form-group full" style="display:grid; grid-template-columns:1.45fr 0.95fr; gap:8px;">
+            <div class="form-group" style="min-width:0;">
+              <label>Email 客戶電郵</label>
+              <input type="text" id="invCustEmail" inputmode="email" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="client@email.com" oninput="handleInvEmailInput()" onblur="handleInvEmailBlur()">
+            </div>
+            <div class="form-group" style="min-width:0;">
+              <label>Contact No. 聯絡電話</label>
+              <input type="text" id="invCustPhone" inputmode="tel" placeholder="例如: +852 9123 4567" oninput="handleInvoiceFieldChange()" onblur="handleInvPhoneBlur(this)">
+            </div>
+          </div>
+          <div id="invEmailTypoBanner" class="form-group full" style="display:none; background:#FFFBEB; border:1.2px solid #F59E0B; border-radius:8px; padding:7px 10px; font-size:12px; color:#92400E; line-height:1.45;"></div>
+          <div class="form-group full" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <div class="form-group" style="min-width:0;">
+              <label>Unit no. 單位號碼</label>
+              <input type="text" id="invRoomNo" placeholder="例如: 68/138" oninput="handleInvoiceFieldChange()">
+            </div>
+            <div class="form-group" style="min-width:0;">
+              <label>Floor 樓層</label>
+              <input type="text" id="invFloorNo" placeholder="例如: 18/F" oninput="handleInvoiceFieldChange()" onblur="handleInvFloorNoBlur(this)">
+            </div>
+          </div>
+          <div class="form-group full">
+            <label>Address 地址</label>
+            <input type="text" id="invAddress" placeholder="輸入屋苑及地址" oninput="handleInvoiceFieldChange()">
+          </div>
         </div>
-        <div class="form-group">
-          <label>Package Quantity 數量</label>
-          <input type="number" id="invPkgQty" value="1" min="1" oninput="handleInvoiceFieldChange()">
+        <div style="margin-top:10px; display:flex; gap:8px;">
+          <button type="button" class="btn btn-navy" style="flex:1;" onclick="saveCurrentInvoiceRecord(false)">儲存客戶資料</button>
+          <button type="button" class="btn btn-gold" style="flex:1;" onclick="goToInvoicePackageStep()">下一步：服務套餐 →</button>
         </div>
-        <div class="form-group">
-          <label>Package Unit Price 單價 (HKD)</label>
-          <input type="number" id="invPkgPrice" value="2488" min="0" oninput="handleInvoiceFieldChange()">
-        </div>
-      </div>
-
-      <div class="inv-contents-preview" id="invPkgContentsPreview"></div>
-    </div>
-
-    <!-- Add-on Service 增值服務 & Advance Payment 預付款項 & 總計 -->
-    <div class="inv-section-card">
-      <div class="card-title">
-        <span>💰 增值服務、預付款項及總額</span>
-      </div>
-      <div class="form-grid">
-        <div class="form-group full">
-          <label>Add-on Service 增值服務 (留空或 Nil 則不計費)</label>
-          <input type="text" id="invAddonDesc" value="Nil" placeholder="Nil 或輸入額外服務項目" oninput="handleInvoiceFieldChange()">
-        </div>
-        <div class="form-group">
-          <label>增值服務數量</label>
-          <input type="number" id="invAddonQty" value="0" min="0" oninput="handleInvoiceFieldChange()">
-        </div>
-        <div class="form-group">
-          <label>增值服務單價 (HKD)</label>
-          <input type="number" id="invAddonPrice" value="0" min="0" oninput="handleInvoiceFieldChange()">
-        </div>
-
-        <div class="form-group full" style="margin-top:4px; padding-top:8px; border-top:1px dashed #E2E8F0;">
-          <label>Advance Payment 預付款項項目</label>
-          <input type="text" id="invAdvDesc" value="Miscellaneous Fees 水電及其他雜費" oninput="handleInvoiceFieldChange()">
-        </div>
-        <div class="form-group">
-          <label>預付款數量</label>
-          <input type="number" id="invAdvQty" value="1" min="0" oninput="handleInvoiceFieldChange()">
-        </div>
-        <div class="form-group">
-          <label>預付款單價 (HKD)</label>
-          <input type="number" id="invAdvPrice" value="500" min="0" oninput="handleInvoiceFieldChange()">
-        </div>
-
-        <div class="form-group">
-          <label>Other | 其他金額 (HKD)</label>
-          <input type="number" id="invOtherAmount" value="0" min="0" oninput="handleInvoiceFieldChange()">
-        </div>
-        <div class="form-group">
-          <label>Currency 貨幣單位</label>
-          <select id="invCurrency" onchange="handleInvoiceFieldChange()">
-            <option value="HKD">HKD</option>
-            <option value="THB">THB</option>
-          </select>
-        </div>
-      </div>
-
-      <div style="margin-top:10px; padding:10px 12px; background:#FAF7F0; border:1px solid #E5D4A8; border-radius:9px; font-size:13px;">
-        <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-          <span style="color:#555;">Subtotal | 小計：</span>
-          <strong id="invSubtotalText">2,988 HKD</strong>
-        </div>
-        <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-          <span style="color:#555;">Other | 其他：</span>
-          <strong id="invOtherText">0 HKD</strong>
-        </div>
-        <div style="display:flex; justify-content:space-between; padding-top:6px; border-top:1px solid #D5C49A; font-size:15px; color:var(--navy);">
-          <span style="font-weight:800;">Total Amount | 總額 (Grand Total)：</span>
-          <strong id="invGrandTotalText">2,988 HKD</strong>
-        </div>
+        <div class="last-edited-subtle-footer" id="invLastEditedFooterText">最後編輯：尚未儲存</div>
       </div>
     </div>
 
-    <!-- 雙簽名區：Customer Signature & Authorized Signature -->
-    <div class="inv-section-card">
-      <div class="card-title">
-        <span>✍️ 客戶與受托人簽署</span>
-      </div>
+    <!-- INV TAB 2: 服務套餐 -->
+    <div class="tab-panel inv-tab-panel" id="invTab1">
+      <div class="card" style="padding:11px 12px 12px 12px;">
+        <div class="card-title" style="margin-bottom:7px; padding-bottom:4px;">
+          <span>服務套餐 (Package)</span>
+          <button type="button" class="btn btn-compact" style="background:#FFFBEB; color:#B45309; border:1px solid #FDE68A; padding:4px 11px; height:27px; border-radius:999px; font-size:11px; font-weight:700; flex-shrink:0;" onclick="clearCurrentTabInputs('invoice_package')">全部清除</button>
+        </div>
+        <div class="inv-pkg-pill-grid" style="margin-top:0; gap:6px;">
+          <div class="inv-pkg-pill active" id="invPkgBtn_essential" style="min-height:54px; padding:7px 4px; gap:2px;" onclick="selectInvoicePackage('essential')">
+            <span class="pkg-en" style="font-size:11.5px;">Essential Care</span>
+            <span class="pkg-zh" style="font-size:14.5px; margin-top:0;">基礎方案</span>
+          </div>
+          <div class="inv-pkg-pill" id="invPkgBtn_plus" style="min-height:54px; padding:7px 4px; gap:2px;" onclick="selectInvoicePackage('plus')">
+            <span class="pkg-en" style="font-size:11.5px;">Plus Care</span>
+            <span class="pkg-zh" style="font-size:14.5px; margin-top:0;">全面方案</span>
+          </div>
+          <div class="inv-pkg-pill" id="invPkgBtn_premium" style="min-height:54px; padding:7px 4px; gap:2px;" onclick="selectInvoicePackage('premium')">
+            <span class="pkg-en" style="font-size:11.5px;">Premium Care</span>
+            <span class="pkg-zh" style="font-size:14.5px; margin-top:0;">尊貴方案</span>
+          </div>
+        </div>
 
-      <div style="margin-bottom:12px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
-          <label style="font-size:12.5px; color:var(--navy);">1. Customer Signature 客戶簽署</label>
-          <div style="display:flex; gap:5px;">
-            <input type="file" accept="image/*" id="invCustSigFile" style="display:none;" onchange="handleInvSigUpload('cust', event)">
-            <button type="button" class="btn btn-outline btn-sm" style="padding:4px 8px; font-size:11px;" onclick="document.getElementById('invCustSigFile').click()">📷 上載圖</button>
-            <button type="button" class="btn btn-outline btn-sm" style="padding:4px 8px; font-size:11px;" onclick="clearInvSignature('cust')">清除</button>
+        <div class="form-grid" style="margin-top:7px; gap:6px;">
+          <div class="form-group full" style="gap:2px;">
+            <label style="font-size:11px;">Service Period 服務期</label>
+            <div style="display:flex; align-items:center; gap:5px;">
+              <div style="position:relative; flex:1; display:flex; align-items:center;">
+                <input type="text" id="invPeriodStartText" placeholder="1 Dec 2026" style="padding-right:24px; height:29px; min-height:29px; font-size:12.5px;" oninput="handleInvoicePeriodManualTextChange()">
+                <input type="date" id="invPeriodStartPicker" style="position:absolute; right:3px; width:24px; height:26px; opacity:0; cursor:pointer;" onchange="handleInvoicePeriodStartPicked(this.value)">
+                <span style="position:absolute; right:6px; pointer-events:none; font-size:12.5px;">📅</span>
+              </div>
+              <span style="font-weight:700; color:#555;">-</span>
+              <div style="position:relative; flex:1; display:flex; align-items:center;">
+                <input type="text" id="invPeriodEndText" placeholder="30 Nov 2027" style="padding-right:24px; height:29px; min-height:29px; font-size:12.5px;" oninput="handleInvoicePeriodManualTextChange()">
+                <input type="date" id="invPeriodEndPicker" style="position:absolute; right:3px; width:24px; height:26px; opacity:0; cursor:pointer;" onchange="handleInvoicePeriodEndPicked(this.value)">
+                <span style="position:absolute; right:6px; pointer-events:none; font-size:12.5px;">📅</span>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" id="invPkgQty" value="1">
+          <div class="form-group" style="gap:2px;">
+            <label style="font-size:11px;">Duration 年期 (年)</label>
+            <div style="position:relative; display:flex; align-items:center;">
+              <input type="text" id="invPkgYears" inputmode="decimal" value="1" placeholder="1 / 1.5 / 2" style="padding-right:26px; height:29px; min-height:29px; font-weight:700; color:var(--navy);" oninput="handleInvoiceYearsInput(this)" onblur="handleInvoiceYearsBlur(this)" onfocus="this.select()">
+              <span style="position:absolute; right:8px; font-size:12px; font-weight:700; color:#64748B; pointer-events:none;">年</span>
+            </div>
+          </div>
+          <div class="form-group" style="gap:2px;">
+            <label style="font-size:11px;">Unit Price 單價 (HKD)</label>
+            <input type="number" id="invPkgPrice" value="2488" min="0" style="height:29px; min-height:29px; font-weight:700; color:var(--navy);" oninput="handleInvoiceFieldChange()">
           </div>
         </div>
-        <canvas id="invCustSigCanvas" class="inv-sig-canvas"></canvas>
-        <div class="form-grid" style="margin-top:6px;">
-          <div class="form-group">
-            <label>客戶簽署顯示名稱</label>
-            <input type="text" id="invCustSignName" placeholder="自動帶入客戶姓名" oninput="handleInvoiceFieldChange()">
-          </div>
-          <div class="form-group">
-            <label>客戶簽署日期</label>
-            <input type="text" id="invCustSignDate" placeholder="例如: 18 Nov 2026" oninput="handleInvoiceFieldChange()">
-          </div>
-        </div>
-      </div>
 
-      <div style="padding-top:10px; border-top:1px dashed #DCE1E8;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
-          <label style="font-size:12.5px; color:var(--navy);">2. Authorized Signature 受托人簽署</label>
-          <div style="display:flex; gap:5px;">
-            <input type="file" accept="image/*" id="invAuthSigFile" style="display:none;" onchange="handleInvSigUpload('auth', event)">
-            <button type="button" class="btn btn-navy btn-sm" style="padding:4px 8px; font-size:11px;" onclick="applyPresetSignatureToInvoice()">套用預設簽名</button>
-            <button type="button" class="btn btn-outline btn-sm" style="padding:4px 8px; font-size:11px;" onclick="document.getElementById('invAuthSigFile').click()">📷 上載圖</button>
-            <button type="button" class="btn btn-outline btn-sm" style="padding:4px 8px; font-size:11px;" onclick="clearInvSignature('auth')">清除</button>
-          </div>
-        </div>
-        <canvas id="invAuthSigCanvas" class="inv-sig-canvas"></canvas>
-        <div class="form-grid" style="margin-top:6px;">
-          <div class="form-group">
-            <label>受托人簽署顯示名稱</label>
-            <input type="text" id="invAuthSignName" value="Ms Namthip" placeholder="Ms Namthip" oninput="handleInvoiceFieldChange()">
-          </div>
-          <div class="form-group">
-            <label>受托人簽署日期</label>
-            <input type="text" id="invAuthSignDate" placeholder="例如: 18-Nov-2026" oninput="handleInvoiceFieldChange()">
-          </div>
-        </div>
-      </div>
+        <div class="inv-contents-preview" id="invPkgContentsPreview" style="margin-top:8px; min-height:375px; height:auto; padding:11px 12px; background:linear-gradient(180deg, #FFFFFF 0%, #FAF8F3 100%); border:1.2px solid #E2D5B5; border-left:4px solid var(--gold);"></div>
 
-      <div style="margin-top:14px; display:flex; gap:8px;">
-        <button type="button" class="btn btn-navy" style="flex:1;" onclick="saveCurrentInvoiceRecord(false)">💾 儲存發票紀錄</button>
-        <button type="button" class="btn btn-gold" style="flex:1;" onclick="toggleInvoicePreview(true)">👁️ 預覽 / 匯出 PDF</button>
+        <div style="margin-top:10px; padding:8px 12px; border-radius:9px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1.2px solid var(--gold); display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:12px; font-weight:700; color:#8C6D23;" id="invPkgCalcFormulaText">套餐合計 (1 年 × 2,488)</span>
+          <strong style="font-size:16px; font-weight:800; color:var(--navy); letter-spacing:0.3px;" id="invPkgSubtotalBarText">2,488 HKD</strong>
+        </div>
+
+        <div style="margin-top:9px; display:flex; gap:8px;">
+          <button type="button" class="btn btn-navy" style="flex:1;" onclick="saveCurrentInvoiceRecord(false)">儲存服務套餐</button>
+          <button type="button" class="btn btn-gold" style="flex:1;" onclick="goToInvoiceTotalsStep()">下一步：增值及總額 →</button>
+        </div>
       </div>
     </div>
+
+    <!-- INV TAB 3: 增值服務、預繳款項及總額 -->
+    <div class="tab-panel inv-tab-panel" id="invTab2">
+      <div class="card" style="padding:10px 11px 11px 11px; margin-bottom:8px;">
+        <div class="card-title" style="margin-bottom:6px; padding-bottom:4px;">
+          <span>增值服務、預繳款項及總額</span>
+          <button type="button" class="btn btn-compact" style="background:#FFFBEB; color:#B45309; border:1px solid #FDE68A; padding:3px 10px; height:25px; border-radius:999px; font-size:11px; font-weight:700; flex-shrink:0;" onclick="clearCurrentTabInputs('invoice_totals')">全部清除</button>
+        </div>
+        <div class="form-grid" style="gap:6px;">
+          <!-- 項目 1：Add-on Service 增值服務 -->
+          <div class="form-group full" style="gap:2px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:6px;">
+              <label style="font-size:11px;">Add-on Service 增值服務</label>
+              <button type="button" id="invAddonNilBtn" onclick="setInvoiceAddonsNil()" style="height:21px; padding:0 9px; border-radius:999px; border:1.2px solid var(--navy); background:var(--navy); color:#fff; font-size:10px; font-weight:700; cursor:pointer; flex-shrink:0;">✓ Nil (不需增值)</button>
+            </div>
+            <div id="invAddonCatalogContainer" class="addon-catalog-list"></div>
+            <div id="invAddonSummaryPill" style="margin-top:3px; padding:4px 9px; border-radius:7px; background:#FAF7F0; border:1px solid #E5D4A8; display:flex; justify-content:space-between; align-items:center; font-size:11.5px;">
+              <span style="color:#6E551C; font-weight:700;" id="invAddonSummaryLabel">已選增值服務：Nil (0 項)</span>
+              <strong style="color:var(--navy); font-weight:800;" id="invAddonSummaryTotal">0 HKD</strong>
+            </div>
+            <input type="hidden" id="invAddonDesc" value="Nil">
+            <input type="hidden" id="invAddonQty" value="0">
+            <input type="hidden" id="invAddonPrice" value="0">
+            <input type="hidden" id="invCurrency" value="HKD">
+          </div>
+
+          <!-- 項目 2：Advance Payment 預繳款項 (簡潔純白卡片 + 統一金邊小細項金額列) -->
+          <div class="form-group full" style="margin-top:2px; padding-top:6px; border-top:1px dashed #E2E8F0; gap:3px;">
+            <label style="font-size:11px;">Advance Payment 預繳款項</label>
+            <div id="invAdvItemCard" class="addon-item-card" style="background:#FFFFFF; border-color:#DCE1E8; padding:4px 7px; min-height:32px; gap:5px;">
+              <input type="text" id="invAdvDesc" value="Miscellaneous Fees 水電及其他雜費" placeholder="預繳款項目名稱" style="flex:1; min-width:0; height:24px; min-height:24px; border:none; background:transparent; padding:0 2px; font-size:11.5px; font-weight:700; color:var(--navy); box-shadow:none;" oninput="handleInvoiceFieldChange()">
+              <div style="display:inline-flex; align-items:center; gap:1px; flex-shrink:0; background:#F8FAFC; border:1px solid #CBD5E1; border-radius:5px; padding:0 4px; height:22px;">
+                <span style="font-size:11px; font-weight:700; color:#8C6D23;">$</span>
+                <input type="number" id="invAdvPrice" value="500" min="0" style="width:46px; height:20px; min-height:20px; border:none; background:transparent; padding:0 1px; font-size:11px; font-weight:700; color:#8C6D23; text-align:right; box-shadow:none;" oninput="handleInvoiceFieldChange()">
+              </div>
+              <div class="addon-qty-stepper">
+                <button type="button" class="addon-step-btn" id="invAdvMinusBtn" onclick="adjustInvoiceAdvQty(-1)">−</button>
+                <span class="addon-qty-val" id="invAdvQtyDisplay">1</span>
+                <button type="button" class="addon-step-btn" onclick="adjustInvoiceAdvQty(1)">＋</button>
+              </div>
+              <input type="hidden" id="invAdvQty" value="1">
+            </div>
+            <div style="padding:4px 9px; border-radius:7px; background:#FAF7F0; border:1px solid #E5D4A8; display:flex; justify-content:space-between; align-items:center; font-size:11.5px;">
+              <span style="color:#6E551C; font-weight:700;" id="invAdvSummaryLabel">預繳款項小計 (1 × $500)</span>
+              <strong style="color:var(--navy); font-weight:800;" id="invAdvSummaryTotal">500 HKD</strong>
+            </div>
+          </div>
+
+          <!-- 項目 3：Other 其他 (簡潔純白卡片 + 暖金色小細項金額列) -->
+          <div class="form-group full" style="margin-top:2px; padding-top:6px; border-top:1px dashed #E2E8F0; gap:3px;">
+            <label style="font-size:11px;">Other 其他 (可輸入正數附加費或負數折扣)</label>
+            <div class="addon-item-card" id="invOtherItemCard" style="background:#FFFFFF; border-color:#DCE1E8; padding:4px 7px; min-height:32px; gap:6px;">
+              <input type="text" id="invOtherDesc" value="" placeholder="輸入其他項目說明（例如：特別折扣 / 額外雜費）" style="flex:1; min-width:0; height:24px; min-height:24px; border:none; background:transparent; padding:0 2px; font-size:11.5px; font-weight:600; color:var(--navy); box-shadow:none;" oninput="handleInvoiceFieldChange()">
+              <div style="display:inline-flex; align-items:center; gap:2px; flex-shrink:0; background:#F8FAFC; border:1px solid #CBD5E1; border-radius:6px; padding:0 6px; height:23px;">
+                <span style="font-size:11px; font-weight:700; color:#8C6D23;">$</span>
+                <input type="number" id="invOtherAmount" value="0" step="any" placeholder="0" style="width:62px; height:21px; min-height:21px; border:none; background:transparent; padding:0 1px; font-size:11.5px; font-weight:800; color:var(--navy); text-align:right; box-shadow:none;" oninput="handleInvoiceFieldChange()">
+              </div>
+            </div>
+            <div style="padding:4px 9px; border-radius:7px; background:#FAF7F0; border:1px solid #E5D4A8; display:flex; justify-content:space-between; align-items:center; font-size:11.5px;">
+              <span style="color:#6E551C; font-weight:700;" id="invOtherSummaryLabel">其他項目小計：Nil</span>
+              <strong style="color:var(--navy); font-weight:800;" id="invOtherSummaryTotal">0 HKD</strong>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:7px; border:1px solid #E5D4A8; border-radius:8px; overflow:hidden; font-size:11.5px;">
+          <div style="padding:6px 10px 5px 10px; background:#FDFBF6;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2.5px; color:#6E551C; font-weight:600;">
+              <span>Package Fee | 套餐費用：</span>
+              <strong style="color:var(--navy); font-weight:800;" id="invPkgFeeSummaryText">2,488 HKD</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2.5px; color:#6E551C; font-weight:600;">
+              <span>Add-on &amp; Advance | 增值服務及預繳：</span>
+              <strong style="color:var(--navy); font-weight:800;" id="invAddonAndAdvSummaryText">500 HKD</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; color:#6E551C; font-weight:600;">
+              <span>Other | 其他：</span>
+              <strong style="color:var(--navy); font-weight:800;" id="invOtherText">0 HKD</strong>
+            </div>
+          </div>
+          <div style="padding:6px 10px; background:#FAF7F0; border-top:1px solid #D5C49A; display:flex; justify-content:space-between; align-items:center; font-size:13.5px; color:var(--navy);">
+            <span style="font-weight:800;">Total Amount | 應付總額：</span>
+            <strong style="font-size:15.5px;" id="invGrandTotalText">2,988 HKD</strong>
+          </div>
+        </div>
+
+        <div style="margin-top:8px; display:flex; gap:7px;">
+          <button type="button" class="btn btn-navy" style="flex:1; padding:8px 10px; font-size:13px;" onclick="saveCurrentInvoiceRecord(false)">儲存金額明細</button>
+          <button type="button" class="btn btn-gold" style="flex:1; padding:8px 10px; font-size:13px;" onclick="goToInvoiceSignStep()">下一步：雙方簽署 →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- INV TAB 4: 雙方簽署 -->
+    <div class="tab-panel inv-tab-panel" id="invTab3">
+      <div class="card">
+        <div class="card-title">
+          <span>客戶與受托人雙方簽署</span>
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+            <label style="font-size:12.5px; color:var(--navy);">1. Customer Signature 客戶簽署</label>
+            <div style="display:flex; gap:5px;">
+              <input type="file" accept="image/*" id="invCustSigFile" style="display:none;" onchange="handleInvSigUpload('cust', event)">
+              <button type="button" class="btn btn-outline btn-sm" style="padding:4px 8px; font-size:11px;" onclick="document.getElementById('invCustSigFile').click()">📷 上載圖</button>
+              <button type="button" class="btn btn-outline btn-sm" style="padding:4px 8px; font-size:11px;" onclick="clearInvSignature('cust')">清除</button>
+            </div>
+          </div>
+          <canvas id="invCustSigCanvas" class="inv-sig-canvas"></canvas>
+          <div class="form-grid" style="margin-top:6px;">
+            <div class="form-group">
+              <label>客戶簽署顯示名稱</label>
+              <input type="text" id="invCustSignName" placeholder="自動帶入客戶姓名" oninput="handleInvoiceFieldChange()">
+            </div>
+            <div class="form-group">
+              <label>客戶簽署日期</label>
+              <input type="text" id="invCustSignDate" placeholder="例如: 18 Nov 2026" oninput="handleInvoiceFieldChange()">
+            </div>
+          </div>
+        </div>
+
+        <div style="padding-top:10px; border-top:1px dashed #DCE1E8;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+            <label style="font-size:12.5px; color:var(--navy);">2. Authorized Signature 受托人簽署</label>
+            <div style="display:flex; gap:5px;">
+              <input type="file" accept="image/*" id="invAuthSigFile" style="display:none;" onchange="handleInvSigUpload('auth', event)">
+              <button type="button" class="btn btn-navy btn-sm" style="padding:4px 8px; font-size:11px;" onclick="applyPresetSignatureToInvoice()">套用預設簽名</button>
+              <button type="button" class="btn btn-outline btn-sm" style="padding:4px 8px; font-size:11px;" onclick="document.getElementById('invAuthSigFile').click()">📷 上載圖</button>
+              <button type="button" class="btn btn-outline btn-sm" style="padding:4px 8px; font-size:11px;" onclick="clearInvSignature('auth')">清除</button>
+            </div>
+          </div>
+          <canvas id="invAuthSigCanvas" class="inv-sig-canvas"></canvas>
+          <div class="form-grid" style="margin-top:6px;">
+            <div class="form-group">
+              <label>受托人簽署顯示名稱</label>
+              <input type="text" id="invAuthSignName" value="Ms Namthip" placeholder="Ms Namthip" oninput="handleInvoiceFieldChange()">
+            </div>
+            <div class="form-group">
+              <label>受托人簽署日期</label>
+              <input type="text" id="invAuthSignDate" placeholder="例如: 18-Nov-2026" oninput="handleInvoiceFieldChange()">
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:14px; display:flex; gap:8px;">
+          <button type="button" class="btn btn-navy" style="flex:1;" onclick="saveCurrentInvoiceRecord(false)">儲存發票紀錄</button>
+          <button type="button" class="btn btn-gold" style="flex:1;" onclick="toggleInvoicePreview(true)">預覽 / 匯出 PDF</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- 底部固定操作按鈕 (左側：整合清單 + 相片 + 離場核對三段式進度條；右側：預覽 / 匯出 PDF) -->
@@ -5073,6 +5537,12 @@ function clearCurrentTabInputs(scope) {
   } else if (_pendingClearTabScope === "workflow") {
     if (titleEl) titleEl.textContent = "確認清除「離場核對」？";
     if (descEl) descEl.textContent = "此操作僅清空本分頁的勾選項目及數量，不會影響客戶資料及其他分頁。確定清除？";
+  } else if (_pendingClearTabScope === "invoice_package") {
+    if (titleEl) titleEl.textContent = "確認清除「服務套餐」？";
+    if (descEl) descEl.textContent = "此操作僅重置本分頁的方案、服務期及年期設定，不會影響客戶資料及其他分頁。確定清除？";
+  } else if (_pendingClearTabScope === "invoice_totals") {
+    if (titleEl) titleEl.textContent = "確認清除「增值及總額」？";
+    if (descEl) descEl.textContent = "此操作僅重置本分頁的增值服務、預繳款項及其他金額，不會影響客戶資料及服務套餐。確定清除？";
   }
   document.getElementById("confirmClearModal").classList.add("active");
 }
@@ -5128,6 +5598,42 @@ function executeClearAllFormInputs() {
     updateWorkflowStatusUI();
     performAutoSave();
     showToast("✓ 已清除「離場核對」本頁資料！");
+  } else if (scope === "invoice_package") {
+    const today = new Date();
+    const todayIso = today.toISOString().split("T")[0];
+    const nextYear = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate() - 1);
+    const pStart = document.getElementById("invPeriodStartPicker");
+    const pStartTxt = document.getElementById("invPeriodStartText");
+    const pEnd = document.getElementById("invPeriodEndPicker");
+    const pEndTxt = document.getElementById("invPeriodEndText");
+    if (pStart) pStart.value = todayIso;
+    if (pStartTxt) pStartTxt.value = formatEnglishShortDate(today);
+    if (pEnd) pEnd.value = nextYear.toISOString().split("T")[0];
+    if (pEndTxt) pEndTxt.value = formatEnglishShortDate(nextYear);
+    const qtyEl = document.getElementById("invPkgQty");
+    const yrsEl = document.getElementById("invPkgYears");
+    if (qtyEl) qtyEl.value = "1";
+    if (yrsEl) yrsEl.value = "1";
+    selectInvoicePackage("essential", true);
+    scheduleInvoiceAutoSave();
+    showToast("✓ 已清除「服務套餐」本頁資料！");
+  } else if (scope === "invoice_totals") {
+    resetInvoiceAddonsState();
+    const advDesc = document.getElementById("invAdvDesc");
+    const advQty = document.getElementById("invAdvQty");
+    const advPrice = document.getElementById("invAdvPrice");
+    const otherDesc = document.getElementById("invOtherDesc");
+    const otherAmt = document.getElementById("invOtherAmount");
+    const curEl = document.getElementById("invCurrency");
+    if (advDesc) advDesc.value = "Miscellaneous Fees 水電及其他雜費";
+    if (advQty) advQty.value = "1";
+    if (advPrice) advPrice.value = "500";
+    if (otherDesc) otherDesc.value = "";
+    if (otherAmt) otherAmt.value = "0";
+    if (curEl) curEl.value = "HKD";
+    recalculateInvoiceTotals();
+    scheduleInvoiceAutoSave();
+    showToast("✓ 已清除「增值及總額」本頁資料！");
   }
 }
 
@@ -6997,9 +7503,7 @@ function clearSignature() {
 // ================= 生成 100% 還原 Canva 原裝 Logo 與版面 =================
 function buildHeaderHTML() {
   return `
-    <div>
-      <img class="exact-logo-img" src="${EXACT_COMPANY_LOGO}" alt="Manity PROPERTY CARE">
-    </div>
+    <img class="exact-logo-img" src="${EXACT_COMPANY_LOGO}" alt="Manity PROPERTY CARE">
     <div class="rpt-title">Condo Inspection Report</div>
   `;
 }
@@ -7089,9 +7593,9 @@ function buildMetaHTML() {
         <span class="meta-zh-r">檢查次數</span>
         <span class="meta-colon">:</span>
         <span class="meta-insp-val" style="padding-left:1.5mm;">${inspNo}</span>
-        <span style="font-weight:600; color:#111; margin:0 1mm;">of Total</span>
+        <span style="font-weight:500; color:#333; margin:0 1mm;">of Total</span>
         <span class="meta-insp-val">${inspTotal}</span>
-        <span style="margin-left:2.2mm; font-weight:600; color:#111;">Date 到訪日</span>
+        <span style="margin-left:2.2mm; font-weight:500; color:#333;">Date 到訪日</span>
         <span style="width:1.8mm; text-align:left; padding-left:0.4mm; font-weight:600; color:#111; flex-shrink:0;">:</span>
         <span style="font-weight:600; color:#111; padding-left:0.8mm;">${fmtDate}</span>
       </div>
@@ -7346,7 +7850,51 @@ function fitA4PreviewToScreen(resetZoom = false) {
   });
 }
 
+function buildInvoiceExportFilename() {
+  const data = collectCurrentInvoiceData();
+  let ref = (data.refNo || "").trim();
+  if (ref && !/^c/i.test(ref)) {
+    ref = "C" + ref;
+  } else if (ref) {
+    ref = "C" + ref.slice(1);
+  } else {
+    ref = "C000";
+  }
+  ref = ref.replace(/[\\/:*?"<>|]/g, "-");
+
+  const fullName = [data.custTitle, data.custName].filter(Boolean).join("_").replace(/[\\/:*?"<>|\s]+/g, "_").replace(/^_+|_+$/g, "") || "Client";
+  const rawDate = (data.invDate || "").trim();
+  let datePart = "";
+  if (/^\d{4}-\d{2}-\d{2}$/.test(rawDate)) {
+    datePart = rawDate.replace(/-/g, "");
+  } else if (/^\d{2}\/\d{2}\/\d{4}$/.test(rawDate)) {
+    const p = rawDate.split("/");
+    datePart = `${p[2]}${p[1]}${p[0]}`;
+  } else {
+    datePart = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+  }
+  return `${ref}_${fullName}_${datePart}_Invoice`;
+}
+
 function resetA4PreviewScaleForPrint() {
+  if (_isInvoicePreviewMode) {
+    [1, 2, 3].forEach(num => {
+      const slot = document.getElementById(`slot-page-${num}`);
+      if (slot) slot.style.display = "none";
+    });
+    const invSlot = document.getElementById("slot-invoice-page");
+    const invPage = document.getElementById("a4-invoice-page");
+    if (invSlot && invPage) {
+      invSlot.style.display = "block";
+      invPage.style.transform = "none";
+      invSlot.style.width = "210mm";
+      invSlot.style.height = "296.5mm";
+    }
+    return;
+  }
+  const invSlotHide = document.getElementById("slot-invoice-page");
+  if (invSlotHide) invSlotHide.style.display = "none";
+
   const showP3 = _previewOnlyPage3 || !!document.getElementById("includePage3")?.checked;
   [1, 2, 3].forEach(num => {
     const slot = document.getElementById(`slot-page-${num}`);
@@ -7461,7 +8009,9 @@ function isDesktopBrowserEnv() {
 }
 
 function triggerNativeBrowserPrintPDF() {
-  const cleanTitle = buildExportPdfFilename() + (_previewOnlyPage3 ? "_Internal_Workflow" : "");
+  const cleanTitle = _isInvoicePreviewMode
+    ? buildInvoiceExportFilename()
+    : (buildExportPdfFilename() + (_previewOnlyPage3 ? "_Internal_Workflow" : ""));
   document.title = cleanTitle;
   resetA4PreviewScaleForPrint();
   showToast("請於列印視窗選擇「另存為 PDF」（建議勾選「背景圖形」）");
@@ -7691,21 +8241,21 @@ async function generateMobileVectorPdfBlob(onlyPage3 = false) {
   const fmtDate = rawDate ? rawDate.split("-").reverse().join("/") : "";
   const showP3 = !!document.getElementById("includePage3")?.checked;
 
-  // 繪製共用頁首與客戶資料欄（第 1、2、3 頁完全一致）
+  // 繪製共用頁首與客戶資料欄（第 1、2、3 頁完全一致，Logo 比例與位置與 Invoice 完全統一）
   const drawPageHeaderAndMeta = (pageNum) => {
-    // Logo + 標題
+    // Logo + 標題（嚴格鎖定原圖 808:209 比例：高 14.8mm × 寬 57.22mm，與 Invoice 100% 一致）
     try {
-      doc.addImage(EXACT_COMPANY_LOGO, "PNG", marginL, 8.5, 52, 15);
+      doc.addImage(EXACT_COMPANY_LOGO, "PNG", marginL, 8.5, 57.22, 14.8);
     } catch (e) {}
     doc.setFont("helvetica", "bold");
     doc.setFontSize(16.5);
     doc.setTextColor(43, 46, 52);
-    doc.text("Condo Inspection Report", pageW - marginR, 22, { align: "right" });
+    doc.text("Condo Inspection Report", pageW - marginR, 22.3, { align: "right" });
 
     // 金色分隔線
-    doc.setDrawColor(182, 154, 88);
-    doc.setLineWidth(0.45);
-    doc.line(marginL, 25.5, pageW - marginR, 25.5);
+    doc.setDrawColor(189, 171, 125);
+    doc.setLineWidth(0.35);
+    doc.line(marginL, 25.8, pageW - marginR, 25.8);
 
     // 客戶資訊網格 (左右兩欄每行間距精準對齊 rowH = 4.8mm，Address 第 2 行與右欄第 4 行完全水平對齊)
     const leftX = marginL + 2;
@@ -8297,6 +8847,8 @@ function togglePreview(show, bypassWarning = false, onlyPage3 = false) {
       document.getElementById("homeScreen").style.display = "none";
       document.getElementById("editorContainer").style.display = "none";
       document.getElementById("mainTabs").style.display = "none";
+      const invTabs = document.getElementById("invoiceTabs");
+      if (invTabs) invTabs.style.display = "flex";
       document.getElementById("editorBottomBar").style.display = "none";
       const invEd = document.getElementById("invoiceEditorContainer");
       if (invEd) invEd.style.display = "block";
@@ -8684,6 +9236,115 @@ function handleRestoreJsonFileSelected(event) {
 // ================= 新客戶發票 (Invoice) 完整系統邏輯 (v138 First Stage) =================
 const INVOICES_STORAGE_KEY = "manity_invoices_db_v1";
 let _isInvoicePreviewMode = false;
+const INVOICE_ADDON_CATALOG = [
+  { key: "bed_linen", en: "Bed Linen Laundry", zh: "床品四件套清潔", price: 468 },
+  { key: "upholstery", en: "Upholstery & Fabric Cleaning", zh: "布藝清潔", price: 468 },
+  { key: "pest_control", en: "Pest Control", zh: "除蟲服務", price: 1288 },
+  { key: "room_cleaning", en: "Room Cleaning", zh: "房間清潔", price: 688 },
+  { key: "ac_cleaning", en: "Air Conditioner Cleaning", zh: "冷氣清潔", price: 388 },
+  { key: "washer_cleaning", en: "Washing Machine Cleaning", zh: "洗衣機清潔", price: 388 }
+];
+
+let _invAddonSelections = {}; // { key: qty }
+
+function resetInvoiceAddonsState() {
+  _invAddonSelections = {};
+  renderInvoiceAddonCatalog();
+}
+
+function setInvoiceAddonsNil() {
+  _invAddonSelections = {};
+  renderInvoiceAddonCatalog();
+  recalculateInvoiceTotals();
+  scheduleInvoiceAutoSave();
+}
+
+function toggleInvoiceAddonItem(key) {
+  const curQty = Number(_invAddonSelections[key] || 0);
+  if (curQty > 0) {
+    delete _invAddonSelections[key];
+  } else {
+    _invAddonSelections[key] = 1;
+  }
+  renderInvoiceAddonCatalog();
+  recalculateInvoiceTotals();
+  scheduleInvoiceAutoSave();
+}
+
+function adjustInvoiceAddonQty(key, delta, e) {
+  if (e) e.stopPropagation();
+  const curQty = Number(_invAddonSelections[key] || 0);
+  const nextQty = Math.max(0, curQty + delta);
+  if (nextQty <= 0) {
+    delete _invAddonSelections[key];
+  } else {
+    _invAddonSelections[key] = nextQty;
+  }
+  renderInvoiceAddonCatalog();
+  recalculateInvoiceTotals();
+  scheduleInvoiceAutoSave();
+}
+
+function getSelectedInvoiceAddonsList() {
+  const list = [];
+  INVOICE_ADDON_CATALOG.forEach(item => {
+    const qty = Math.max(0, Number(_invAddonSelections[item.key] || 0));
+    if (qty > 0) {
+      list.push({
+        key: item.key,
+        en: item.en,
+        zh: item.zh,
+        qty: qty,
+        price: item.price,
+        total: qty * item.price
+      });
+    }
+  });
+  return list;
+}
+
+function renderInvoiceAddonCatalog() {
+  const container = document.getElementById("invAddonCatalogContainer");
+  if (!container) return;
+  const cur = document.getElementById("invCurrency")?.value || "HKD";
+
+  container.innerHTML = INVOICE_ADDON_CATALOG.map(item => {
+    const qty = Math.max(0, Number(_invAddonSelections[item.key] || 0));
+    const isSel = qty > 0;
+    return `
+      <div class="addon-item-card ${isSel ? "selected" : ""}">
+        <div class="addon-item-main" onclick="toggleInvoiceAddonItem('${item.key}')">
+          <div class="addon-item-info">
+            <span class="addon-item-title" title="${item.en} ${item.zh}">${item.en} ${item.zh}</span>
+            <span class="addon-item-sub">$${formatMoneyCommas(item.price)}</span>
+          </div>
+        </div>
+        <div class="addon-qty-stepper">
+          <button type="button" class="addon-step-btn" ${!isSel ? "disabled" : ""} onclick="adjustInvoiceAddonQty('${item.key}', -1, event)">−</button>
+          <span class="addon-qty-val">${qty}</span>
+          <button type="button" class="addon-step-btn" onclick="adjustInvoiceAddonQty('${item.key}', 1, event)">＋</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  const selected = getSelectedInvoiceAddonsList();
+  const nilBtn = document.getElementById("invAddonNilBtn");
+  if (nilBtn) {
+    if (selected.length === 0) {
+      nilBtn.style.background = "var(--navy)";
+      nilBtn.style.color = "#fff";
+      nilBtn.style.borderColor = "var(--navy)";
+      nilBtn.textContent = "✓ Nil (不需增值)";
+    } else {
+      nilBtn.style.background = "#fff";
+      nilBtn.style.color = "#64748B";
+      nilBtn.style.borderColor = "#CBD5E1";
+      nilBtn.textContent = "重設為 Nil";
+    }
+  }
+}
+
 let _currentInvoiceId = "";
 let _currentInvoicePkgKey = "essential";
 let _invCustSigDataUrl = "";
@@ -8804,10 +9465,48 @@ function switchHomeListMode(mode) {
   }
 }
 
+let _currentInvoiceTabIdx = 0;
+
+function switchInvoiceTab(idx) {
+  _currentInvoiceTabIdx = idx;
+  document.querySelectorAll(".inv-tab-btn").forEach((b, i) => b.classList.toggle("active", i === idx));
+  document.querySelectorAll(".inv-tab-panel").forEach((p, i) => p.classList.toggle("active", i === idx));
+  if (idx === 3) {
+    initInvoiceSignaturePads();
+    setTimeout(() => {
+      if (typeof _resizeInvCanvasRole === "function") {
+        _resizeInvCanvasRole("cust");
+        _resizeInvCanvasRole("auth");
+      }
+    }, 30);
+  }
+  window.scrollTo(0, 0);
+}
+
+function goToInvoicePackageStep() {
+  saveCurrentInvoiceRecord(true);
+  showToast("✓ 已儲存客戶資料");
+  switchInvoiceTab(1);
+}
+
+function goToInvoiceTotalsStep() {
+  saveCurrentInvoiceRecord(true);
+  showToast("✓ 已儲存服務套餐");
+  switchInvoiceTab(2);
+}
+
+function goToInvoiceSignStep() {
+  saveCurrentInvoiceRecord(true);
+  showToast("✓ 已儲存金額明細");
+  switchInvoiceTab(3);
+}
+
 function openInvoiceEditor() {
   document.getElementById("homeScreen").style.display = "none";
   document.getElementById("editorContainer").style.display = "none";
   document.getElementById("mainTabs").style.display = "none";
+  const invTabs = document.getElementById("invoiceTabs");
+  if (invTabs) invTabs.style.display = "flex";
   document.getElementById("editorBottomBar").style.display = "none";
   document.getElementById("print-preview-wrapper").classList.remove("active");
   const invEd = document.getElementById("invoiceEditorContainer");
@@ -8816,8 +9515,11 @@ function openInvoiceEditor() {
   if (actRow) actRow.classList.add("active");
   const lockBtn = document.getElementById("btnTopLockToggle");
   const delBtn = document.getElementById("btnTopDeletePage");
+  const delInvBtn = document.getElementById("btnTopDeleteInvoice");
   if (lockBtn) lockBtn.style.display = "none";
   if (delBtn) delBtn.style.display = "none";
+  if (delInvBtn) delInvBtn.style.display = "inline-flex";
+  switchInvoiceTab(0);
   initInvoiceSignaturePads();
   window.scrollTo(0, 0);
 }
@@ -8825,20 +9527,53 @@ function openInvoiceEditor() {
 function restoreTopbarReportButtons() {
   const lockBtn = document.getElementById("btnTopLockToggle");
   const delBtn = document.getElementById("btnTopDeletePage");
+  const delInvBtn = document.getElementById("btnTopDeleteInvoice");
   if (lockBtn) lockBtn.style.display = "inline-flex";
   if (delBtn) delBtn.style.display = "inline-flex";
+  if (delInvBtn) delInvBtn.style.display = "none";
+}
+
+function deleteCurrentInvoicePage() {
+  const ref = (document.getElementById("invRefNo")?.value || "").trim();
+  const custName = (document.getElementById("invCustName")?.value || "").trim();
+  const label = ref ? `[${ref}]${custName ? " " + custName : ""}` : (custName || "目前這張發票");
+
+  requireAdminPwd(
+    "刪除發票紀錄驗證",
+    `確定要永久刪除 ${label} 的發票紀錄嗎？刪除後主頁將不再保留此發票紀錄。請輸入管理員密碼確認：`,
+    async () => {
+      if (_currentInvoiceId) {
+        const db = getInvoicesDb();
+        if (db[_currentInvoiceId]) {
+          delete db[_currentInvoiceId];
+          setInvoicesDb(db);
+        }
+        if (fbDb) {
+          try { await fbDb.collection("invoices").doc(encodeFbId(_currentInvoiceId)).delete(); } catch (err) {}
+        }
+      }
+      resetInvoiceForm(false);
+      showToast("🗑️ 已刪除發票紀錄");
+      goHome();
+      switchHomeListMode("invoices");
+    }
+  );
 }
 
 const _origOpenEditor = openEditor;
 openEditor = function() {
   const invEd = document.getElementById("invoiceEditorContainer");
   if (invEd) invEd.style.display = "none";
+  const invTabs = document.getElementById("invoiceTabs");
+  if (invTabs) invTabs.style.display = "none";
   restoreTopbarReportButtons();
   _origOpenEditor();
 };
 
 const _origGoHome = goHome;
 goHome = function() {
+  const invTabs = document.getElementById("invoiceTabs");
+  if (invTabs) invTabs.style.display = "none";
   restoreTopbarReportButtons();
   _origGoHome();
 };
@@ -8848,45 +9583,255 @@ function startNewInvoiceFromHome() {
   resetInvoiceForm(false);
 }
 
+function openInvHeaderDatePicker(e) {
+  const inp = document.getElementById("invDatePicker");
+  if (!inp) return;
+  if (typeof inp.showPicker === "function") {
+    try { inp.showPicker(); } catch (err) {}
+  }
+}
+
+function formatDMYFromISO(isoStr) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(isoStr || "").trim());
+  if (!m) return "";
+  return `${m[3]}/${m[2]}/${m[1]}`;
+}
+
+function formatEnglishShortFromISOorDMY(val) {
+  const s = String(val || "").trim();
+  if (!s) return "";
+  let iso = parseDMYToISO(s);
+  if (!iso && /^\d{4}-\d{2}-\d{2}$/.test(s)) iso = s;
+  if (iso) {
+    const d = new Date(iso + "T00:00:00");
+    if (!isNaN(d)) return formatEnglishShortDate(d);
+  }
+  return s;
+}
+
+function handleInvDMYTextInput(el) {
+  const raw = (el.value || "").replace(/[^\d/]/g, "");
+  let formatted = "";
+  if (raw.includes("/")) {
+    const parts = raw.split("/");
+    let dPart = (parts[0] || "").replace(/\D/g, "").slice(0, 2);
+    let mPart = (parts[1] || "").replace(/\D/g, "").slice(0, 2);
+    let yPart = (parts[2] || "").replace(/\D/g, "").slice(0, 4);
+    if (parts.length >= 2 && dPart.length === 1) dPart = "0" + dPart;
+    if (parts.length >= 3 && mPart.length === 1 && parseInt(mPart, 10) >= 1) mPart = "0" + mPart;
+    if (mPart.length === 1 && parseInt(mPart, 10) >= 2) mPart = "0" + mPart;
+    formatted = (parts.length >= 3 || yPart.length > 0) ? `${dPart}/${mPart}/${yPart}` : `${dPart}/${mPart}`;
+  } else {
+    let digits = raw.replace(/\D/g, "").slice(0, 8);
+    if (digits.length >= 3) {
+      const dd = digits.slice(0, 2);
+      const m1 = parseInt(digits[2], 10);
+      if (m1 >= 2) {
+        digits = (dd + "0" + digits.slice(2)).slice(0, 8);
+      }
+    }
+    if (digits.length > 4) formatted = `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`;
+    else if (digits.length > 2) formatted = `${digits.slice(0, 2)}/${digits.slice(2)}`;
+    else formatted = digits;
+  }
+  el.value = formatted;
+
+  const iso = parseDMYToISO(formatted);
+  const picker = document.getElementById("invDatePicker");
+  if (picker) picker.value = iso;
+  if (iso) {
+    const engDate = formatEnglishShortFromISOorDMY(iso);
+    const custSignDateEl = document.getElementById("invCustSignDate");
+    const authSignDateEl = document.getElementById("invAuthSignDate");
+    if (custSignDateEl && !custSignDateEl.dataset.manualEdited) custSignDateEl.value = engDate;
+    if (authSignDateEl && !authSignDateEl.dataset.manualEdited) authSignDateEl.value = engDate.replace(/\s+/g, "-");
+  }
+  updateInvoiceFieldHighlights();
+  scheduleInvoiceAutoSave();
+}
+
+function handleInvRefNoInput(el) {
+  if (!el) return;
+  const val = el.value || "";
+  if (val.includes("c")) {
+    const pos = el.selectionStart;
+    el.value = val.replace(/c/g, "C");
+    if (typeof pos === "number") {
+      try { el.setSelectionRange(pos, pos); } catch (e) {}
+    }
+  }
+  updateInvoiceFieldHighlights();
+  scheduleInvoiceAutoSave();
+}
+
+function handleInvEmailInput() {
+  updateInvoiceFieldHighlights();
+  scheduleInvoiceAutoSave();
+}
+
+function handleInvEmailBlur() {
+  const emailEl = document.getElementById("invCustEmail");
+  if (emailEl) emailEl.value = emailEl.value.trim();
+  updateInvoiceFieldHighlights();
+  scheduleInvoiceAutoSave();
+}
+
+function updateInvEmailTypoBanner() {
+  const emailEl = document.getElementById("invCustEmail");
+  const banner = document.getElementById("invEmailTypoBanner");
+  if (!emailEl || !banner) return;
+  const val = String(emailEl.value || "").trim();
+  if (!val) {
+    banner.style.display = "none";
+    banner.innerHTML = "";
+    return;
+  }
+  const typo = detectEmailTypoSuggestion(val);
+  if (typo) {
+    banner.style.display = "block";
+    banner.style.background = "#FFFBEB";
+    banner.style.borderColor = "#F59E0B";
+    banner.style.color = "#92400E";
+    banner.innerHTML = `💡 提示：電郵網域 <strong>@${typo.typedDomain}</strong> 可能有誤，是否更正為 <strong>${typo.suggested}</strong>？ <button type="button" style="margin-top:4px; border:none; background:#D97706; color:#fff; font-weight:700; font-size:11.5px; padding:3px 9px; border-radius:5px; cursor:pointer;" onclick="applySuggestedInvEmail('${typo.suggested.replace(/'/g, "\'")}')">一鍵修正為 ${typo.suggested}</button>`;
+  } else {
+    banner.style.display = "none";
+    banner.innerHTML = "";
+  }
+}
+
+function applySuggestedInvEmail(newEmail) {
+  const emailEl = document.getElementById("invCustEmail");
+  if (!emailEl) return;
+  emailEl.value = newEmail;
+  updateInvoiceFieldHighlights();
+  scheduleInvoiceAutoSave();
+  showToast(`✓ 已修正電郵為 ${newEmail}`);
+}
+
+function handleInvPhoneBlur(el) {
+  if (!el) return;
+  const formatted = formatSmartContactPhone(el.value);
+  if (formatted && formatted !== el.value) {
+    el.value = formatted;
+  }
+  updateInvoiceFieldHighlights();
+  scheduleInvoiceAutoSave();
+}
+
+function handleInvFloorNoBlur(el) {
+  if (!el) return;
+  const formatted = formatSmartFloorNo(el.value);
+  if (formatted !== el.value) {
+    el.value = formatted;
+  }
+  updateInvoiceFieldHighlights();
+  scheduleInvoiceAutoSave();
+}
+
+function updateInvoiceFieldHighlights() {
+  const dateVal = (document.getElementById("invDateDisplay")?.value || "").trim();
+  const dateIso = parseDMYToISO(dateVal);
+  const pill = document.getElementById("invDateHeaderPill");
+  if (pill) pill.classList.toggle("field-pending-yellow", !dateIso && !dateVal);
+
+  const reqIds = ["invRefNo", "invIssuer", "invCustTitle", "invCustName", "invCustEmail", "invCustPhone", "invRoomNo", "invAddress"];
+  reqIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const v = String(el.value || "").trim();
+    let isMissing = !v;
+    if (!isMissing && id === "invCustEmail" && !isValidEmailFormat(v)) {
+      isMissing = true;
+    }
+    el.classList.toggle("field-pending-yellow", isMissing);
+  });
+
+  updateInvEmailTypoBanner();
+
+  // 更新新客戶發票 4 欄燈號狀態
+  let custMissing = 0;
+  if (!dateIso && !dateVal) custMissing++;
+  reqIds.forEach(id => {
+    const el = document.getElementById(id);
+    const v = el ? String(el.value || "").trim() : "";
+    if (!v || (id === "invCustEmail" && !isValidEmailFormat(v))) custMissing++;
+  });
+  const lamp0 = document.getElementById("invTabLamp0");
+  if (lamp0) lamp0.className = "lamp-dot " + (custMissing === 0 ? "green" : "red");
+
+  const pkgOk = !!(document.getElementById("invPeriodStartText")?.value || "").trim() && !!(document.getElementById("invPeriodEndText")?.value || "").trim();
+  const lamp1 = document.getElementById("invTabLamp1");
+  if (lamp1) lamp1.className = "lamp-dot " + (pkgOk ? "green" : "red");
+
+  const lamp2 = document.getElementById("invTabLamp2");
+  if (lamp2) lamp2.className = "lamp-dot green";
+
+  const signOk = !!_invCustSigDataUrl && !!_invAuthSigDataUrl;
+  const lamp3 = document.getElementById("invTabLamp3");
+  if (lamp3) lamp3.className = "lamp-dot " + (signOk ? "green" : "red");
+}
+
 function resetInvoiceForm(showNotify) {
   _currentInvoiceId = "INV_" + Date.now();
   const today = new Date();
-  const todayStr = formatEnglishShortDate(today);
+  const todayIso = today.toISOString().split("T")[0];
+  const todayDmy = formatDMYFromISO(todayIso);
+  const todayEng = formatEnglishShortDate(today);
   const nextYear = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate() - 1);
 
   document.getElementById("invRefNo").value = "";
-  document.getElementById("invDatePicker").value = today.toISOString().split("T")[0];
-  document.getElementById("invDateDisplay").value = todayStr;
+  document.getElementById("invDatePicker").value = todayIso;
+  document.getElementById("invDateDisplay").value = todayDmy;
   document.getElementById("invCustTitle").value = "";
   document.getElementById("invCustName").value = "";
-  document.getElementById("invCustPhone").value = "+852 ";
+  document.getElementById("invCustPhone").value = "";
   document.getElementById("invCustEmail").value = "";
+  if (document.getElementById("invRoomNo")) document.getElementById("invRoomNo").value = "";
+  if (document.getElementById("invFloorNo")) document.getElementById("invFloorNo").value = "";
   document.getElementById("invAddress").value = "";
   document.getElementById("invIssuer").value = "Ms Namthip";
 
-  document.getElementById("invPeriodStartPicker").value = today.toISOString().split("T")[0];
-  document.getElementById("invPeriodStartText").value = todayStr;
+  document.getElementById("invPeriodStartPicker").value = todayIso;
+  document.getElementById("invPeriodStartText").value = todayEng;
   document.getElementById("invPeriodEndPicker").value = nextYear.toISOString().split("T")[0];
   document.getElementById("invPeriodEndText").value = formatEnglishShortDate(nextYear);
 
   document.getElementById("invPkgQty").value = "1";
+  if (document.getElementById("invPkgYears")) document.getElementById("invPkgYears").value = "1";
+  window._invLegacyAddonActive = false;
+  resetInvoiceAddonsState();
   document.getElementById("invAddonDesc").value = "Nil";
   document.getElementById("invAddonQty").value = "0";
   document.getElementById("invAddonPrice").value = "0";
   document.getElementById("invAdvDesc").value = "Miscellaneous Fees 水電及其他雜費";
   document.getElementById("invAdvQty").value = "1";
   document.getElementById("invAdvPrice").value = "500";
+  const resetOtherDesc = document.getElementById("invOtherDesc");
+  if (resetOtherDesc) resetOtherDesc.value = "";
   document.getElementById("invOtherAmount").value = "0";
   document.getElementById("invCurrency").value = "HKD";
 
-  document.getElementById("invCustSignName").value = "";
-  document.getElementById("invCustSignDate").value = todayStr;
+  const custSignNameEl = document.getElementById("invCustSignName");
+  if (custSignNameEl) {
+    delete custSignNameEl.dataset.manualEdited;
+    custSignNameEl.value = "";
+  }
+  const custSignDateEl = document.getElementById("invCustSignDate");
+  if (custSignDateEl) {
+    delete custSignDateEl.dataset.manualEdited;
+    custSignDateEl.value = todayEng;
+  }
+  const authSignDateEl = document.getElementById("invAuthSignDate");
+  if (authSignDateEl) {
+    delete authSignDateEl.dataset.manualEdited;
+    authSignDateEl.value = todayEng.replace(/\s+/g, "-");
+  }
   document.getElementById("invAuthSignName").value = "Ms Namthip";
-  document.getElementById("invAuthSignDate").value = todayStr.replace(/\s+/g, "-");
 
   clearInvSignature("cust", true);
   clearInvSignature("auth", true);
   selectInvoicePackage("essential", true);
+  updateInvoiceFieldHighlights();
   if (showNotify) showToast("✓ 已清空新客戶發票表單");
 }
 
@@ -8904,25 +9849,265 @@ function selectInvoicePackage(pkgKey, skipSave) {
   const cur = document.getElementById("invCurrency")?.value || "HKD";
   if (badge) badge.textContent = `${formatMoneyCommas(pkg.price)} ${cur}`;
 
+  const zhSuffix = (pkg.programName || "").split(" ").pop() || "";
   const previewBox = document.getElementById("invPkgContentsPreview");
   if (previewBox) {
-    previewBox.innerHTML = `<div style="font-weight:800; color:var(--navy); margin-bottom:4px;">${pkg.titleLine} 服務內容：</div>` +
-      pkg.items.map(it => `<div class="inv-content-row"><span>${it.en} <span style="color:#64748B;">${it.zh}</span></span><strong style="color:var(--navy);">${it.freq || "✓"}</strong></div>`).join("");
+    previewBox.innerHTML =
+      `<div style="display:flex; justify-content:space-between; align-items:center; gap:6px; padding-bottom:7px; margin-bottom:7px; border-bottom:1.5px solid #E5D4A8;">` +
+        `<div style="font-weight:800; font-size:13.5px; color:var(--navy); line-height:1.25;">${pkg.titleLine.replace(/^Package\s*-\s*/i, "")} <span style="color:#8C6D23;">${zhSuffix}</span></div>` +
+        `<span style="display:inline-flex; align-items:center; gap:3px; padding:2.5px 9px; border-radius:999px; background:var(--navy); color:#F3E7CA; font-size:11px; font-weight:700; letter-spacing:0.6px; flex-shrink:0; box-shadow:0 1px 3px rgba(30,50,80,0.16);">✦ 服務內容</span>` +
+      `</div>` +
+      pkg.items.map(it => `<div class="inv-content-row" style="padding:3.5px 0; font-size:12.5px;"><span>${it.en} <span style="color:#64748B;">${it.zh}</span></span><strong style="color:var(--navy);">${it.freq || "✓"}</strong></div>`).join("");
   }
 
   recalculateInvoiceTotals();
   if (!skipSave) scheduleInvoiceAutoSave();
 }
 
+function parseFlexibleEnglishOrIsoDate(str) {
+  const s = String(str || "").trim();
+  if (!s) return null;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) {
+    const d = new Date(s + "T00:00:00");
+    return isNaN(d) ? null : d;
+  }
+  const dmy = s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})$/);
+  if (dmy) {
+    const d = new Date(Number(dmy[3]), Number(dmy[2]) - 1, Number(dmy[1]));
+    return isNaN(d) ? null : d;
+  }
+  const months = { jan:0, feb:1, mar:2, apr:3, may:4, jun:5, jul:6, aug:7, sep:8, oct:9, nov:10, dec:11 };
+  const eng = s.match(/^(\d{1,2})\s+([a-zA-Z]{3,})\s+(\d{4})$/);
+  if (eng) {
+    const mIdx = months[eng[2].slice(0, 3).toLowerCase()];
+    if (mIdx !== undefined) {
+      const d = new Date(Number(eng[3]), mIdx, Number(eng[1]));
+      return isNaN(d) ? null : d;
+    }
+  }
+  const fallback = new Date(s);
+  return isNaN(fallback) ? null : fallback;
+}
+
+function formatIsoLocal(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+function parseChineseNumberToken(tok) {
+  const s = String(tok || "").trim();
+  if (!s) return NaN;
+  const num = parseFloat(s);
+  if (isFinite(num)) return num;
+  const zhMap = { "零": 0, "一": 1, "二": 2, "兩": 2, "三": 3, "四": 4, "五": 5, "六": 6, "七": 7, "八": 8, "九": 9, "十": 10 };
+  if (s === "半") return 0.5;
+  if (s === "十") return 10;
+  if (s.startsWith("十") && s.length === 2 && zhMap[s[1]] !== undefined) return 10 + zhMap[s[1]];
+  if (s.endsWith("十") && s.length === 2 && zhMap[s[0]] !== undefined) return zhMap[s[0]] * 10;
+  if (s.length === 3 && s[1] === "十" && zhMap[s[0]] !== undefined && zhMap[s[2]] !== undefined) return zhMap[s[0]] * 10 + zhMap[s[2]];
+  if (zhMap[s] !== undefined) return zhMap[s];
+  return NaN;
+}
+
+// 解析多種年期輸入：例如 "2.5"、"1.25"、"2年6個月"、"1年15日"、"二年半"、"6個月"、"90日"
+function parseDurationSpec(rawVal) {
+  const s = String(rawVal || "").trim();
+  if (!s) return null;
+
+  // 1. 複合或帶單位中文/英文輸入（含 年/yr, 月/m, 日/天/d, 半）
+  if (/(年|月|日|天|半|yr|year|month|day)/i.test(s)) {
+    let years = 0, months = 0, days = 0, matched = false;
+    if (s === "半年") {
+      return { years: 0, months: 6, days: 0, qtyYears: 0.5 };
+    }
+    const yMatch = s.match(/([0-9.]+|[零一二兩三四五六七八九十]+)\s*(?:個?年|yrs?|years?)/i);
+    if (yMatch) {
+      const yv = parseChineseNumberToken(yMatch[1]);
+      if (!isNaN(yv)) {
+        const wY = Math.floor(yv);
+        const fY = yv - wY;
+        years += wY;
+        if (fY > 0) {
+          const totalFracMonths = fY * 12;
+          const wM = Math.floor(totalFracMonths + 1e-9);
+          const remD = Math.round((totalFracMonths - wM) * 30.4375);
+          months += wM;
+          days += remD;
+        }
+        matched = true;
+      }
+    }
+    if (/年半/.test(s)) {
+      months += 6;
+      matched = true;
+    }
+    const mMatch = s.match(/([0-9.]+|[零一二兩三四五六七八九十半]+)\s*(?:個月|月|mos?|months?)/i);
+    if (mMatch) {
+      const mv = parseChineseNumberToken(mMatch[1]);
+      if (!isNaN(mv)) {
+        const wM = Math.floor(mv);
+        const remD = Math.round((mv - wM) * 30.4375);
+        months += wM;
+        days += remD;
+        matched = true;
+      }
+    }
+    const dMatch = s.match(/([0-9.]+|[零一二兩三四五六七八九十]+)\s*(?:日|天|days?)/i);
+    if (dMatch) {
+      const dv = parseChineseNumberToken(dMatch[1]);
+      if (!isNaN(dv)) {
+        days += Math.round(dv);
+        matched = true;
+      }
+    }
+    if (matched && (years > 0 || months > 0 || days > 0)) {
+      const totalMonthsNorm = years * 12 + months;
+      const normY = Math.floor(totalMonthsNorm / 12);
+      const normM = totalMonthsNorm % 12;
+      const qty = Math.round((normY + normM / 12 + days / 365.25) * 10000) / 10000;
+      return { years: normY, months: normM, days, qtyYears: qty };
+    }
+  }
+
+  // 2. 純數字或小數點（如 2、2.5、1.25、0.5）-> 自動換算成精準幾多年幾多個月幾多日
+  const pureNum = parseChineseNumberToken(s);
+  if (!isNaN(pureNum) && pureNum > 0) {
+    const wholeY = Math.floor(pureNum);
+    const fracY = pureNum - wholeY;
+    const exactMonths = fracY * 12;
+    let wholeM = Math.floor(exactMonths + 1e-9);
+    let remDays = Math.round((exactMonths - wholeM) * 30.4375);
+    if (remDays >= 30) {
+      wholeM += 1;
+      remDays = 0;
+    }
+    const finalY = wholeY + Math.floor(wholeM / 12);
+    const finalM = wholeM % 12;
+    const cleanQty = Math.round(pureNum * 10000) / 10000;
+    return { years: finalY, months: finalM, days: remDays, qtyYears: cleanQty };
+  }
+
+  return null;
+}
+
+function addDurationSpecMinusOneDay(startDate, spec) {
+  return new Date(
+    startDate.getFullYear() + (spec.years || 0),
+    startDate.getMonth() + (spec.months || 0),
+    startDate.getDate() + (spec.days || 0) - 1
+  );
+}
+
+// 計算兩個日期之間的精準「幾多年 幾多個月 幾多日」（包含首尾兩日）
+function computeExactCalendarDiff(startDate, endDate) {
+  const inclusiveEnd = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate() + 1);
+  if (inclusiveEnd <= startDate) {
+    return { years: 0, months: 0, days: 0, qtyYears: 0 };
+  }
+  let years = inclusiveEnd.getFullYear() - startDate.getFullYear();
+  let months = inclusiveEnd.getMonth() - startDate.getMonth();
+  let days = inclusiveEnd.getDate() - startDate.getDate();
+
+  if (days < 0) {
+    months -= 1;
+    const prevMonthLastDay = new Date(inclusiveEnd.getFullYear(), inclusiveEnd.getMonth(), 0).getDate();
+    days += Math.max(prevMonthLastDay, startDate.getDate());
+  }
+  if (months < 0) {
+    years -= 1;
+    months += 12;
+  }
+
+  // 若剛好為整數月（例如 31 Jan -> 30 Apr 為 3 個月），修正月底天數差異
+  const anchorAfterYM = new Date(startDate.getFullYear() + years, startDate.getMonth() + months, startDate.getDate());
+  const exactRemDays = Math.round((inclusiveEnd - anchorAfterYM) / 86400000);
+  if (exactRemDays >= 0 && exactRemDays < 32) {
+    days = exactRemDays;
+  }
+
+  const qtyYears = Math.round((years + months / 12 + days / 365.25) * 10000) / 10000;
+  return { years, months, days, qtyYears };
+}
+
+function formatCleanYearsNumber(num) {
+  if (!isFinite(num) || num <= 0) return "1";
+  const rounded = Math.round(num * 100) / 100;
+  return String(rounded);
+}
+
+function updateDurationQtyHintUI(qtyYears) {
+  // Handled directly inside recalculateInvoiceTotals for the right-aligned subtotal bar
+}
+
+function syncInvoiceYearsFromPeriodTexts() {
+  const sDate = parseFlexibleEnglishOrIsoDate(document.getElementById("invPeriodStartText")?.value);
+  const eDate = parseFlexibleEnglishOrIsoDate(document.getElementById("invPeriodEndText")?.value);
+  const yearsEl = document.getElementById("invPkgYears");
+  if (!sDate || !eDate || !yearsEl) return;
+  const diff = computeExactCalendarDiff(sDate, eDate);
+  const cleanQtyStr = formatCleanYearsNumber(diff.qtyYears > 0 ? diff.qtyYears : 1);
+  yearsEl.value = cleanQtyStr;
+  const qtyEl = document.getElementById("invPkgQty");
+  if (qtyEl && diff.qtyYears > 0) {
+    qtyEl.value = String(diff.qtyYears);
+  }
+}
+
+function handleInvoiceYearsInput(el) {
+  const spec = parseDurationSpec(el.value);
+  if (spec && spec.qtyYears > 0) {
+    const startText = document.getElementById("invPeriodStartText")?.value || "";
+    let sDate = parseFlexibleEnglishOrIsoDate(startText);
+    if (!sDate) {
+      sDate = new Date();
+      document.getElementById("invPeriodStartPicker").value = formatIsoLocal(sDate);
+      document.getElementById("invPeriodStartText").value = formatEnglishShortDate(sDate);
+    }
+    const endD = addDurationSpecMinusOneDay(sDate, spec);
+    document.getElementById("invPeriodEndPicker").value = formatIsoLocal(endD);
+    document.getElementById("invPeriodEndText").value = formatEnglishShortDate(endD);
+    const qtyEl = document.getElementById("invPkgQty");
+    if (qtyEl) qtyEl.value = String(spec.qtyYears);
+    recalculateInvoiceTotals();
+    scheduleInvoiceAutoSave();
+  }
+}
+
+function handleInvoiceYearsBlur(el) {
+  const spec = parseDurationSpec(el.value);
+  if (spec && spec.qtyYears > 0) {
+    handleInvoiceYearsInput(el);
+    el.value = formatCleanYearsNumber(spec.qtyYears);
+  } else {
+    syncInvoiceYearsFromPeriodTexts();
+  }
+}
+
+function handleInvoicePeriodManualTextChange() {
+  const sDate = parseFlexibleEnglishOrIsoDate(document.getElementById("invPeriodStartText")?.value);
+  const eDate = parseFlexibleEnglishOrIsoDate(document.getElementById("invPeriodEndText")?.value);
+  if (sDate) document.getElementById("invPeriodStartPicker").value = formatIsoLocal(sDate);
+  if (eDate) document.getElementById("invPeriodEndPicker").value = formatIsoLocal(eDate);
+  syncInvoiceYearsFromPeriodTexts();
+  handleInvoiceFieldChange();
+}
+
 function handleInvoiceDatePicked(isoVal) {
   if (!isoVal) return;
   const d = new Date(isoVal + "T00:00:00");
-  const formatted = formatEnglishShortDate(d);
-  document.getElementById("invDateDisplay").value = formatted;
-  if (!document.getElementById("invCustSignDate").value.trim()) {
-    document.getElementById("invCustSignDate").value = formatted;
+  const engStr = formatEnglishShortDate(d);
+  document.getElementById("invDateDisplay").value = formatDMYFromISO(isoVal);
+  const custSignDateEl = document.getElementById("invCustSignDate");
+  const authSignDateEl = document.getElementById("invAuthSignDate");
+  if (custSignDateEl && !custSignDateEl.dataset.manualEdited) {
+    custSignDateEl.value = engStr;
   }
-  document.getElementById("invAuthSignDate").value = formatted.replace(/\s+/g, "-");
+  if (authSignDateEl && !authSignDateEl.dataset.manualEdited) {
+    authSignDateEl.value = engStr.replace(/\s+/g, "-");
+  }
+  updateInvoiceFieldHighlights();
   scheduleInvoiceAutoSave();
 }
 
@@ -8930,9 +10115,12 @@ function handleInvoicePeriodStartPicked(isoVal) {
   if (!isoVal) return;
   const d = new Date(isoVal + "T00:00:00");
   document.getElementById("invPeriodStartText").value = formatEnglishShortDate(d);
-  const endD = new Date(d.getFullYear() + 1, d.getMonth(), d.getDate() - 1);
-  document.getElementById("invPeriodEndPicker").value = endD.toISOString().split("T")[0];
+  const spec = parseDurationSpec(document.getElementById("invPkgYears")?.value || "1") || { years: 1, months: 0, days: 0, qtyYears: 1 };
+  const endD = addDurationSpecMinusOneDay(d, spec);
+  document.getElementById("invPeriodEndPicker").value = formatIsoLocal(endD);
   document.getElementById("invPeriodEndText").value = formatEnglishShortDate(endD);
+  syncInvoiceYearsFromPeriodTexts();
+  recalculateInvoiceTotals();
   scheduleInvoiceAutoSave();
 }
 
@@ -8940,7 +10128,18 @@ function handleInvoicePeriodEndPicked(isoVal) {
   if (!isoVal) return;
   const d = new Date(isoVal + "T00:00:00");
   document.getElementById("invPeriodEndText").value = formatEnglishShortDate(d);
+  syncInvoiceYearsFromPeriodTexts();
+  recalculateInvoiceTotals();
   scheduleInvoiceAutoSave();
+}
+
+function adjustInvoiceAdvQty(delta) {
+  const qtyEl = document.getElementById("invAdvQty");
+  if (!qtyEl) return;
+  const curQty = Math.max(0, Number(qtyEl.value || 0));
+  const nextQty = Math.max(0, curQty + delta);
+  qtyEl.value = String(nextQty);
+  handleInvoiceFieldChange();
 }
 
 function recalculateInvoiceTotals() {
@@ -8949,24 +10148,106 @@ function recalculateInvoiceTotals() {
   const pkgPrice = Math.max(0, Number(document.getElementById("invPkgPrice")?.value || 0));
   const pkgTotal = pkgQty * pkgPrice;
 
-  const addonQty = Math.max(0, Number(document.getElementById("invAddonQty")?.value || 0));
-  const addonPrice = Math.max(0, Number(document.getElementById("invAddonPrice")?.value || 0));
-  const addonTotal = addonQty * addonPrice;
+  const selectedAddons = getSelectedInvoiceAddonsList();
+  let addonQty = 0;
+  let addonPrice = 0;
+  let addonTotal = 0;
+  let addonDescStr = "Nil";
+
+  if (selectedAddons.length > 0) {
+    addonQty = selectedAddons.reduce((acc, it) => acc + it.qty, 0);
+    addonTotal = selectedAddons.reduce((acc, it) => acc + it.total, 0);
+    addonPrice = selectedAddons.length === 1 ? selectedAddons[0].price : addonTotal;
+    addonDescStr = selectedAddons.map(it => `${it.en} ${it.zh}${it.qty > 1 ? " x" + it.qty : ""}`).join(", ");
+  } else {
+    const legacyDesc = (document.getElementById("invAddonDesc")?.value || "").trim();
+    const legacyQty = Math.max(0, Number(document.getElementById("invAddonQty")?.value || 0));
+    const legacyPrice = Math.max(0, Number(document.getElementById("invAddonPrice")?.value || 0));
+    if (legacyDesc && legacyDesc.toLowerCase() !== "nil" && legacyQty > 0 && Object.keys(_invAddonSelections).length === 0 && window._invLegacyAddonActive) {
+      addonQty = legacyQty;
+      addonPrice = legacyPrice;
+      addonTotal = legacyQty * legacyPrice;
+      addonDescStr = legacyDesc;
+    }
+  }
+
+  const descHidden = document.getElementById("invAddonDesc");
+  const qtyHidden = document.getElementById("invAddonQty");
+  const priceHidden = document.getElementById("invAddonPrice");
+  if (descHidden) descHidden.value = addonDescStr;
+  if (qtyHidden) qtyHidden.value = String(addonQty);
+  if (priceHidden) priceHidden.value = String(addonPrice);
+
+  const sumLabelEl = document.getElementById("invAddonSummaryLabel");
+  const sumTotalEl = document.getElementById("invAddonSummaryTotal");
+  if (sumLabelEl) {
+    sumLabelEl.textContent = selectedAddons.length > 0
+      ? `已選 ${selectedAddons.length} 項服務 (共 ${addonQty} 次)`
+      : (addonTotal > 0 ? `已選增值服務 (${addonQty} 次)` : "已選增值服務：Nil (0 項)");
+  }
+  if (sumTotalEl) {
+    sumTotalEl.textContent = `${formatMoneyCommas(addonTotal)} ${cur}`;
+  }
 
   const advQty = Math.max(0, Number(document.getElementById("invAdvQty")?.value || 0));
   const advPrice = Math.max(0, Number(document.getElementById("invAdvPrice")?.value || 0));
   const advTotal = advQty * advPrice;
 
-  const otherAmt = Math.max(0, Number(document.getElementById("invOtherAmount")?.value || 0));
+  const advQtyDisp = document.getElementById("invAdvQtyDisplay");
+  if (advQtyDisp) advQtyDisp.textContent = String(advQty);
+  const advMinusBtn = document.getElementById("invAdvMinusBtn");
+  if (advMinusBtn) advMinusBtn.disabled = advQty <= 0;
+  const advSumLbl = document.getElementById("invAdvSummaryLabel");
+  const advSumTot = document.getElementById("invAdvSummaryTotal");
+  if (advSumLbl) advSumLbl.textContent = advQty > 0 ? `預繳款項小計 (${advQty} × $${formatMoneyCommas(advPrice)})` : "預繳款項小計：Nil (0 項)";
+  if (advSumTot) advSumTot.textContent = `${formatMoneyCommas(advTotal)} ${cur}`;
+
+  const rawOtherVal = Number(document.getElementById("invOtherAmount")?.value || 0);
+  const otherAmt = isNaN(rawOtherVal) ? 0 : rawOtherVal;
+
   const subtotal = pkgTotal + addonTotal + advTotal;
   const grandTotal = subtotal + otherAmt;
 
   const badge = document.getElementById("invPkgPriceBadge");
   if (badge) badge.textContent = `${formatMoneyCommas(pkgPrice)} ${cur}`;
 
-  document.getElementById("invSubtotalText").textContent = `${formatMoneyCommas(subtotal)} ${cur}`;
-  document.getElementById("invOtherText").textContent = `${formatMoneyCommas(otherAmt)} ${cur}`;
-  document.getElementById("invGrandTotalText").textContent = `${formatMoneyCommas(grandTotal)} ${cur}`;
+  const pkgBarTotalEl = document.getElementById("invPkgSubtotalBarText");
+  const pkgBarFormulaEl = document.getElementById("invPkgCalcFormulaText");
+  if (pkgBarTotalEl) pkgBarTotalEl.textContent = `${formatMoneyCommas(pkgTotal)} ${cur}`;
+  if (pkgBarFormulaEl) pkgBarFormulaEl.textContent = `套餐合計 (${formatCleanYearsNumber(pkgQty)} 年 × ${formatMoneyCommas(pkgPrice)})`;
+
+  const otherDescVal = (document.getElementById("invOtherDesc")?.value || "").trim();
+  const otherFormatted = otherAmt < 0 ? `-${formatMoneyCommas(Math.abs(otherAmt))} ${cur}` : `${formatMoneyCommas(otherAmt)} ${cur}`;
+
+  const otherSumLblEl = document.getElementById("invOtherSummaryLabel");
+  const otherSumTotEl = document.getElementById("invOtherSummaryTotal");
+  if (otherSumLblEl) {
+    otherSumLblEl.textContent = otherDescVal
+      ? `其他項目小計 (${otherDescVal})`
+      : (otherAmt !== 0 ? "其他項目小計" : "其他項目小計：Nil");
+  }
+  if (otherSumTotEl) {
+    otherSumTotEl.textContent = otherFormatted;
+    otherSumTotEl.style.color = otherAmt < 0 ? "#DC2626" : "var(--navy)";
+  }
+
+  const pkgFeeSumEl = document.getElementById("invPkgFeeSummaryText");
+  if (pkgFeeSumEl) {
+    pkgFeeSumEl.textContent = `${formatMoneyCommas(pkgTotal)} ${cur}`;
+  }
+
+  const addonAndAdvTotal = addonTotal + advTotal;
+  const addonAndAdvEl = document.getElementById("invAddonAndAdvSummaryText");
+  if (addonAndAdvEl) {
+    addonAndAdvEl.textContent = `${formatMoneyCommas(addonAndAdvTotal)} ${cur}`;
+  }
+
+  const otherTextEl = document.getElementById("invOtherText");
+  if (otherTextEl) {
+    otherTextEl.textContent = otherFormatted;
+    otherTextEl.style.color = otherAmt < 0 ? "#DC2626" : "var(--navy)";
+  }
+  document.getElementById("invGrandTotalText").textContent = `${grandTotal < 0 ? "-" : ""}${formatMoneyCommas(Math.abs(grandTotal))} ${cur}`;
 
   return { cur, pkgQty, pkgPrice, pkgTotal, addonQty, addonPrice, addonTotal, advQty, advPrice, advTotal, otherAmt, subtotal, grandTotal };
 }
@@ -8978,6 +10259,8 @@ function handleInvoiceFieldChange() {
   if (signNameEl && !signNameEl.dataset.manualEdited) {
     signNameEl.value = [title, name].filter(Boolean).join(" ");
   }
+  renderInvoiceAddonCatalog();
+  updateInvoiceFieldHighlights();
   recalculateInvoiceTotals();
   scheduleInvoiceAutoSave();
 }
@@ -8994,6 +10277,8 @@ function collectCurrentInvoiceData() {
     custName: (document.getElementById("invCustName")?.value || "").trim(),
     custPhone: (document.getElementById("invCustPhone")?.value || "").trim(),
     custEmail: (document.getElementById("invCustEmail")?.value || "").trim(),
+    roomNo: (document.getElementById("invRoomNo")?.value || "").trim(),
+    floorNo: formatSmartFloorNo(document.getElementById("invFloorNo")?.value || ""),
     address: (document.getElementById("invAddress")?.value || "").trim(),
     issuer: (document.getElementById("invIssuer")?.value || "").trim(),
     pkgKey: _currentInvoicePkgKey,
@@ -9001,12 +10286,14 @@ function collectCurrentInvoiceData() {
     periodEnd: (document.getElementById("invPeriodEndText")?.value || "").trim(),
     pkgQty: totals.pkgQty,
     pkgPrice: totals.pkgPrice,
+    addonItems: getSelectedInvoiceAddonsList(),
     addonDesc: (document.getElementById("invAddonDesc")?.value || "").trim(),
     addonQty: totals.addonQty,
     addonPrice: totals.addonPrice,
     advDesc: (document.getElementById("invAdvDesc")?.value || "").trim(),
     advQty: totals.advQty,
     advPrice: totals.advPrice,
+    otherDesc: (document.getElementById("invOtherDesc")?.value || "").trim(),
     otherAmount: totals.otherAmt,
     currency: totals.cur,
     subtotal: totals.subtotal,
@@ -9042,6 +10329,8 @@ function saveCurrentInvoiceRecord(silent = false) {
   setInvoicesDb(db);
   syncInvoiceToCloud(data);
   renderHomeInvoiceList();
+  const foot = document.getElementById("invLastEditedFooterText");
+  if (foot && data.updatedAt) foot.textContent = `最後編輯：${data.updatedAt}`;
   if (!silent) showToast(`✓ 已儲存發票 (${data.refNo || data.custName})`);
 }
 
@@ -9052,11 +10341,19 @@ function loadInvoiceIntoEditor(invId) {
   openInvoiceEditor();
   _currentInvoiceId = data.invId;
   document.getElementById("invRefNo").value = data.refNo || "";
-  document.getElementById("invDateDisplay").value = data.invDate || "";
+  const loadedIso = parseDMYToISO(data.invDate || "");
+  if (loadedIso) {
+    document.getElementById("invDatePicker").value = loadedIso;
+    document.getElementById("invDateDisplay").value = formatDMYFromISO(loadedIso);
+  } else {
+    document.getElementById("invDateDisplay").value = data.invDate || "";
+  }
   document.getElementById("invCustTitle").value = data.custTitle || "";
   document.getElementById("invCustName").value = data.custName || "";
   document.getElementById("invCustPhone").value = data.custPhone || "";
   document.getElementById("invCustEmail").value = data.custEmail || "";
+  if (document.getElementById("invRoomNo")) document.getElementById("invRoomNo").value = data.roomNo || "";
+  if (document.getElementById("invFloorNo")) document.getElementById("invFloorNo").value = data.floorNo || "";
   document.getElementById("invAddress").value = data.address || "";
   document.getElementById("invIssuer").value = data.issuer || "Ms Namthip";
 
@@ -9064,14 +10361,33 @@ function loadInvoiceIntoEditor(invId) {
   document.getElementById("invPeriodEndText").value = data.periodEnd || "";
   selectInvoicePackage(data.pkgKey || "essential", true);
 
-  document.getElementById("invPkgQty").value = data.pkgQty !== undefined ? data.pkgQty : 1;
+  const loadedQty = data.pkgQty !== undefined ? data.pkgQty : 1;
+  document.getElementById("invPkgQty").value = loadedQty;
+  if (document.getElementById("invPkgYears")) {
+    document.getElementById("invPkgYears").value = formatCleanYearsNumber(loadedQty);
+    syncInvoiceYearsFromPeriodTexts();
+  }
   document.getElementById("invPkgPrice").value = data.pkgPrice !== undefined ? data.pkgPrice : (INVOICE_PACKAGES[data.pkgKey || "essential"].price);
+  _invAddonSelections = {};
+  window._invLegacyAddonActive = false;
+  if (Array.isArray(data.addonItems) && data.addonItems.length > 0) {
+    data.addonItems.forEach(it => {
+      if (it && it.key && Number(it.qty) > 0) {
+        _invAddonSelections[it.key] = Number(it.qty);
+      }
+    });
+  } else if (data.addonDesc && data.addonDesc.toLowerCase() !== "nil" && Number(data.addonQty) > 0) {
+    window._invLegacyAddonActive = true;
+  }
   document.getElementById("invAddonDesc").value = data.addonDesc || "Nil";
   document.getElementById("invAddonQty").value = data.addonQty || 0;
   document.getElementById("invAddonPrice").value = data.addonPrice || 0;
+  renderInvoiceAddonCatalog();
   document.getElementById("invAdvDesc").value = data.advDesc || "Miscellaneous Fees 水電及其他雜費";
   document.getElementById("invAdvQty").value = data.advQty !== undefined ? data.advQty : 1;
   document.getElementById("invAdvPrice").value = data.advPrice !== undefined ? data.advPrice : 500;
+  const otherDescEl = document.getElementById("invOtherDesc");
+  if (otherDescEl) otherDescEl.value = data.otherDesc || "";
   document.getElementById("invOtherAmount").value = data.otherAmount || 0;
   document.getElementById("invCurrency").value = data.currency || "HKD";
 
@@ -9082,6 +10398,9 @@ function loadInvoiceIntoEditor(invId) {
 
   setInvSignatureImage("cust", data.custSigDataUrl || "");
   setInvSignatureImage("auth", data.authSigDataUrl || "");
+  const foot = document.getElementById("invLastEditedFooterText");
+  if (foot) foot.textContent = data.updatedAt ? `最後編輯：${data.updatedAt}` : "最後編輯：尚未儲存";
+  updateInvoiceFieldHighlights();
   recalculateInvoiceTotals();
 }
 
@@ -9154,6 +10473,10 @@ function renderHomeInvoiceList() {
 
 // ================= 發票雙簽名板繪圖與預設套用 =================
 let _invPadsInited = false;
+const _invCanvasResizers = {};
+function _resizeInvCanvasRole(role) {
+  if (typeof _invCanvasResizers[role] === "function") _invCanvasResizers[role]();
+}
 function initInvoiceSignaturePads() {
   if (_invPadsInited) return;
   _invPadsInited = true;
@@ -9181,6 +10504,7 @@ function setupSingleInvCanvas(canvasId, role) {
       if (savedUrl) setInvSignatureImage(role, savedUrl);
     }
   };
+  _invCanvasResizers[role] = resize;
   resize();
 
   let drawing = false;
@@ -9243,6 +10567,7 @@ function setInvSignatureImage(role, dataUrl) {
     ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
   };
   img.src = dataUrl;
+  if (typeof updateInvoiceFieldHighlights === "function") updateInvoiceFieldHighlights();
 }
 
 function clearInvSignature(role, silent = false) {
@@ -9274,6 +10599,19 @@ function applyPresetSignatureToInvoice() {
 }
 
 // ================= A4 Invoice 渲染與匯出 PDF =================
+
+function splitBilingualEnZh(str) {
+  const s = String(str || "").trim();
+  if (!s) return { en: "", zh: "" };
+  const cjkIdx = s.search(/[\u4e00-\u9fff\u3400-\u4dbf]/);
+  if (cjkIdx === -1) return { en: s, zh: "" };
+  if (cjkIdx === 0) return { en: "", zh: s };
+  return {
+    en: s.slice(0, cjkIdx).trim(),
+    zh: s.slice(cjkIdx).trim()
+  };
+}
+
 function renderInvoiceA4Page() {
   const data = collectCurrentInvoiceData();
   const pkg = INVOICE_PACKAGES[data.pkgKey] || INVOICE_PACKAGES.essential;
@@ -9281,17 +10619,20 @@ function renderInvoiceA4Page() {
   if (logoImg) logoImg.src = EXACT_COMPANY_LOGO;
 
   const fullName = [data.custTitle, data.custName].filter(Boolean).join(" ");
+  const floorPart = data.floorNo ? `(${data.floorNo})` : "";
+  const fullAddr = [data.roomNo, floorPart, data.address].filter(Boolean).join(" ");
+  const invDateForA4 = formatEnglishShortFromISOorDMY(data.invDate);
   const metaHtml = `
     <div>
-      <div class="inv-a4-mrow"><span class="inv-a4-mlbl">Customer Name | 客戶姓名</span><span class="inv-a4-mcolon">:</span><span class="inv-a4-mval">${escapeHtmlSafe(fullName)}</span></div>
-      <div class="inv-a4-mrow"><span class="inv-a4-mlbl">Contact no. | 聯絡號碼</span><span class="inv-a4-mcolon">:</span><span class="inv-a4-mval">${escapeHtmlSafe(data.custPhone)}</span></div>
-      <div class="inv-a4-mrow"><span class="inv-a4-mlbl">Email | 電郵</span><span class="inv-a4-mcolon">:</span><span class="inv-a4-mval">${escapeHtmlSafe(data.custEmail)}</span></div>
-      <div class="inv-a4-mrow"><span class="inv-a4-mlbl">Address | 地址</span><span class="inv-a4-mcolon">:</span><span class="inv-a4-mval">${escapeHtmlSafe(data.address)}</span></div>
-      <div class="inv-a4-mrow"><span class="inv-a4-mlbl">Issuer | 發件人</span><span class="inv-a4-mcolon">:</span><span class="inv-a4-mval">${escapeHtmlSafe(data.issuer)}</span></div>
+      <div class="inv-a4-mrow"><span class="inv-a4-en-l">Customer Name</span><span class="inv-a4-zh-l">客戶姓名</span><span class="inv-a4-mcolon">:</span><span class="inv-a4-mval">${escapeHtmlSafe(fullName)}</span></div>
+      <div class="inv-a4-mrow"><span class="inv-a4-en-l">Contact no.</span><span class="inv-a4-zh-l">聯絡號碼</span><span class="inv-a4-mcolon">:</span><span class="inv-a4-mval">${escapeHtmlSafe(data.custPhone)}</span></div>
+      <div class="inv-a4-mrow"><span class="inv-a4-en-l">Email</span><span class="inv-a4-zh-l">電郵</span><span class="inv-a4-mcolon">:</span><span class="inv-a4-mval">${escapeHtmlSafe(data.custEmail)}</span></div>
+      <div class="inv-a4-mrow addr-2row"><span class="inv-a4-en-l">Address</span><span class="inv-a4-zh-l">地址</span><span class="inv-a4-mcolon">:</span><span class="inv-a4-mval-addr">${escapeHtmlSafe(fullAddr)}</span></div>
+      <div class="inv-a4-mrow"><span class="inv-a4-en-l">Issuer</span><span class="inv-a4-zh-l">發件人</span><span class="inv-a4-mcolon">:</span><span class="inv-a4-mval">${escapeHtmlSafe(data.issuer)}</span></div>
     </div>
-    <div>
-      <div class="inv-a4-mrow"><span class="inv-a4-mlbl-r">Ref no. | 參考編號</span><span class="inv-a4-mcolon">:</span><span class="inv-a4-mval">${escapeHtmlSafe(data.refNo)}</span></div>
-      <div class="inv-a4-mrow"><span class="inv-a4-mlbl-r">Date | 日期</span><span class="inv-a4-mcolon">:</span><span class="inv-a4-mval">${escapeHtmlSafe(data.invDate)}</span></div>
+    <div class="inv-a4-meta-right">
+      <div class="inv-a4-mrow"><span class="inv-a4-en-r">Ref no.</span><span class="inv-a4-zh-r">參考編號</span><span class="inv-a4-mcolon">:</span><span class="inv-a4-mval-r">${escapeHtmlSafe(data.refNo)}</span></div>
+      <div class="inv-a4-mrow"><span class="inv-a4-en-r">Date</span><span class="inv-a4-zh-r">日期</span><span class="inv-a4-mcolon">:</span><span class="inv-a4-mval-r">${escapeHtmlSafe(invDateForA4)}</span></div>
     </div>
   `;
   document.getElementById("invA4MetaGrid").innerHTML = metaHtml;
@@ -9309,26 +10650,55 @@ function renderInvoiceA4Page() {
     </div>
   `).join("");
 
-  const addonBlock = (!data.addonDesc || data.addonDesc.toLowerCase() === "nil")
-    ? `<div style="margin-top:4mm;">
-         <div style="font-weight:700; color:#1E3250;">Add-on Service 增值服務</div>
-         <div style="padding-left:2mm; margin-top:1mm;">Nil</div>
-       </div>`
-    : `<div style="margin-top:4mm;">
-         <div style="font-weight:700; color:#1E3250;">Add-on Service 增值服務</div>
-         <div class="inv-a4-item-grid" style="margin-top:1mm;">
-           <div style="padding-left:2mm;">${escapeHtmlSafe(data.addonDesc)}</div>
-           <div class="c-qty">${data.addonQty}</div>
-           <div class="c-price">${formatMoneyCommas(data.addonPrice)} ${cur}</div>
-           <div class="c-tot">${formatMoneyCommas(addonTot)} ${cur}</div>
-         </div>
-       </div>`;
+  const a4AddonItems = Array.isArray(data.addonItems) ? data.addonItems.filter(it => Number(it.qty) > 0) : [];
+  let addonBlock = "";
+  if (a4AddonItems.length > 0) {
+    const rowsHtml = a4AddonItems.map(it => `
+      <div class="inv-a4-item-grid" style="margin-top:0.65mm;">
+        <div class="inv-a4-sub-indent inv-a4-bilingual-row">
+          <span>${escapeHtmlSafe(it.en)}</span>
+          <span>${escapeHtmlSafe(it.zh)}</span>
+        </div>
+        <div class="c-qty">${it.qty}</div>
+        <div class="c-price">${formatMoneyCommas(it.price)} ${cur}</div>
+        <div class="c-tot">${formatMoneyCommas(it.qty * it.price)} ${cur}</div>
+      </div>
+    `).join("");
+    addonBlock = `<div class="inv-a4-sec-block">
+      <div class="inv-a4-sec-title">Add-on Service 增值服務</div>
+      ${rowsHtml}
+    </div>`;
+  } else if (!data.addonDesc || data.addonDesc.toLowerCase() === "nil") {
+    addonBlock = `<div class="inv-a4-sec-block">
+      <div class="inv-a4-sec-title">Add-on Service 增值服務</div>
+      <div class="inv-a4-sub-indent" style="margin-top:0.55mm; font-size:8.4pt;">Nil</div>
+    </div>`;
+  } else {
+    const splitAddon = splitBilingualEnZh(data.addonDesc);
+    addonBlock = `<div class="inv-a4-sec-block">
+      <div class="inv-a4-sec-title">Add-on Service 增值服務</div>
+      <div class="inv-a4-item-grid" style="margin-top:0.55mm;">
+        <div class="inv-a4-sub-indent inv-a4-bilingual-row">
+          <span>${escapeHtmlSafe(splitAddon.en)}</span>
+          <span>${escapeHtmlSafe(splitAddon.zh)}</span>
+        </div>
+        <div class="c-qty">${data.addonQty}</div>
+        <div class="c-price">${formatMoneyCommas(data.addonPrice)} ${cur}</div>
+        <div class="c-tot">${formatMoneyCommas(addonTot)} ${cur}</div>
+      </div>
+    </div>`;
+  }
 
+  const advRaw = data.advDesc || "Miscellaneous Fees 水電及其他雜費";
+  const splitAdv = splitBilingualEnZh(advRaw);
   const advBlock = `
-    <div style="margin-top:4mm;">
-      <div style="font-weight:700; color:#1E3250;">Advance Payment 預付款項</div>
-      <div class="inv-a4-item-grid" style="margin-top:1mm;">
-        <div style="padding-left:2mm;">${escapeHtmlSafe(data.advDesc || "Miscellaneous Fees 水電及其他雜費")}</div>
+    <div class="inv-a4-sec-block">
+      <div class="inv-a4-sec-title">Advance Payment 預付款項</div>
+      <div class="inv-a4-item-grid" style="margin-top:0.55mm;">
+        <div class="inv-a4-sub-indent inv-a4-bilingual-row">
+          <span>${escapeHtmlSafe(splitAdv.en)}</span>
+          <span>${escapeHtmlSafe(splitAdv.zh)}</span>
+        </div>
         <div class="c-qty">${data.advQty}</div>
         <div class="c-price">${formatMoneyCommas(data.advPrice)} ${cur}</div>
         <div class="c-tot">${formatMoneyCommas(advTot)} ${cur}</div>
@@ -9336,23 +10706,52 @@ function renderInvoiceA4Page() {
     </div>
   `;
 
+  const otherAmtNum = Number(data.otherAmount) || 0;
+  const otherDescClean = String(data.otherDesc || "").trim();
+  const otherPriceFormatted = `${otherAmtNum < 0 ? "-" : ""}${formatMoneyCommas(Math.abs(otherAmtNum))} ${cur}`;
+  let otherBlock = "";
+  if (otherDescClean || otherAmtNum !== 0) {
+    const splitOther = splitBilingualEnZh(otherDescClean || "Other Adjustment 其他調整");
+    otherBlock = `
+      <div class="inv-a4-sec-block">
+        <div class="inv-a4-sec-title">Other 其他</div>
+        <div class="inv-a4-item-grid" style="margin-top:0.55mm;">
+          <div class="inv-a4-sub-indent inv-a4-bilingual-row">
+            <span>${escapeHtmlSafe(splitOther.en)}</span>
+            <span>${escapeHtmlSafe(splitOther.zh)}</span>
+          </div>
+          <div class="c-qty">1</div>
+          <div class="c-price">${otherPriceFormatted}</div>
+          <div class="c-tot">${otherPriceFormatted}</div>
+        </div>
+      </div>
+    `;
+  } else {
+    otherBlock = `
+      <div class="inv-a4-sec-block">
+        <div class="inv-a4-sec-title">Other 其他</div>
+        <div class="inv-a4-sub-indent" style="margin-top:0.55mm; font-size:8.4pt;">Nil</div>
+      </div>
+    `;
+  }
+
   const totalsBlock = `
     <div class="inv-a4-totals-area">
-      <div style="font-size:10pt; font-weight:800; color:#1E3250; padding-bottom:2mm;">
+      <div style="font-size:9.8pt; font-weight:700; color:#1E3250; padding-bottom:1.2mm;">
         Grand Total 應付總額
       </div>
       <div>
         <div class="inv-a4-sum-row">
-          <span>Subtotal | 小計</span>
-          <strong>${formatMoneyCommas(data.subtotal)} ${cur}</strong>
+          <span class="inv-a4-sum-lbl"><span>Subtotal</span><span>小計</span></span>
+          <span class="sum-val">${formatMoneyCommas(data.subtotal)} ${cur}</span>
         </div>
         <div class="inv-a4-sum-row">
-          <span>Other | 其他</span>
-          <strong>${formatMoneyCommas(data.otherAmount)} ${cur}</strong>
+          <span class="inv-a4-sum-lbl"><span>Other</span><span>其他</span></span>
+          <span class="sum-val">${otherPriceFormatted}</span>
         </div>
         <div class="inv-a4-sum-row grand">
-          <span>Total Amount | 總額</span>
-          <span>${formatMoneyCommas(data.grandTotal)} ${cur}</span>
+          <span class="inv-a4-sum-lbl"><span>Total Amount</span><span>總額</span></span>
+          <span class="sum-val">${formatMoneyCommas(data.grandTotal)} ${cur}</span>
         </div>
       </div>
     </div>
@@ -9362,17 +10761,23 @@ function renderInvoiceA4Page() {
     <div>
       <div class="inv-a4-item-grid">
         <div>
-          <div style="font-weight:800; color:#1E3250;">${escapeHtmlSafe(pkg.titleLine)}</div>
-          <div style="font-size:8.6pt; color:#333; margin-top:0.6mm;">Service Period 服務期: <strong>${escapeHtmlSafe(data.periodStart)} - ${escapeHtmlSafe(data.periodEnd)}</strong></div>
+          <div class="inv-a4-sec-title inv-a4-pkg-style-b"><span class="inv-a4-pkg-lbl-b">Package 方案</span><span class="inv-a4-pkg-div-b">|</span><span class="inv-a4-pkg-name-b">${escapeHtmlSafe(pkg.titleLine.replace(/^Package\s*-\s*/i, ""))} ${escapeHtmlSafe((pkg.programName || "").replace(/^.*?(基礎方案|全面方案|尊貴方案)$/, "$1"))}</span></div>
+          <div class="inv-a4-sub-indent inv-a4-bilingual-row" style="font-size:8.1pt; font-weight:500; color:#111; margin-top:0.6mm;">
+            <span>Service Period:</span>
+            <span>服務期: <span>${escapeHtmlSafe(data.periodStart)} - ${escapeHtmlSafe(data.periodEnd)}</span></span>
+          </div>
         </div>
-        <div class="c-qty">${data.pkgQty}</div>
+        <div class="c-qty">${formatCleanYearsNumber(data.pkgQty)}</div>
         <div class="c-price">${formatMoneyCommas(data.pkgPrice)} ${cur}</div>
         <div class="c-tot">${formatMoneyCommas(pkgTot)} ${cur}</div>
       </div>
-      <div style="font-weight:700; color:#1E3250; margin-top:3mm; font-size:8.8pt;">Package Contents 套餐內容</div>
-      <div class="inv-a4-pkg-sublist">${pkgSubRows}</div>
+      <div class="inv-a4-sec-block">
+        <div class="inv-a4-sec-title">Package Contents 套餐內容</div>
+        <div class="inv-a4-pkg-sublist">${pkgSubRows}</div>
+      </div>
       ${addonBlock}
       ${advBlock}
+      ${otherBlock}
     </div>
     ${totalsBlock}
   `;
@@ -9383,14 +10788,36 @@ function renderInvoiceA4Page() {
         ${data.custSigDataUrl ? `<img src="${data.custSigDataUrl}" alt="Customer Signature">` : ""}
       </div>
       <div class="inv-a4-sign-lbl">Customer Signature 客戶簽署</div>
-      <div class="inv-a4-sign-sub">(${escapeHtmlSafe(data.custSignName || fullName || "Customer Name")} &nbsp;|&nbsp; Date 日期: ${escapeHtmlSafe(data.custSignDate || data.invDate)})</div>
+      <div class="inv-a4-sign-field-row">
+        <span class="inv-a4-sign-en">Name</span>
+        <span class="inv-a4-sign-zh">姓名</span>
+        <span class="inv-a4-sign-colon">:</span>
+        <span class="inv-a4-sign-val-line">${escapeHtmlSafe(data.custSignName || fullName || "")}</span>
+      </div>
+      <div class="inv-a4-sign-field-row">
+        <span class="inv-a4-sign-en">Date</span>
+        <span class="inv-a4-sign-zh">日期</span>
+        <span class="inv-a4-sign-colon">:</span>
+        <span class="inv-a4-sign-val-line">${escapeHtmlSafe(data.custSignDate || invDateForA4)}</span>
+      </div>
     </div>
     <div class="inv-a4-sign-box">
       <div class="inv-a4-sign-pad">
         ${data.authSigDataUrl ? `<img src="${data.authSigDataUrl}" alt="Authorized Signature">` : ""}
       </div>
       <div class="inv-a4-sign-lbl">Authorized Signature 受托人簽署</div>
-      <div class="inv-a4-sign-sub">(${escapeHtmlSafe(data.authSignName || data.issuer || "Authorized Person")} &nbsp;|&nbsp; Date 日期: ${escapeHtmlSafe(data.authSignDate || "")})</div>
+      <div class="inv-a4-sign-field-row">
+        <span class="inv-a4-sign-en">Name</span>
+        <span class="inv-a4-sign-zh">姓名</span>
+        <span class="inv-a4-sign-colon">:</span>
+        <span class="inv-a4-sign-val-line">${escapeHtmlSafe(data.authSignName || data.issuer || "")}</span>
+      </div>
+      <div class="inv-a4-sign-field-row">
+        <span class="inv-a4-sign-en">Date</span>
+        <span class="inv-a4-sign-zh">日期</span>
+        <span class="inv-a4-sign-colon">:</span>
+        <span class="inv-a4-sign-val-line">${escapeHtmlSafe(data.authSignDate || invDateForA4)}</span>
+      </div>
     </div>
   `;
 }
@@ -9414,10 +10841,7 @@ function toggleInvoicePreview(show) {
   _previewOnlyPage3 = false;
   renderInvoiceA4Page();
 
-  const data = collectCurrentInvoiceData();
-  const safeRef = (data.refNo || "Invoice").replace(/[^a-zA-Z0-9_-]/g, "_");
-  const safeName = (data.custName || "Client").replace(/\s+/g, "_");
-  document.title = `${safeRef}_${safeName}_Invoice`;
+  document.title = buildInvoiceExportFilename();
 
   const exportBtn = document.getElementById("toolbarExportBtn");
   if (exportBtn) {
@@ -9434,6 +10858,8 @@ function toggleInvoicePreview(show) {
   document.getElementById("editorContainer").style.display = "none";
   document.getElementById("invoiceEditorContainer").style.display = "none";
   document.getElementById("mainTabs").style.display = "none";
+  const invTabs = document.getElementById("invoiceTabs");
+  if (invTabs) invTabs.style.display = "none";
   document.getElementById("editorBottomBar").style.display = "none";
   const actRow = document.getElementById("topbarActionsRow");
   if (actRow) actRow.classList.remove("active");
@@ -9441,16 +10867,357 @@ function toggleInvoicePreview(show) {
   requestAnimationFrame(() => fitA4PreviewToScreen(true));
 }
 
+async function generateMobileInvoiceVectorPdfBlob() {
+  const JsPDFCtor = await ensureJsPdfLoaded();
+  const doc = new JsPDFCtor({ unit: "mm", format: "a4", orientation: "portrait", compress: true });
+  const pageW = 210;
+  const pageH = 297;
+  const marginL = 9.5;
+  const marginR = 9.5;
+  const contentW = pageW - marginL - marginR; // 191mm
+
+  const data = collectCurrentInvoiceData();
+  const pkg = INVOICE_PACKAGES[data.pkgKey] || INVOICE_PACKAGES.essential;
+  const fullName = [data.custTitle, data.custName].filter(Boolean).join(" ");
+  const floorPart = data.floorNo ? `(${data.floorNo})` : "";
+  const fullAddr = [data.roomNo, floorPart, data.address].filter(Boolean).join(" ");
+  const invDateForA4 = formatEnglishShortFromISOorDMY(data.invDate);
+  const cur = data.currency || "HKD";
+
+  // 1. 頁首 Logo + Invoice 標題 + 香檳金分隔線 (完全還原 A4 發票比例)
+  try {
+    doc.addImage(EXACT_COMPANY_LOGO, "PNG", marginL, 6.5, 57.22, 14.8);
+  } catch (e) {}
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(20);
+  doc.setTextColor(30, 50, 80);
+  doc.text("Invoice", pageW - marginR, 20.5, { align: "right" });
+
+  doc.setDrawColor(189, 171, 125);
+  doc.setLineWidth(0.35);
+  doc.line(marginL, 22.9, pageW - marginR, 22.9);
+
+  // 2. 客戶資料網格 (左欄 5 行 + 右欄 Ref no. & Date，每行 5.1mm 精準對齊)
+  const leftX = marginL + 0.5;
+  const rightX = marginL + contentW * 0.64 + 1.5;
+  const rowH = 5.1;
+  let y = 25.0;
+
+  const drawInvMetaRow = (x, enW, zhW, enLbl, zhLbl, val, maxValW, isAddr = false) => {
+    const sEn = createCrispTextStamp(enLbl, { fontSizePt: 8.5, bold: false, color: "#333333", maxWidthMm: enW + 1, lineHeightMm: rowH });
+    if (sEn) doc.addImage(sEn.dataUrl, "PNG", x, y - 0.5, sEn.wMm, sEn.hMm);
+    const sZh = createCrispTextStamp(zhLbl, { fontSizePt: 8.5, bold: false, color: "#333333", maxWidthMm: zhW + 1, lineHeightMm: rowH });
+    if (sZh) doc.addImage(sZh.dataUrl, "PNG", x + enW, y - 0.5, sZh.wMm, sZh.hMm);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(8.5);
+    doc.setTextColor(51, 51, 51);
+    doc.text(":", x + enW + zhW + 0.3, y + 2.8);
+
+    if (val) {
+      const sVal = createCrispTextStamp(String(val), {
+        fontSizePt: 8.5,
+        bold: false,
+        color: "#111111",
+        maxWidthMm: maxValW,
+        lineHeightMm: rowH,
+        maxLines: isAddr ? 2 : 1
+      });
+      if (sVal) doc.addImage(sVal.dataUrl, "PNG", x + enW + zhW + 2.6, y - 0.5, sVal.wMm, sVal.hMm);
+    }
+  };
+
+  drawInvMetaRow(leftX, 25, 14, "Customer Name", "客戶姓名", fullName, 76);
+  y += rowH;
+  drawInvMetaRow(leftX, 25, 14, "Contact no.", "聯絡號碼", data.custPhone, 76);
+  y += rowH;
+  drawInvMetaRow(leftX, 25, 14, "Email", "電郵", data.custEmail, 76);
+  y += rowH;
+  drawInvMetaRow(leftX, 25, 14, "Address", "地址", fullAddr, 76, true);
+  y += rowH * 2;
+  drawInvMetaRow(leftX, 25, 14, "Issuer", "發件人", data.issuer, 76);
+
+  // 右欄 Ref no. 與 Date
+  y = 25.0;
+  drawInvMetaRow(rightX, 14.5, 14, "Ref no.", "參考編號", data.refNo, 34);
+  y += rowH;
+  drawInvMetaRow(rightX, 14.5, 14, "Date", "日期", invDateForA4, 34);
+
+  const metaBottomY = 25.0 + rowH * 6 + 1.8;
+  doc.setDrawColor(189, 171, 125);
+  doc.setLineWidth(0.35);
+  doc.line(marginL, metaBottomY, pageW - marginR, metaBottomY);
+
+  // 3. 主項目表格外框 (Rounded Champagne Gold Box)
+  const boxTopY = metaBottomY + 2.0;
+  const boxBottomY = 250.5;
+  const boxH = boxBottomY - boxTopY;
+  doc.setDrawColor(189, 171, 125);
+  doc.setLineWidth(0.32);
+  doc.roundedRect(marginL, boxTopY, contentW, boxH, 3, 3);
+
+  // 表頭底色與分隔線
+  const theadH = 7.4;
+  doc.setFillColor(253, 251, 247);
+  doc.roundedRect(marginL + 0.15, boxTopY + 0.15, contentW - 0.3, theadH, 2.8, 2.8, "F");
+  doc.rect(marginL + 0.15, boxTopY + 3.5, contentW - 0.3, theadH - 3.35, "F");
+  doc.setDrawColor(189, 171, 125);
+  doc.setLineWidth(0.32);
+  doc.line(marginL, boxTopY + theadH, pageW - marginR, boxTopY + theadH);
+
+  // 表格欄座標 (完全對應 CSS: 1fr | 24mm | 27.5mm | 24mm，左右內邊距 3.6mm)
+  const innerL = marginL + 3.6;
+  const innerR = pageW - marginR - 3.6;
+  const colTotRightX = innerR;
+  const colPriceRightX = innerR - 24;
+  const colQtyCenterX = innerR - 24 - 27.5 - 12;
+
+  const drawTheadText = (txt, x, align, maxW) => {
+    const st = createCrispTextStamp(txt, { fontSizePt: 8.4, bold: true, color: "#1E3250", maxWidthMm: maxW, lineHeightMm: 4.5, align });
+    if (!st) return;
+    let drawX = x;
+    if (align === "center") drawX = x - st.wMm / 2;
+    else if (align === "right") drawX = x - st.wMm;
+    doc.addImage(st.dataUrl, "PNG", drawX, boxTopY + 1.4, st.wMm, st.hMm);
+  };
+  drawTheadText("Item Description 項目名稱", innerL, "left", 95);
+  drawTheadText("Quantity 數量", colQtyCenterX, "center", 24);
+  drawTheadText("Unit Price 價格", colPriceRightX, "right", 27.5);
+  drawTheadText("Total 合計", colTotRightX, "right", 24);
+
+  const drawItemNumbers = (rowY, qtyStr, priceStr, totStr) => {
+    const sQ = createCrispTextStamp(String(qtyStr), { fontSizePt: 8.2, bold: false, color: "#111111", maxWidthMm: 22, lineHeightMm: 4.2, align: "center" });
+    if (sQ) doc.addImage(sQ.dataUrl, "PNG", colQtyCenterX - sQ.wMm / 2, rowY - 0.3, sQ.wMm, sQ.hMm);
+    const sP = createCrispTextStamp(String(priceStr), { fontSizePt: 8.2, bold: false, color: "#111111", maxWidthMm: 27, lineHeightMm: 4.2, align: "right" });
+    if (sP) doc.addImage(sP.dataUrl, "PNG", colPriceRightX - sP.wMm, rowY - 0.3, sP.wMm, sP.hMm);
+    const sT = createCrispTextStamp(String(totStr), { fontSizePt: 8.2, bold: false, color: "#111111", maxWidthMm: 24, lineHeightMm: 4.2, align: "right" });
+    if (sT) doc.addImage(sT.dataUrl, "PNG", colTotRightX - sT.wMm, rowY - 0.3, sT.wMm, sT.hMm);
+  };
+
+  // 4. 表格內容區塊 (Package 方案 B 樣式 + Package Contents + Add-on + Advance + Other)
+  let ty = boxTopY + theadH + 2.8;
+  const pkgTot = data.pkgQty * data.pkgPrice;
+  const pkgEnClean = pkg.titleLine.replace(/^Package\s*-\s*/i, "");
+  const pkgZhClean = (pkg.programName || "").replace(/^.*?(基礎方案|全面方案|尊貴方案)$/, "$1");
+  const pkgFullDisplay = `${pkgEnClean} ${pkgZhClean}`.trim();
+
+  // 方案 B 標題行：[Package 方案] | [Manity Essential Care 基礎方案]
+  const sPkgLbl = createCrispTextStamp("Package 方案", { fontSizePt: 9.0, bold: true, color: "#1E3250", maxWidthMm: 28, lineHeightMm: 4.5 });
+  let curPkgX = innerL;
+  if (sPkgLbl) {
+    doc.addImage(sPkgLbl.dataUrl, "PNG", curPkgX, ty - 0.4, sPkgLbl.wMm, sPkgLbl.hMm);
+    curPkgX += sPkgLbl.wMm + 1.2;
+  }
+  doc.setDrawColor(182, 154, 88);
+  doc.setLineWidth(0.35);
+  doc.line(curPkgX, ty + 0.3, curPkgX, ty + 3.6);
+  curPkgX += 2.2;
+  const sPkgName = createCrispTextStamp(pkgFullDisplay, { fontSizePt: 9.6, bold: true, color: "#1E3250", maxWidthMm: 78, lineHeightMm: 4.6 });
+  if (sPkgName) {
+    doc.addImage(sPkgName.dataUrl, "PNG", curPkgX, ty - 0.5, sPkgName.wMm, sPkgName.hMm);
+  }
+  drawItemNumbers(ty, formatCleanYearsNumber(data.pkgQty), `${formatMoneyCommas(data.pkgPrice)} ${cur}`, `${formatMoneyCommas(pkgTot)} ${cur}`);
+
+  // Service Period 服務期
+  ty += 4.8;
+  const sSpEn = createCrispTextStamp("Service Period:", { fontSizePt: 8.1, bold: false, color: "#111111", maxWidthMm: 46, lineHeightMm: 4.2 });
+  if (sSpEn) doc.addImage(sSpEn.dataUrl, "PNG", innerL + 4, ty - 0.3, sSpEn.wMm, sSpEn.hMm);
+  const sSpZh = createCrispTextStamp(`服務期: ${data.periodStart} - ${data.periodEnd}`, { fontSizePt: 8.1, bold: false, color: "#111111", maxWidthMm: 62, lineHeightMm: 4.2 });
+  if (sSpZh) doc.addImage(sSpZh.dataUrl, "PNG", innerL + 51, ty - 0.3, sSpZh.wMm, sSpZh.hMm);
+
+  // Package Contents 套餐內容
+  ty += 6.2;
+  const sPcTitle = createCrispTextStamp("Package Contents 套餐內容", { fontSizePt: 9.0, bold: true, color: "#1E3250", maxWidthMm: 80, lineHeightMm: 4.5 });
+  if (sPcTitle) doc.addImage(sPcTitle.dataUrl, "PNG", innerL, ty - 0.4, sPcTitle.wMm, sPcTitle.hMm);
+  ty += 4.6;
+
+  pkg.items.forEach(it => {
+    const sItEn = createCrispTextStamp(it.en, { fontSizePt: 8.1, bold: false, color: "#111111", maxWidthMm: 46, lineHeightMm: 4.4 });
+    if (sItEn) doc.addImage(sItEn.dataUrl, "PNG", innerL + 4, ty - 0.3, sItEn.wMm, sItEn.hMm);
+    const sItZh = createCrispTextStamp(it.zh, { fontSizePt: 8.1, bold: false, color: "#111111", maxWidthMm: 24, lineHeightMm: 4.4 });
+    if (sItZh) doc.addImage(sItZh.dataUrl, "PNG", innerL + 51, ty - 0.3, sItZh.wMm, sItZh.hMm);
+    if (it.freq) {
+      const sItFr = createCrispTextStamp(`• ${it.freq}`, { fontSizePt: 8.1, bold: false, color: "#111111", maxWidthMm: 22, lineHeightMm: 4.4 });
+      if (sItFr) doc.addImage(sItFr.dataUrl, "PNG", innerL + 76, ty - 0.3, sItFr.wMm, sItFr.hMm);
+    }
+    ty += 4.55;
+  });
+
+  // Add-on Service 增值服務
+  ty += 2.2;
+  const sAddonTitle = createCrispTextStamp("Add-on Service 增值服務", { fontSizePt: 9.0, bold: true, color: "#1E3250", maxWidthMm: 80, lineHeightMm: 4.5 });
+  if (sAddonTitle) doc.addImage(sAddonTitle.dataUrl, "PNG", innerL, ty - 0.4, sAddonTitle.wMm, sAddonTitle.hMm);
+  ty += 4.5;
+
+  const a4AddonItems = Array.isArray(data.addonItems) ? data.addonItems.filter(it => Number(it.qty) > 0) : [];
+  if (a4AddonItems.length > 0) {
+    a4AddonItems.forEach(it => {
+      const sAEn = createCrispTextStamp(it.en, { fontSizePt: 8.2, bold: false, color: "#111111", maxWidthMm: 46, lineHeightMm: 4.3 });
+      if (sAEn) doc.addImage(sAEn.dataUrl, "PNG", innerL + 4, ty - 0.3, sAEn.wMm, sAEn.hMm);
+      const sAZh = createCrispTextStamp(it.zh, { fontSizePt: 8.2, bold: false, color: "#111111", maxWidthMm: 54, lineHeightMm: 4.3 });
+      if (sAZh) doc.addImage(sAZh.dataUrl, "PNG", innerL + 51, ty - 0.3, sAZh.wMm, sAZh.hMm);
+      drawItemNumbers(ty, it.qty, `${formatMoneyCommas(it.price)} ${cur}`, `${formatMoneyCommas(it.qty * it.price)} ${cur}`);
+      ty += 4.55;
+    });
+  } else if (!data.addonDesc || data.addonDesc.toLowerCase() === "nil") {
+    const sNil = createCrispTextStamp("Nil", { fontSizePt: 8.4, bold: false, color: "#111111", maxWidthMm: 30, lineHeightMm: 4.3 });
+    if (sNil) doc.addImage(sNil.dataUrl, "PNG", innerL + 4, ty - 0.3, sNil.wMm, sNil.hMm);
+    ty += 4.5;
+  } else {
+    const splitAddon = splitBilingualEnZh(data.addonDesc);
+    const sAEn = createCrispTextStamp(splitAddon.en, { fontSizePt: 8.2, bold: false, color: "#111111", maxWidthMm: 46, lineHeightMm: 4.3 });
+    if (sAEn) doc.addImage(sAEn.dataUrl, "PNG", innerL + 4, ty - 0.3, sAEn.wMm, sAEn.hMm);
+    const sAZh = createCrispTextStamp(splitAddon.zh, { fontSizePt: 8.2, bold: false, color: "#111111", maxWidthMm: 54, lineHeightMm: 4.3 });
+    if (sAZh) doc.addImage(sAZh.dataUrl, "PNG", innerL + 51, ty - 0.3, sAZh.wMm, sAZh.hMm);
+    drawItemNumbers(ty, data.addonQty, `${formatMoneyCommas(data.addonPrice)} ${cur}`, `${formatMoneyCommas(data.addonQty * data.addonPrice)} ${cur}`);
+    ty += 4.55;
+  }
+
+  // Advance Payment 預付款項
+  ty += 2.2;
+  const sAdvTitle = createCrispTextStamp("Advance Payment 預付款項", { fontSizePt: 9.0, bold: true, color: "#1E3250", maxWidthMm: 80, lineHeightMm: 4.5 });
+  if (sAdvTitle) doc.addImage(sAdvTitle.dataUrl, "PNG", innerL, ty - 0.4, sAdvTitle.wMm, sAdvTitle.hMm);
+  ty += 4.5;
+  const splitAdv = splitBilingualEnZh(data.advDesc || "Miscellaneous Fees 水電及其他雜費");
+  const sAdvEn = createCrispTextStamp(splitAdv.en, { fontSizePt: 8.2, bold: false, color: "#111111", maxWidthMm: 46, lineHeightMm: 4.3 });
+  if (sAdvEn) doc.addImage(sAdvEn.dataUrl, "PNG", innerL + 4, ty - 0.3, sAdvEn.wMm, sAdvEn.hMm);
+  const sAdvZh = createCrispTextStamp(splitAdv.zh, { fontSizePt: 8.2, bold: false, color: "#111111", maxWidthMm: 54, lineHeightMm: 4.3 });
+  if (sAdvZh) doc.addImage(sAdvZh.dataUrl, "PNG", innerL + 51, ty - 0.3, sAdvZh.wMm, sAdvZh.hMm);
+  drawItemNumbers(ty, data.advQty, `${formatMoneyCommas(data.advPrice)} ${cur}`, `${formatMoneyCommas(data.advQty * data.advPrice)} ${cur}`);
+  ty += 4.55;
+
+  // Other 其他
+  ty += 2.2;
+  const sOthTitle = createCrispTextStamp("Other 其他", { fontSizePt: 9.0, bold: true, color: "#1E3250", maxWidthMm: 80, lineHeightMm: 4.5 });
+  if (sOthTitle) doc.addImage(sOthTitle.dataUrl, "PNG", innerL, ty - 0.4, sOthTitle.wMm, sOthTitle.hMm);
+  ty += 4.5;
+  const otherAmtNum = Number(data.otherAmount) || 0;
+  const otherDescClean = String(data.otherDesc || "").trim();
+  const otherPriceFormatted = `${otherAmtNum < 0 ? "-" : ""}${formatMoneyCommas(Math.abs(otherAmtNum))} ${cur}`;
+  if (otherDescClean || otherAmtNum !== 0) {
+    const splitOther = splitBilingualEnZh(otherDescClean || "Other Adjustment 其他調整");
+    const sOEn = createCrispTextStamp(splitOther.en, { fontSizePt: 8.2, bold: false, color: "#111111", maxWidthMm: 46, lineHeightMm: 4.3 });
+    if (sOEn) doc.addImage(sOEn.dataUrl, "PNG", innerL + 4, ty - 0.3, sOEn.wMm, sOEn.hMm);
+    const sOZh = createCrispTextStamp(splitOther.zh, { fontSizePt: 8.2, bold: false, color: "#111111", maxWidthMm: 54, lineHeightMm: 4.3 });
+    if (sOZh) doc.addImage(sOZh.dataUrl, "PNG", innerL + 51, ty - 0.3, sOZh.wMm, sOZh.hMm);
+    drawItemNumbers(ty, "1", otherPriceFormatted, otherPriceFormatted);
+  } else {
+    const sOthNil = createCrispTextStamp("Nil", { fontSizePt: 8.4, bold: false, color: "#111111", maxWidthMm: 30, lineHeightMm: 4.3 });
+    if (sOthNil) doc.addImage(sOthNil.dataUrl, "PNG", innerL + 4, ty - 0.3, sOthNil.wMm, sOthNil.hMm);
+  }
+
+  // 5. 表格底部 Grand Total 應付總額區 (與上方 Total 合計欄完全垂直靠右拍齊)
+  const totalsTopY = boxBottomY - 21.5;
+  doc.setDrawColor(189, 171, 125);
+  doc.setLineWidth(0.35);
+  doc.line(innerL, totalsTopY, innerR, totalsTopY);
+
+  const sGtLeft = createCrispTextStamp("Grand Total 應付總額", { fontSizePt: 9.8, bold: true, color: "#1E3250", maxWidthMm: 70, lineHeightMm: 5.0 });
+  if (sGtLeft) doc.addImage(sGtLeft.dataUrl, "PNG", innerL, boxBottomY - 8.2, sGtLeft.wMm, sGtLeft.hMm);
+
+  const sumColX = innerL + (innerR - innerL) * 0.44 + 1.5;
+  let sy = totalsTopY + 1.8;
+
+  const drawSumRow = (enLbl, zhLbl, valStr, isGrand = false) => {
+    const fPt = isGrand ? 9.8 : 8.5;
+    const colHex = isGrand ? "#1E3250" : "#222222";
+    const sL1 = createCrispTextStamp(enLbl, { fontSizePt: fPt, bold: isGrand, color: colHex, maxWidthMm: 26, lineHeightMm: 4.6 });
+    if (sL1) doc.addImage(sL1.dataUrl, "PNG", sumColX, sy - 0.3, sL1.wMm, sL1.hMm);
+    const sL2 = createCrispTextStamp(zhLbl, { fontSizePt: fPt, bold: isGrand, color: colHex, maxWidthMm: 14, lineHeightMm: 4.6 });
+    if (sL2) doc.addImage(sL2.dataUrl, "PNG", sumColX + 26, sy - 0.3, sL2.wMm, sL2.hMm);
+    const sVal = createCrispTextStamp(valStr, { fontSizePt: fPt, bold: true, color: isGrand ? "#1E3250" : "#111111", maxWidthMm: 52, lineHeightMm: 4.6, align: "right" });
+    if (sVal) doc.addImage(sVal.dataUrl, "PNG", innerR - sVal.wMm, sy - 0.3, sVal.wMm, sVal.hMm);
+  };
+
+  drawSumRow("Subtotal", "小計", `${formatMoneyCommas(data.subtotal)} ${cur}`, false);
+  sy += 5.1;
+  drawSumRow("Other", "其他", otherPriceFormatted, false);
+  sy += 5.4;
+  doc.setDrawColor(30, 50, 80);
+  doc.setLineWidth(0.42);
+  doc.line(sumColX, sy - 0.8, innerR, sy - 0.8);
+  sy += 0.8;
+  drawSumRow("Total Amount", "總額", `${formatMoneyCommas(data.grandTotal)} ${cur}`, true);
+
+  // 6. 雙方簽署區 (Customer Signature & Authorized Signature)
+  const signTopY = boxBottomY + 2.5;
+  const sigW = 62;
+  const sigPadH = 16.5;
+  const leftSigX = marginL + 4;
+  const rightSigX = pageW - marginR - 4 - sigW;
+
+  const drawSignatureColumn = async (boxX, titleStr, sigUrl, nameVal, dateVal) => {
+    if (sigUrl) {
+      try {
+        const nat = await getImageNaturalSize(sigUrl);
+        if (nat && nat.w > 0 && nat.h > 0) {
+          const r = Math.min(58 / nat.w, 15 / nat.h);
+          doc.addImage(sigUrl, "PNG", boxX + 1, signTopY + sigPadH - nat.h * r - 0.5, nat.w * r, nat.h * r);
+        }
+      } catch (e) {}
+    }
+    const lineY = signTopY + sigPadH;
+    doc.setDrawColor(189, 171, 125);
+    doc.setLineWidth(0.42);
+    doc.line(boxX, lineY, boxX + sigW, lineY);
+
+    const sTitle = createCrispTextStamp(titleStr, { fontSizePt: 8.4, bold: true, color: "#1E3250", maxWidthMm: sigW, lineHeightMm: 4.4 });
+    if (sTitle) doc.addImage(sTitle.dataUrl, "PNG", boxX, lineY + 1.0, sTitle.wMm, sTitle.hMm);
+
+    let fy = lineY + 5.8;
+    const drawSigField = (enL, zhL, valText) => {
+      const sE = createCrispTextStamp(enL, { fontSizePt: 8.0, bold: false, color: "#333333", maxWidthMm: 10, lineHeightMm: 4.2 });
+      if (sE) doc.addImage(sE.dataUrl, "PNG", boxX, fy - 0.3, sE.wMm, sE.hMm);
+      const sZ = createCrispTextStamp(zhL, { fontSizePt: 8.0, bold: false, color: "#333333", maxWidthMm: 9, lineHeightMm: 4.2 });
+      if (sZ) doc.addImage(sZ.dataUrl, "PNG", boxX + 9.5, fy - 0.3, sZ.wMm, sZ.hMm);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(8.0);
+      doc.setTextColor(51, 51, 51);
+      doc.text(":", boxX + 17.8, fy + 2.6);
+
+      const valStartX = boxX + 20.2;
+      doc.setDrawColor(197, 203, 211);
+      doc.setLineWidth(0.22);
+      doc.line(valStartX, fy + 3.6, boxX + sigW, fy + 3.6);
+      if (valText) {
+        const sV = createCrispTextStamp(String(valText), { fontSizePt: 8.0, bold: true, color: "#111111", maxWidthMm: sigW - 21, lineHeightMm: 4.2 });
+        if (sV) doc.addImage(sV.dataUrl, "PNG", valStartX + 1.0, fy - 0.4, sV.wMm, sV.hMm);
+      }
+    };
+
+    drawSigField("Name", "姓名", nameVal);
+    fy += 4.8;
+    drawSigField("Date", "日期", dateVal);
+  };
+
+  await drawSignatureColumn(leftSigX, "Customer Signature 客戶簽署", data.custSigDataUrl, data.custSignName || fullName || "", data.custSignDate || invDateForA4);
+  await drawSignatureColumn(rightSigX, "Authorized Signature 受托人簽署", data.authSigDataUrl, data.authSignName || data.issuer || "", data.authSignDate || invDateForA4);
+
+  // 7. 頁尾付款方式與聯絡資料
+  const footTopY = 278.5;
+  doc.setDrawColor(189, 171, 125);
+  doc.setLineWidth(0.25);
+  doc.line(marginL, footTopY, pageW - marginR, footTopY);
+
+  const sF1 = createCrispTextStamp("Accepted Payment Method 繳費方法", { fontSizePt: 7.6, bold: true, color: "#222222", maxWidthMm: contentW, lineHeightMm: 3.8 });
+  if (sF1) doc.addImage(sF1.dataUrl, "PNG", marginL, footTopY + 1.1, sF1.wMm, sF1.hMm);
+  const sF2 = createCrispTextStamp("Hong Kong: FPS, Cash / Thailand: PromptPay, Cash (according to the exchange rate at that time)", { fontSizePt: 7.6, bold: false, color: "#333333", maxWidthMm: contentW, lineHeightMm: 3.8 });
+  if (sF2) doc.addImage(sF2.dataUrl, "PNG", marginL, footTopY + 4.9, sF2.wMm, sF2.hMm);
+  const sF3 = createCrispTextStamp("Contact Number 聯絡號碼: +6662064 1601   |   Email 電郵: manity.propertycare@gmail.com", { fontSizePt: 7.6, bold: true, color: "#222222", maxWidthMm: contentW, lineHeightMm: 3.8 });
+  if (sF3) doc.addImage(sF3.dataUrl, "PNG", marginL, footTopY + 8.7, sF3.wMm, sF3.hMm);
+
+  return doc.output("blob");
+}
+
 async function exportInvoicePDF() {
+  saveCurrentInvoiceRecord(true);
+
+  // 電腦版瀏覽器直接呼叫系統原生向量列印 / 另存為 PDF（與 Inspection Report 完全一致）
   if (isDesktopBrowserEnv()) {
     triggerNativeBrowserPrintPDF();
     return;
   }
-  const data = collectCurrentInvoiceData();
-  const safeRef = (data.refNo || "Invoice").replace(/[^a-zA-Z0-9_-]/g, "_");
-  const safeName = (data.custName || "Client").replace(/\s+/g, "_");
-  const filename = `${safeRef}_${safeName}_Invoice.pdf`;
 
+  const filename = buildInvoiceExportFilename() + ".pdf";
   const exportBtn = document.getElementById("toolbarExportBtn");
   const origText = exportBtn ? exportBtn.textContent : "列印 / 匯出發票 PDF";
   if (exportBtn) {
@@ -9459,19 +11226,8 @@ async function exportInvoicePDF() {
   }
 
   try {
-    const invEl = document.getElementById("a4-invoice-page");
-    const origTransform = invEl.style.transform;
-    invEl.style.transform = "none";
-    const opt = {
-      margin: 0,
-      filename: filename,
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, logging: false },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
-    };
-    const pdfBlob = await html2pdf().set(opt).from(invEl).outputPdf("blob");
-    invEl.style.transform = origTransform;
-
+    // 0.3 秒極速原生向量生成（完全保留 iPhone Safari / Android 原生分享手勢時限）
+    const pdfBlob = await generateMobileInvoiceVectorPdfBlob();
     _lastGeneratedPdfBlob = pdfBlob;
     _lastGeneratedPdfFilename = filename;
 
@@ -9484,22 +11240,46 @@ async function exportInvoicePDF() {
     }
 
     const pdfFile = new File([pdfBlob], filename, { type: "application/pdf" });
-    if (typeof navigator.share === "function" && navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
+
+    // iPhone / Android 原生分享選單（WhatsApp / 電郵 / AirDrop / 儲存到檔案）
+    if (typeof navigator.share === "function") {
+      let canShareFiles = false;
       try {
-        await navigator.share({ files: [pdfFile], title: filename });
-        showToast("✓ 發票 PDF 已開啟分享選單！");
-        return;
-      } catch (shareErr) {
-        if (shareErr && shareErr.name === "AbortError") return;
-        showToast("✓ 發票 PDF 已生成！請點上方「📤 分享」或「📥 儲存 PDF」");
-        return;
+        canShareFiles = !!(navigator.canShare && navigator.canShare({ files: [pdfFile] }));
+      } catch (e) {
+        canShareFiles = false;
+      }
+
+      if (canShareFiles) {
+        try {
+          await navigator.share({
+            files: [pdfFile],
+            title: filename
+          });
+          showToast("✓ 發票 PDF 已開啟分享選單！");
+          return;
+        } catch (shareErr) {
+          if (shareErr && shareErr.name === "AbortError") {
+            showToast("已取消分享，可隨時點擊上方綠色列重新分享或儲存。");
+            return;
+          }
+          showToast("✓ 發票 PDF 已生成！請點上方「📤 分享」或「📥 儲存 PDF」");
+          return;
+        }
       }
     }
+
+    // 若瀏覽器不支援直接分享檔案，立即觸發下載
     downloadBlobDirectly(pdfBlob, filename);
     showToast("✓ 已儲存 " + filename);
   } catch (err) {
-    console.error("Invoice PDF error:", err);
-    showToast("⚠️ 匯出發票 PDF 失敗，請改用列印功能");
+    if (err && err.name === "AbortError") {
+      showToast("已取消分享，可隨時點擊上方綠色列重新分享或儲存。");
+      return;
+    }
+    console.error("Invoice mobile vector PDF error:", err);
+    const reason = (err && err.message) ? ` (${err.message})` : "";
+    showToast("⚠️ 生成失敗" + reason);
   } finally {
     if (exportBtn) {
       exportBtn.disabled = false;
