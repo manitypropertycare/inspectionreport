@@ -157,16 +157,16 @@
     gap: 8px;
   }
 
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .form-group { display: flex; flex-direction: column; gap: 4px; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .form-group { display: flex; flex-direction: column; gap: 3px; }
   .form-group.full { grid-column: 1 / -1; }
-  label { font-size: 12px; font-weight: 600; color: #555; }
+  label { font-size: 11.5px; font-weight: 600; color: #555; }
   input[type="text"], input[type="date"], input[type="number"], select, textarea {
     width: 100%;
-    padding: 9px 10px;
+    padding: 6.5px 9px;
     border: 1px solid #CCD2DA;
-    border-radius: 8px;
-    font-size: 14px;
+    border-radius: 7px;
+    font-size: 13.5px;
     background: #fff;
     color: #111;
   }
@@ -180,28 +180,106 @@
     font-weight: 800;
     color: var(--navy);
     letter-spacing: 0.4px;
+    flex-wrap: nowrap;
+  }
+  .header-visit-date-pill {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%);
+    border: 1.2px solid var(--gold);
+    border-radius: 999px;
+    padding: 2.5px 8px 2.5px 9px;
+    box-shadow: 0 1px 4px rgba(30, 50, 80, 0.08);
+    flex-shrink: 0;
+    transition: all 0.18s ease;
+  }
+  .header-visit-date-pill:focus-within {
+    border-color: var(--navy);
+    box-shadow: 0 0 0 2.5px rgba(30, 50, 80, 0.12);
+  }
+  .header-visit-date-pill.field-pending-yellow {
+    background: #FEF9C3 !important;
+    border-color: #EAB308 !important;
+  }
+  .header-visit-date-lbl {
+    font-size: 11px;
+    font-weight: 800;
+    color: #8C6D23;
+    white-space: nowrap;
+    letter-spacing: 0.2px;
+    user-select: none;
+  }
+  #tab0 input.header-visit-date-input {
+    width: 82px !important;
+    min-width: 82px !important;
+    max-width: 82px !important;
+    height: 22px !important;
+    min-height: 22px !important;
+    padding: 0 2px !important;
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 4px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    color: var(--navy) !important;
+    text-align: center;
+    letter-spacing: 0.2px;
+  }
+  #tab0 input.header-visit-date-input:focus {
+    background: rgba(255, 255, 255, 0.85) !important;
+    outline: none !important;
+  }
+  .header-visit-cal-trigger {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .header-visit-cal-trigger:hover {
+    background: rgba(182, 154, 88, 0.2);
+  }
+  #tab0 .header-visit-cal-trigger input[type="date"] {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    opacity: 0;
+    cursor: pointer;
+    margin: 0;
+    padding: 0 !important;
+    border: none !important;
   }
   #tab0 label {
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 700;
     color: var(--navy);
-    letter-spacing: 0.25px;
-    line-height: 1.35;
+    letter-spacing: 0.2px;
+    line-height: 1.3;
   }
   #tab0 input[type="text"],
   #tab0 input[type="date"],
   #tab0 input[type="number"],
   #tab0 select {
-    font-size: 13.5px;
+    font-size: 13px;
     font-weight: 500;
     color: #1A202C;
     letter-spacing: 0.15px;
-    line-height: 1.25;
-    padding: 7.5px 9px;
-    min-height: 36px;
-    height: 36px;
+    line-height: 1.2;
+    padding: 5px 8.5px;
+    min-height: 31px;
+    height: 31px;
     border: 1.2px solid #CBD5E1;
-    border-radius: 8px;
+    border-radius: 7px;
     transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
   }
   #tab0 input[type="text"]:focus,
@@ -866,9 +944,11 @@
   .pill.active-no { background: #FCE8E6; border-color: #D93025; color: #D93025; }
   .pill.active-na { background: #FFF3E0; border-color: #EA580C; color: #EA580C; font-size: 11px; }
   .chk-remark-input {
-    margin-top: 6px;
-    padding: 6px 9px !important;
-    font-size: 13px !important;
+    margin-top: 5px;
+    padding: 4.5px 8px !important;
+    font-size: 12.5px !important;
+    min-height: 28px !important;
+    height: 28px !important;
     background: #F9FAFB !important;
   }
 
@@ -1581,8 +1661,15 @@
       margin: 0 !important;
       padding: 0 !important;
     }
-    .a4-scale-slot.hide-p3-slot {
+    .a4-scale-slot.hide-p3-slot,
+    #print-preview-wrapper.only-p3-mode #slot-page-1,
+    #print-preview-wrapper.only-p3-mode #slot-page-2 {
       display: none !important;
+    }
+    #print-preview-wrapper.only-p3-mode #slot-page-3,
+    #print-preview-wrapper.only-p3-mode #a4-page-3 {
+      page-break-before: auto !important;
+      break-before: auto !important;
     }
     .a4-page {
       width: 210mm !important;
@@ -1658,6 +1745,18 @@
     </div>
   </div>
 
+  <div id="confirmPrintP3Modal" class="pwd-modal-backdrop" onclick="if(event.target===this) closeConfirmPrintP3Modal()">
+    <div class="pwd-modal-box" style="border-top-color: #D97706; max-width: 370px;">
+      <div class="pwd-modal-title" style="color:#B45309;">⚠️ 離場核對表尚未完成</div>
+      <div class="pwd-modal-desc" id="confirmPrintP3Desc" style="margin-bottom:6px;">目前仍有未完成項目，確定要直接僅列印第 3 頁嗎？</div>
+      <div class="warn-detail-box" id="confirmPrintP3Details" style="background:#FFFBEB; border-color:#FDE68A; color:#92400E;"></div>
+      <div style="display:flex; gap:8px; margin-top:14px;">
+        <button type="button" class="btn btn-navy" style="flex:1;" onclick="closeConfirmPrintP3Modal()">返回繼續填寫</button>
+        <button type="button" class="btn btn-gold" style="flex:1;" onclick="executeConfirmedPrintOnlyPage3()">直接預覽第 3 頁</button>
+      </div>
+    </div>
+  </div>
+
   <div id="confirmClearModal" class="pwd-modal-backdrop" onclick="if(event.target===this) closeConfirmClearModal()">
     <div class="pwd-modal-box" style="border-top-color: #D97706;">
       <div class="pwd-modal-title" id="confirmClearTitle">確認全部清除？</div>
@@ -1692,7 +1791,7 @@
 
       </div>
       <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v121</span>
+        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v131</span>
         <span id="cloudSyncBadge" class="cloud-status-orb syncing" title="雲端連線中..." aria-label="雲端連線狀態">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
@@ -1767,7 +1866,15 @@
     <div class="tab-panel active" id="tab0">
       <div class="card">
         <div class="card-title">
-          <span>客戶編號檔案庫</span>
+          <span style="white-space:nowrap;">客戶編號檔案庫</span>
+          <div id="inspDateHeaderPill" class="header-visit-date-pill" title="點擊月曆圖示選擇或直接輸入日/月/年">
+            <span class="header-visit-cal-trigger" onclick="openHeaderVisitDatePicker(event)" title="開啟日曆選擇">
+              <span style="font-size:12px; line-height:1; pointer-events:none;">📅</span>
+              <input type="date" id="inspDate" onchange="updateCustomerFieldHighlights(); scheduleAutoSave(true);">
+            </span>
+            <span class="header-visit-date-lbl">到訪日</span>
+            <input type="text" id="inspDateDisplay" class="header-visit-date-input" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" oninput="handleDMYTextInput('visit', this)" onfocus="this.select()">
+          </div>
         </div>
         <div class="form-grid">
           <div class="form-group">
@@ -1786,7 +1893,7 @@
           <div class="form-group full">
             <label>Customer Name 客戶姓名</label>
             <div style="display:flex; gap:6px; align-items:center;">
-              <select id="custTitle" style="width:74px; flex-shrink:0; padding:7.5px 4px; font-weight:600;" onchange="updateCustomerFieldHighlights(); scheduleAutoSave(true);">
+              <select id="custTitle" style="width:74px; flex-shrink:0; padding:5px 4px; font-weight:600;" onchange="updateCustomerFieldHighlights(); scheduleAutoSave(true);">
                 <option value="">稱謂</option>
                 <option value="Mr.">Mr.</option>
                 <option value="Ms.">Ms.</option>
@@ -1821,7 +1928,7 @@
             <input type="text" id="address" placeholder="輸入屋苑及地址" oninput="updateCustomerFieldHighlights()">
           </div>
           <div class="form-group full">
-            <label>Period 服務期 (日/月/年 至 日/月/年)</label>
+            <label>Period 服務期 (日/月/年)</label>
             <div style="display:flex; align-items:center; gap:6px;">
               <div style="position:relative; flex:1; display:flex; align-items:center;">
                 <input type="text" id="periodStartDisplay" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" style="padding-right:28px;" oninput="handleDMYTextInput('start', this)">
@@ -1837,18 +1944,14 @@
             </div>
             <input type="hidden" id="period">
           </div>
-          <div class="form-group full" style="display:grid; grid-template-columns:1.36fr 0.82fr 0.82fr; gap:6px; align-items:end;">
+          <div class="form-group full" style="display:grid; grid-template-columns:1fr 1fr; gap:8px; align-items:end;">
             <div class="form-group" style="min-width:0;">
-              <label style="white-space:nowrap; font-size:11.5px;">Date 到訪日</label>
-              <input type="date" id="inspDate" style="padding:7.5px 6px; font-size:13px;" onchange="updateCustomerFieldHighlights()">
+              <label style="white-space:nowrap;">Inspection 檢查次數</label>
+              <input type="number" id="inspNo" value="1" min="1" style="text-align:center;" oninput="updateCustomerFieldHighlights()" onblur="handleInspNoBlurOrChange(this)">
             </div>
             <div class="form-group" style="min-width:0;">
-              <label style="white-space:nowrap; font-size:11.5px;">Inspection 檢查次數</label>
-              <input type="number" id="inspNo" value="1" min="1" style="padding:7.5px 6px; text-align:center;" oninput="updateCustomerFieldHighlights()" onblur="handleInspNoBlurOrChange(this)">
-            </div>
-            <div class="form-group" style="min-width:0;">
-              <label style="white-space:nowrap; font-size:11.5px;">of Total 總次數 <span id="inspTotalHintSub"></span></label>
-              <input type="number" id="inspTotal" value="" placeholder="4/6/8" min="1" style="padding:7.5px 6px; text-align:center;" oninput="updateCustomerFieldHighlights()" onblur="handleInspTotalBlurOrChange(this)">
+              <label style="white-space:nowrap;">of Total 總次數 <span id="inspTotalHintSub"></span></label>
+              <input type="number" id="inspTotal" value="" placeholder="4/6/8" min="1" style="text-align:center;" oninput="updateCustomerFieldHighlights()" onblur="handleInspTotalBlurOrChange(this)">
             </div>
           </div>
         </div>
@@ -1875,7 +1978,6 @@
           <span class="cat-done-badge pending" id="notesStatusBadge"><span class="lamp-dot red"></span>未確認儲存</span>
         </div>
         <div class="form-group full" style="margin-bottom:4px;">
-          <label>備註 (顯示於第 1 頁左下角「備註：」3 行虛線內，無內容可留空直接按儲存確認)</label>
           <div class="textarea-with-counter">
             <textarea id="generalNotes" rows="3" placeholder="輸入備註（最多 3 行，無特別備註可直接按下方「儲存備註」）..." oninput="handleNotesInput(this)"></textarea>
             <span class="textarea-counter-pill" id="notesCharCounter">剩餘 81 字</span>
@@ -1892,7 +1994,6 @@
           <span class="cat-done-badge pending" id="specialNotesStatusBadge"><span class="lamp-dot red"></span>必須按一次儲存</span>
         </div>
         <div class="form-group full" style="margin-bottom:4px;">
-          <label>注意事項 (顯示於第 1 頁左下角「注意事項：」3 行虛線內；每張新單必須按一次「儲存注意事項」確認)</label>
           <div class="textarea-with-counter">
             <textarea id="specialNotes" rows="3" placeholder="輸入注意事項（最多 3 行，無內容亦須按一次「儲存注意事項」確認）..." oninput="handleSpecialNotesInput(this)"></textarea>
             <span class="textarea-counter-pill" id="specialNotesCharCounter">剩餘 81 字</span>
@@ -1963,8 +2064,9 @@
           <input type="checkbox" id="includePage3" class="wf-check" style="margin:0; flex-shrink:0;" onchange="markWorkflowDirty()">
         </div>
         <div id="workflowFormUI"></div>
-        <div style="margin-top:14px; display:flex; gap:8px;">
+        <div style="margin-top:14px; display:flex; flex-direction:column; gap:8px;">
           <button type="button" id="saveWorkflowBtn" class="btn btn-navy" style="width:100%; padding:11px 14px; font-size:14px; opacity:0.52; background:#64748B;" onclick="saveWorkflowTab()">儲存離場核對（尚欠 24 項未填滿）</button>
+          <button type="button" id="printOnlyPage3Btn" class="btn btn-gold" style="width:100%; padding:11px 14px; font-size:14px;" onclick="handlePrintOnlyPage3Click()">👁️ 僅預覽 / 匯出第 3 頁內部核對表</button>
         </div>
       </div>
     </div>
@@ -2244,6 +2346,8 @@ function initFirebaseRealtimeSync() {
             periodEnd: data.periodEnd || "",
             generalNotes: data.generalNotes || "",
             specialNotes: data.specialNotes || "",
+            notesSaved: data.notesSaved !== undefined ? !!data.notesSaved : true,
+            specialNotesSaved: data.specialNotesSaved !== undefined ? !!data.specialNotesSaved : true,
             includePage3: !!data.includePage3,
             checkState: data.checkState || {},
             photosState: mergedPhotos,
@@ -2347,6 +2451,8 @@ async function syncReportAndPhotosToCloud(ref, rec) {
       periodEnd: rec.periodEnd || "",
       generalNotes: rec.generalNotes || "",
       specialNotes: rec.specialNotes || "",
+      notesSaved: rec.notesSaved !== undefined ? !!rec.notesSaved : true,
+      specialNotesSaved: rec.specialNotesSaved !== undefined ? !!rec.specialNotesSaved : true,
       includePage3: !!rec.includePage3,
       checkState: rec.checkState || {},
       photoCaptions: photoCaptions,
@@ -2571,6 +2677,7 @@ const CATEGORIES = [
 
 // 第 3 頁 Workflow 結構
 const WORKFLOW_GROUPS = [
+  { header: "大堂", items: [] },
   { items: [{ id: "wf_mail", label: "檢查郵箱" }] },
   { header: "離開時", items: [] },
   {
@@ -2869,8 +2976,9 @@ function applyReportRecordToEditor(ref, rec) {
   const snEl = document.getElementById("specialNotes");
   const inheritedSpNotes = (rec.specialNotes !== undefined && rec.specialNotes !== "") ? rec.specialNotes : (fallbackCust.specialNotes || "");
   if (snEl) { snEl.value = inheritedSpNotes; handleSpecialNotesInput(snEl); }
-  notesSaved = (rec.notesSaved !== undefined) ? !!rec.notesSaved : !!(rec.generalNotes && rec.generalNotes.trim());
-  specialNotesSaved = !!rec.specialNotesSaved;
+  // 舊有已儲存的報告（重開檢視或補改其他資料）直接保持「已確認儲存」綠燈狀態，無需重複點擊儲存按鈕；只有手動修改備註／注意事項文字時才會重新亮紅燈要求確認
+  notesSaved = (rec.notesSaved !== undefined) ? !!rec.notesSaved : true;
+  specialNotesSaved = (rec.specialNotesSaved !== undefined) ? !!rec.specialNotesSaved : true;
   updateNotesAndSpecialStatusUI();
   document.getElementById("includePage3").checked = !!rec.includePage3;
 
@@ -4128,8 +4236,13 @@ function handleDMYTextInput(which, el) {
       handlePeriodStartChange();
       return;
     }
-  } else {
+  } else if (which === "end") {
     document.getElementById("periodEnd").value = iso;
+  } else if (which === "visit") {
+    document.getElementById("inspDate").value = iso;
+    updateCustomerFieldHighlights();
+    if (iso) scheduleAutoSave(true);
+    return;
   }
   syncPeriodString();
   scheduleAutoSave(false);
@@ -4344,7 +4457,7 @@ const CUSTOMER_REQUIRED_FIELDS = [
   { id: "address", label: "Address 地址" },
   { id: "periodStart", displayId: "periodStartDisplay", label: "Period 服務期開始日" },
   { id: "periodEnd", displayId: "periodEndDisplay", label: "Period 服務期結束日" },
-  { id: "inspDate", label: "Date 到訪日" },
+  { id: "inspDate", displayId: "inspDateDisplay", label: "Date 到訪日" },
   { id: "inspNo", label: "Inspection 檢查次數" },
   { id: "inspTotal", label: "of Total 總次數" }
 ];
@@ -4613,6 +4726,28 @@ function handleCustPhoneBlur(el) {
   scheduleAutoSave(true);
 }
 
+function openHeaderVisitDatePicker(e) {
+  const inp = document.getElementById("inspDate");
+  if (!inp) return;
+  if (typeof inp.showPicker === "function") {
+    try {
+      inp.showPicker();
+    } catch (err) {}
+  }
+}
+
+function syncInspDateHeaderPill(isMissing) {
+  const raw = (document.getElementById("inspDate")?.value || "").trim();
+  const disp = document.getElementById("inspDateDisplay");
+  const pill = document.getElementById("inspDateHeaderPill");
+  if (disp && document.activeElement !== disp) {
+    disp.value = raw ? raw.split("-").reverse().join("/") : "";
+  }
+  if (pill) {
+    pill.classList.toggle("field-pending-yellow", !!isMissing);
+  }
+}
+
 function updateCustomerFieldHighlights() {
   const missing = getMissingCustomerFields();
   const missingIds = new Set(missing.map(m => m.id));
@@ -4622,6 +4757,7 @@ function updateCustomerFieldHighlights() {
     if (!targetEl) return;
     targetEl.classList.toggle("field-pending-yellow", missingIds.has(f.id));
   });
+  syncInspDateHeaderPill(missingIds.has("inspDate"));
 
   const tabLampCust = document.getElementById("tabLampCust");
   if (tabLampCust) {
@@ -5586,6 +5722,8 @@ function newCustomer() {
   photosState = Array(8).fill(null).map(() => ({ img: "", caption: "" }));
   photosConfirmed = false;
   renderPhotoUI();
+  const incP3 = document.getElementById("includePage3");
+  if (incP3) incP3.checked = false;
   renderWorkflowUI();
   workflowSaved = false;
   updateWorkflowStatusUI();
@@ -6248,12 +6386,12 @@ function renderReportPages() {
     </div>
   `;
 
-  const grpMail = WORKFLOW_GROUPS[0]?.items || [];
-  const grpBalcony = WORKFLOW_GROUPS[2]?.items || [];
-  const grpElec = WORKFLOW_GROUPS[3]?.items || [];
-  const grpWater = WORKFLOW_GROUPS[4]?.items || [];
-  const grpToilet = WORKFLOW_GROUPS[5]?.items || [];
-  const grpMcbAndKeys = [...(WORKFLOW_GROUPS[6]?.items || []), ...(WORKFLOW_GROUPS[7]?.items || [])];
+  const grpMail = WORKFLOW_GROUPS[1]?.items || [];
+  const grpBalcony = WORKFLOW_GROUPS[3]?.items || [];
+  const grpElec = WORKFLOW_GROUPS[4]?.items || [];
+  const grpWater = WORKFLOW_GROUPS[5]?.items || [];
+  const grpToilet = WORKFLOW_GROUPS[6]?.items || [];
+  const grpMcbAndKeys = [...(WORKFLOW_GROUPS[7]?.items || []), ...(WORKFLOW_GROUPS[8]?.items || [])];
 
   document.getElementById("p3WorkflowBody").innerHTML = `
     <div>
@@ -6263,7 +6401,7 @@ function renderReportPages() {
       </div>
       <div class="p3-columns">
         <div class="p3-col">
-          ${renderWfCard("郵箱檢查", grpMail)}
+          ${renderWfCard("大堂 — 郵箱檢查", grpMail)}
           ${renderWfCard("離開時 — 露台", grpBalcony)}
           ${renderWfCard("離開時 — 水務", grpWater)}
           ${renderWfCard("離開時 — 廁所", grpToilet)}
@@ -6352,28 +6490,36 @@ let _previewUserZoom = 1;
 let _pinchInitDist = 0;
 let _pinchInitZoom = 1;
 
+let _previewOnlyPage3 = false;
+
 function fitA4PreviewToScreen(resetZoom = false) {
   const wrapper = document.getElementById("print-preview-wrapper");
   if (!wrapper || !wrapper.classList.contains("active")) return;
   if (resetZoom) _previewUserZoom = 1;
 
-  const p1 = document.getElementById("a4-page-1");
-  if (!p1) return;
+  const refPage = _previewOnlyPage3
+    ? (document.getElementById("a4-page-3") || document.getElementById("a4-page-1"))
+    : document.getElementById("a4-page-1");
+  if (!refPage) return;
 
   // 取得 A4 頁面實際像素尺寸 (210mm x 297mm)
-  const rawW = p1.offsetWidth || 794;
-  const rawH = p1.offsetHeight || 1123;
+  const rawW = refPage.offsetWidth || 794;
+  const rawH = refPage.offsetHeight || 1123;
   const availW = Math.max(260, (wrapper.clientWidth || window.innerWidth) - 16);
 
   // 預設剛好 Fit 滿手機寬度 (最大 1.0 倍)
   _previewBaseScale = Math.min(1, availW / rawW);
   const effectiveScale = _previewBaseScale * _previewUserZoom;
 
-  const showP3 = document.getElementById("includePage3")?.checked;
+  const showP3 = _previewOnlyPage3 || !!document.getElementById("includePage3")?.checked;
   [1, 2, 3].forEach(num => {
     const slot = document.getElementById(`slot-page-${num}`);
     const page = document.getElementById(`a4-page-${num}`);
     if (!slot || !page) return;
+    if (_previewOnlyPage3 && num !== 3) {
+      slot.style.display = "none";
+      return;
+    }
     if (num === 3 && !showP3) {
       slot.style.display = "none";
       return;
@@ -6386,11 +6532,15 @@ function fitA4PreviewToScreen(resetZoom = false) {
 }
 
 function resetA4PreviewScaleForPrint() {
-  const showP3 = document.getElementById("includePage3")?.checked;
+  const showP3 = _previewOnlyPage3 || !!document.getElementById("includePage3")?.checked;
   [1, 2, 3].forEach(num => {
     const slot = document.getElementById(`slot-page-${num}`);
     const page = document.getElementById(`a4-page-${num}`);
     if (!slot || !page) return;
+    if (_previewOnlyPage3 && num !== 3) {
+      slot.style.display = "none";
+      return;
+    }
     if (num === 3 && !showP3) {
       slot.style.display = "none";
       return;
@@ -6496,7 +6646,7 @@ function isDesktopBrowserEnv() {
 }
 
 function triggerNativeBrowserPrintPDF() {
-  const cleanTitle = buildExportPdfFilename();
+  const cleanTitle = buildExportPdfFilename() + (_previewOnlyPage3 ? "_Internal_Workflow" : "");
   document.title = cleanTitle;
   resetA4PreviewScaleForPrint();
   showToast("請於列印視窗選擇「另存為 PDF」（建議勾選「背景圖形」）");
@@ -6705,7 +6855,7 @@ async function normalizeImageToSafeDataUrl(dataUrl) {
   });
 }
 
-async function generateMobileVectorPdfBlob() {
+async function generateMobileVectorPdfBlob(onlyPage3 = false) {
   const JsPDFCtor = await ensureJsPdfLoaded();
 
   const doc = new JsPDFCtor({ unit: "mm", format: "a4", orientation: "portrait", compress: true });
@@ -6808,6 +6958,7 @@ async function generateMobileVectorPdfBlob() {
     doc.text(String(pageNum), pageW - 6.5, 292.5, { align: "right" });
   };
 
+  if (!onlyPage3) {
   // ================= PAGE 1: 8 大類檢查表 + 備註 + 簽名 =================
   drawPageHeaderAndMeta(1);
 
@@ -7061,9 +7212,13 @@ async function generateMobileVectorPdfBlob() {
     }
   }
 
-  // ================= PAGE 3: Workflow for internal use（如已勾選） =================
-  if (showP3) {
-    doc.addPage();
+  }
+
+  // ================= PAGE 3: Workflow for internal use（如已勾選或僅列印第 3 頁） =================
+  if (onlyPage3 || showP3) {
+    if (!onlyPage3) {
+      doc.addPage();
+    }
     drawPageHeaderAndMeta(3);
 
     doc.setFillColor(30, 50, 80);
@@ -7121,13 +7276,13 @@ async function generateMobileVectorPdfBlob() {
     let ly = 59;
     let ry = 59;
 
-    ly += drawWfCardPdf(colLX, ly, wfColW, "郵箱檢查", WORKFLOW_GROUPS[0]?.items || []);
-    ly += drawWfCardPdf(colLX, ly, wfColW, "離開時 — 露台", WORKFLOW_GROUPS[2]?.items || []);
-    ly += drawWfCardPdf(colLX, ly, wfColW, "離開時 — 水務", WORKFLOW_GROUPS[4]?.items || []);
-    ly += drawWfCardPdf(colLX, ly, wfColW, "離開時 — 廁所", WORKFLOW_GROUPS[5]?.items || []);
+    ly += drawWfCardPdf(colLX, ly, wfColW, "大堂 — 郵箱檢查", WORKFLOW_GROUPS[1]?.items || []);
+    ly += drawWfCardPdf(colLX, ly, wfColW, "離開時 — 露台", WORKFLOW_GROUPS[3]?.items || []);
+    ly += drawWfCardPdf(colLX, ly, wfColW, "離開時 — 水務", WORKFLOW_GROUPS[5]?.items || []);
+    ly += drawWfCardPdf(colLX, ly, wfColW, "離開時 — 廁所", WORKFLOW_GROUPS[6]?.items || []);
 
-    ry += drawWfCardPdf(colRX, ry, wfColW, "離開時 — 電力及電器", WORKFLOW_GROUPS[3]?.items || []);
-    const mcbAndKeys = [...(WORKFLOW_GROUPS[6]?.items || []), ...(WORKFLOW_GROUPS[7]?.items || [])];
+    ry += drawWfCardPdf(colRX, ry, wfColW, "離開時 — 電力及電器", WORKFLOW_GROUPS[4]?.items || []);
+    const mcbAndKeys = [...(WORKFLOW_GROUPS[7]?.items || []), ...(WORKFLOW_GROUPS[8]?.items || [])];
     ry += drawWfCardPdf(colRX, ry, wfColW, "總制及門匙交收", mcbAndKeys);
   }
 
@@ -7135,7 +7290,7 @@ async function generateMobileVectorPdfBlob() {
 }
 
 async function exportReportPDF() {
-  if (!isEntireReportReadyForExport()) {
+  if (!_previewOnlyPage3 && !isEntireReportReadyForExport()) {
     showToast("⚠️ 報告仍有未完成項目，請補齊後再匯出 PDF！");
     return;
   }
@@ -7146,7 +7301,7 @@ async function exportReportPDF() {
     return;
   }
 
-  const targetFilename = buildExportPdfFilename() + ".pdf";
+  const targetFilename = buildExportPdfFilename() + (_previewOnlyPage3 ? "_Internal_Workflow.pdf" : ".pdf");
   const exportBtn = document.getElementById("toolbarExportBtn");
   const origBtnText = exportBtn ? exportBtn.textContent : "列印 / 匯出 PDF";
 
@@ -7157,7 +7312,7 @@ async function exportReportPDF() {
 
   try {
     // 0.3 秒極速原生向量生成（完全不放大螢幕、不截圖，保留 iPhone Safari 原生分享手勢時限）
-    const pdfBlob = await generateMobileVectorPdfBlob();
+    const pdfBlob = await generateMobileVectorPdfBlob(_previewOnlyPage3);
     _lastGeneratedPdfBlob = pdfBlob;
     _lastGeneratedPdfFilename = targetFilename;
 
@@ -7224,17 +7379,72 @@ window.addEventListener("afterprint", () => {
   fitA4PreviewToScreen(false);
 });
 
-function togglePreview(show, bypassWarning = false) {
+function handlePrintOnlyPage3Click() {
+  const { missing } = getMissingWorkflowItems();
+  const notSavedYet = (missing.length === 0 && !workflowSaved);
+  if (missing.length > 0 || notSavedYet) {
+    const descEl = document.getElementById("confirmPrintP3Desc");
+    const detEl = document.getElementById("confirmPrintP3Details");
+    if (missing.length > 0) {
+      if (descEl) descEl.textContent = `離場核對表尚欠 ${missing.length} 項未完成，確定要直接僅列印第 3 頁嗎？`;
+      if (detEl) {
+        detEl.innerHTML = missing.slice(0, 8).map(m => `• ${m.label}`).join("<br>") +
+          (missing.length > 8 ? `<br><i>...及另外 ${missing.length - 8} 項</i>` : "");
+      }
+    } else {
+      if (descEl) descEl.textContent = "離場核對表 24 項已填滿，但尚未點擊「儲存離場核對」，確定要直接列印第 3 頁嗎？";
+      if (detEl) detEl.innerHTML = "• 尚未點擊「儲存離場核對」按鈕確認";
+    }
+    const modal = document.getElementById("confirmPrintP3Modal");
+    if (modal) modal.classList.add("active");
+    return;
+  }
+  executeConfirmedPrintOnlyPage3();
+}
+
+function closeConfirmPrintP3Modal() {
+  const modal = document.getElementById("confirmPrintP3Modal");
+  if (modal) modal.classList.remove("active");
+}
+
+function executeConfirmedPrintOnlyPage3() {
+  closeConfirmPrintP3Modal();
+  togglePreview(true, true, true);
+}
+
+function togglePreview(show, bypassWarning = false, onlyPage3 = false) {
+  const wrapper = document.getElementById("print-preview-wrapper");
   if (show) {
-    const canExport = isEntireReportReadyForExport();
+    _previewOnlyPage3 = !!onlyPage3;
+    if (wrapper) wrapper.classList.toggle("only-p3-mode", _previewOnlyPage3);
+
+    const canExport = _previewOnlyPage3 ? true : isEntireReportReadyForExport();
     performAutoSave();
     renderReportPages();
-    document.title = canExport ? buildExportPdfFilename() : DEFAULT_APP_TITLE;
+
+    if (_previewOnlyPage3) {
+      const p3 = document.getElementById("a4-page-3");
+      const slot3 = document.getElementById("slot-page-3");
+      if (p3) {
+        p3.classList.remove("hide-p3");
+        p3.style.display = "flex";
+      }
+      if (slot3) {
+        slot3.classList.remove("hide-p3-slot");
+        slot3.style.display = "block";
+      }
+    }
+
+    const baseTitle = buildExportPdfFilename() + (_previewOnlyPage3 ? "_Internal_Workflow" : "");
+    document.title = canExport ? baseTitle : DEFAULT_APP_TITLE;
 
     const exportBtn = document.getElementById("toolbarExportBtn");
-    if (exportBtn) exportBtn.style.display = canExport ? "inline-flex" : "none";
+    if (exportBtn) {
+      exportBtn.style.display = canExport ? "inline-flex" : "none";
+      exportBtn.textContent = _previewOnlyPage3 ? "列印 / 匯出第 3 頁 PDF" : "列印 / 匯出 PDF";
+    }
 
-    document.getElementById("print-preview-wrapper").classList.add("active");
+    wrapper.classList.add("active");
     document.getElementById("homeScreen").style.display = "none";
     document.getElementById("editorContainer").style.display = "none";
     document.getElementById("mainTabs").style.display = "none";
@@ -7244,10 +7454,14 @@ function togglePreview(show, bypassWarning = false) {
     window.scrollTo(0, 0);
     requestAnimationFrame(() => fitA4PreviewToScreen(true));
   } else {
+    _previewOnlyPage3 = false;
+    if (wrapper) wrapper.classList.remove("only-p3-mode");
+    const exportBtn = document.getElementById("toolbarExportBtn");
+    if (exportBtn) exportBtn.textContent = "列印 / 匯出 PDF";
     const readyBar = document.getElementById("mobilePdfReadyBar");
     if (readyBar) readyBar.style.display = "none";
     document.title = DEFAULT_APP_TITLE;
-    document.getElementById("print-preview-wrapper").classList.remove("active");
+    wrapper.classList.remove("active");
     document.getElementById("editorContainer").style.display = "block";
     document.getElementById("mainTabs").style.display = "flex";
     document.getElementById("editorBottomBar").style.display = "flex";
@@ -7415,8 +7629,16 @@ function exportUnifiedExcelWorkbook(e) {
         rows.push(["【第 3 頁：離場內部核對表 (Workflow)】", rec.workflowSaved ? "狀態：已填滿並儲存" : "狀態：未完成/未儲存"]);
         rows.push(["分類", "核對項目", "填寫數量 / 狀態"]);
         const wfMap = rec.workflowState || {};
+        let currentSection = "";
         WORKFLOW_GROUPS.forEach(grp => {
-          const grpTitle = grp.header ? grp.header.replace(/[：:]/g, "") : "一般";
+          if (grp.header && grp.items.length === 0) {
+            currentSection = grp.header.replace(/[：:]/g, "").trim();
+            return;
+          }
+          const subTitle = grp.header ? grp.header.replace(/[：:]/g, "").trim() : "";
+          const grpTitle = currentSection
+            ? (subTitle ? `${currentSection} — ${subTitle}` : currentSection)
+            : (subTitle || "一般");
           grp.items.forEach(it => {
             const checkedStr = wfMap[it.id] ? "✓ 已剔選" : "未剔選";
             if (it.numId) {
