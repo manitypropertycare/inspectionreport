@@ -50,10 +50,16 @@
     --text-main: #22252A;
   }
 
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang HK", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  }
+  body, button, input, select, textarea {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang HK", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  }
   body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang HK", "Microsoft JhengHei", sans-serif;
     background: var(--bg-app);
     color: var(--text-main);
     padding-bottom: calc(144px + env(safe-area-inset-bottom, 24px));
@@ -165,7 +171,57 @@
     color: #111;
   }
   input:focus, select:focus, textarea:focus { outline: none; border-color: var(--navy); background: #FDFCF9; }
-  #custPhone::placeholder, #custEmail::placeholder { font-size: 12.5px; }
+  /* 客戶資料頁 (#tab0) 統一精緻字型與視覺層次 */
+  #tab0, #tab0 * {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang HK", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  }
+  #tab0 .card-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--navy);
+    letter-spacing: 0.4px;
+  }
+  #tab0 label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: 0.25px;
+    line-height: 1.35;
+  }
+  #tab0 input[type="text"],
+  #tab0 input[type="date"],
+  #tab0 input[type="number"],
+  #tab0 select {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #1A202C;
+    letter-spacing: 0.15px;
+    line-height: 1.25;
+    padding: 7.5px 9px;
+    min-height: 36px;
+    height: 36px;
+    border: 1.2px solid #CBD5E1;
+    border-radius: 8px;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  }
+  #tab0 input[type="text"]:focus,
+  #tab0 input[type="date"]:focus,
+  #tab0 input[type="number"]:focus,
+  #tab0 select:focus {
+    border-color: var(--navy);
+    box-shadow: 0 0 0 2.5px rgba(30, 50, 80, 0.10);
+  }
+  #tab0 input::placeholder {
+    font-size: 12.5px;
+    font-weight: 400;
+    color: #94A3B8;
+    letter-spacing: 0.1px;
+  }
+  #tab0 .btn {
+    font-size: 13.5px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
   .field-pending-yellow {
     background: #FEF9C3 !important;
     border-color: #EAB308 !important;
@@ -987,6 +1043,10 @@
     margin-top: 3.5px;
     width: 100%;
   }
+  .bprog-bar-row.ticks-10 {
+    grid-template-columns: repeat(10, 1fr);
+    gap: 1px;
+  }
   .bprog-tick {
     width: 100%;
     height: 4.5px;
@@ -1062,11 +1122,11 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    padding-bottom: 2.2mm;
+    padding-bottom: 1.8mm;
     border-bottom: 1.1pt solid var(--gold);
   }
   .exact-logo-img {
-    height: 15.5mm;
+    height: 14.8mm;
     width: auto;
     max-width: 72mm;
     object-fit: contain;
@@ -1076,40 +1136,40 @@
     font-size: 16.5pt;
     font-weight: 700;
     color: #2B2E34;
-    padding-bottom: 1mm;
+    padding-bottom: 0.8mm;
   }
 
-  /* 客戶資訊區 (中文字與冒號垂直精準拍齊，Address 支援換行至第4行空白位及超長自動縮字) */
+  /* 客戶資訊區 (左右兩欄每行高度精準對齊 4.6mm，中文字與冒號垂直拍齊；英文地址自動於 rd 字後換行至第4行) */
   .meta-grid {
     display: grid;
-    grid-template-columns: 51% 49%;
-    padding: 2.5mm 2mm 2mm 3mm;
+    grid-template-columns: 54% 46%;
+    padding: 2mm 1.5mm 1.8mm 3mm;
     font-size: 8.2pt;
-    line-height: 1.55;
+    line-height: 4.6mm;
     color: #222;
   }
-  .meta-line { display: flex; align-items: baseline; min-height: 4.8mm; }
-  .meta-line.addr-line { align-items: flex-start; min-height: 9.6mm; }
-  .meta-en-l { width: 23.5mm; font-weight: 500; color: #333; flex-shrink: 0; }
-  .meta-zh-l { width: 15mm; font-weight: 500; color: #333; flex-shrink: 0; text-align: left; }
-  .meta-en-r { width: 16.5mm; font-weight: 500; color: #333; flex-shrink: 0; }
-  .meta-zh-r { width: 15mm; font-weight: 500; color: #333; flex-shrink: 0; text-align: left; }
-  .meta-colon { width: 2.5mm; text-align: center; font-weight: 600; color: #333; flex-shrink: 0; }
-  .meta-val { font-weight: 600; color: #111; flex: 1; padding-left: 1.5mm; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .meta-line { display: flex; align-items: center; height: 4.8mm; min-height: 4.8mm; }
+  .meta-line.addr-line { align-items: flex-start; height: 9.6mm; min-height: 9.6mm; }
+  .meta-en-l { width: 23.5mm; font-weight: 500; color: #333; flex-shrink: 0; white-space: nowrap; line-height: 4.8mm; }
+  .meta-zh-l { width: 12.2mm; font-weight: 500; color: #333; flex-shrink: 0; text-align: left; white-space: nowrap; line-height: 4.8mm; }
+  .meta-en-r { width: 15.5mm; font-weight: 500; color: #333; flex-shrink: 0; white-space: nowrap; line-height: 4.8mm; }
+  .meta-zh-r { width: 12.2mm; font-weight: 500; color: #333; flex-shrink: 0; text-align: left; white-space: nowrap; line-height: 4.8mm; }
+  .meta-colon { width: 1.8mm; text-align: left; font-weight: 600; color: #333; flex-shrink: 0; line-height: 4.8mm; }
+  .meta-val { font-weight: 600; color: #111; flex: 1; padding-left: 1.5mm; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 4.8mm; }
   .meta-val-addr {
     font-weight: 600;
     color: #111;
     flex: 1;
     padding-left: 1.5mm;
-    padding-right: 2mm;
-    white-space: normal;
+    padding-right: 1.5mm;
+    white-space: pre-line;
     word-break: break-word;
-    line-height: 1.38;
+    line-height: 4.8mm;
     max-height: 9.6mm;
     overflow: hidden;
   }
-  .meta-insp-row { display: flex; align-items: baseline; min-height: 4.8mm; white-space: nowrap; }
-  .meta-insp-val { font-weight: 600; color: #111; min-width: 2.5mm; text-align: center; }
+  .meta-insp-row { display: flex; align-items: center; height: 4.8mm; min-height: 4.8mm; white-space: nowrap; line-height: 4.8mm; }
+  .meta-insp-val { font-weight: 600; color: #111; min-width: 2.5mm; text-align: center; line-height: 4.8mm; }
 
   /* 深藍圓角標題橫條 */
   .navy-bar {
@@ -1124,25 +1184,29 @@
     padding: 0 3mm;
     margin-bottom: 1.5mm;
   }
+  .navy-bar.p1-navy-bar {
+    padding: 0;
+  }
   .p1-bar-grid {
     display: grid;
     grid-template-columns: 17mm 68mm 18mm 1fr;
     width: 100%;
     align-items: center;
   }
+  .p1-bar-grid div:nth-child(1) { padding-left: 2.5mm; text-align: left; }
   .p1-bar-grid div:nth-child(3) { text-align: center; }
   .p1-bar-grid div:nth-child(4) { text-align: center; }
 
-  /* 第 1 頁主表格 (疏落易讀排版＋Remark 虛線) */
+  /* 第 1 頁主表格 (釋放標題與子項目之間呼吸空間，並拉開表格底部與備註區距離) */
   .p1-table {
     width: 100%;
     border-collapse: collapse;
     border: 0.8pt solid #C8CDD3;
-    flex: 1;
+    flex: 0 0 auto;
   }
   .p1-table td {
     border: 0.6pt solid #D4D8DD;
-    vertical-align: top;
+    vertical-align: middle;
     padding: 0;
   }
   .cat-icon-cell {
@@ -1152,48 +1216,48 @@
     background: #fff;
   }
   .cat-icon-cell svg {
-    width: 10.5mm;
-    height: 10.5mm;
+    width: 10mm;
+    height: 10mm;
     display: inline-block;
   }
-  .cat-items-cell { width: 68mm; padding: 1.6mm 2mm 0.8mm 2mm !important; }
+  .cat-items-cell { width: 68mm; padding: 1.75mm 2mm 1.55mm 2mm !important; }
   .cat-heading {
-    font-size: 9pt;
+    font-size: 8.9pt;
     font-weight: 800;
     color: #111;
-    line-height: 1.15;
-    margin-top: 0.4mm;
-    margin-bottom: 1.2mm;
+    line-height: 1.2;
+    margin-top: 0;
+    margin-bottom: 1.65mm;
   }
   .sub-row {
     display: flex;
     align-items: center;
-    height: 4.0mm;
-    font-size: 7.7pt;
-    letter-spacing: 0.35pt;
+    height: 4.18mm;
+    font-size: 7.65pt;
+    letter-spacing: 0.3pt;
     color: #222;
   }
   .sub-code { width: 7.5mm; flex-shrink: 0; letter-spacing: 0; }
   .sub-text { flex: 1; }
 
   /* Check 欄：與標題欄「Check」正中垂直對齊 */
-  .cat-check-cell { width: 18mm; padding: 1.6mm 0 0.8mm 0 !important; text-align: center; }
+  .cat-check-cell { width: 18mm; padding: 1.75mm 0 1.55mm 0 !important; text-align: center; }
   .chk-box-stack {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 4.75mm;
+    padding-top: 5.25mm;
   }
   .canva-square {
-    width: 3.15mm;
-    height: 3.15mm;
+    width: 3.05mm;
+    height: 3.05mm;
     border: 0.7pt solid #444;
     border-radius: 0.7mm;
-    margin-bottom: 0.85mm;
+    margin-bottom: 1.13mm;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 7pt;
+    font-size: 6.8pt;
     font-weight: 800;
     line-height: 1;
   }
@@ -1202,12 +1266,12 @@
   .canva-square.na { color: #EA580C; }
 
   /* Remark 欄：每一行配備淺灰虛線 */
-  .cat-remark-cell { padding: 1.6mm 2.5mm 0.8mm 2.5mm !important; }
-  .remark-stack { padding-top: 4.75mm; }
+  .cat-remark-cell { padding: 1.75mm 2.5mm 1.55mm 2.5mm !important; }
+  .remark-stack { padding-top: 5.25mm; }
   .remark-line {
-    height: 4.0mm;
-    font-size: 7.3pt;
-    line-height: 4.0mm;
+    height: 4.18mm;
+    font-size: 7.2pt;
+    line-height: 4.18mm;
     color: #1E3250;
     border-bottom: 0.65pt dashed #B8BFC8;
     white-space: nowrap;
@@ -1215,30 +1279,57 @@
     text-overflow: ellipsis;
   }
 
-  /* 第 1 頁底部簽名區 (備註虛線＋冒號上下對齊＋等長簽名/日期底線) */
+  /* 第 1 頁底部簽名區 (與主表格拉開 4.2mm 舒適緩衝留白，備註：3 行 + 注意事項：3 行) */
   .p1-footer {
     display: grid;
     grid-template-columns: 52% 48%;
-    padding-top: 2.5mm;
-    min-height: 23mm;
-    font-size: 8.5pt;
+    padding-top: 4.2mm;
+    min-height: 29.5mm;
+    font-size: 8.3pt;
     font-weight: 700;
     color: #222;
   }
   .p1-notes-box { padding-left: 1.5mm; padding-right: 4mm; position: relative; }
-  .p1-notes-lines {
-    margin-top: 1mm;
+  .p1-notes-block {
     position: relative;
   }
   .note-dash-row {
-    height: 4.6mm;
+    height: 4.1mm;
+    border-bottom: 0.7pt dashed #9AA3AE;
+  }
+  .note-dash-row.first-with-lbl {
+    display: flex;
+    align-items: flex-end;
+    border-bottom: none;
+  }
+  .note-dash-row.indented-col {
+    margin-left: 16.2mm;
+  }
+  .note-inline-lbl-fixed {
+    width: 16.2mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-size: 8.2pt;
+    font-weight: 700;
+    color: #222;
+    line-height: 4.1mm;
+    white-space: nowrap;
+    padding-right: 1.2mm;
+    flex-shrink: 0;
+  }
+  .note-inline-dash {
+    flex: 1;
+    height: 100%;
     border-bottom: 0.7pt dashed #9AA3AE;
   }
   .p1-notes-val {
     position: absolute;
-    top: 0; left: 0; right: 0;
-    font-weight: 400; font-size: 8pt; line-height: 4.6mm; color: #222;
+    top: 0; left: 16.2mm; right: 0;
+    font-weight: 400; font-size: 7.8pt; line-height: 4.1mm; color: #222;
     white-space: pre-wrap;
+    max-height: 12.3mm;
+    overflow: hidden;
   }
   .p1-sign-box { padding-left: 4mm; display: flex; flex-direction: column; justify-content: flex-end; gap: 3.5mm; padding-bottom: 1mm; }
   .sign-row { display: flex; align-items: flex-end; }
@@ -1519,7 +1610,7 @@
   <div id="savePresetSigModal" class="pwd-modal-backdrop" onclick="if(event.target===this) closeSavePresetSigModal()">
     <div class="pwd-modal-box" style="border-top-color: var(--gold); max-width: 350px;">
       <div class="pwd-modal-title">設為預設簽名</div>
-      <div class="pwd-modal-desc" style="margin-bottom:8px;">請為此簽名輸入正式名稱（例如檢查員姓名或職銜），方便日後隨時揀選套用：</div>
+      <div class="pwd-modal-desc" style="margin-bottom:8px;">請輸入此簽名的正式名稱（如檢查員姓名或職銜），以便日後選用：</div>
       <div style="border:1px dashed #CBD5E1; border-radius:8px; background:#FAFBFC; height:74px; display:flex; align-items:center; justify-content:center; margin-bottom:10px; padding:4px;">
         <img id="savePresetSigPreviewImg" src="" alt="簽名預覽" style="max-height:64px; max-width:92%; object-fit:contain;">
       </div>
@@ -1536,7 +1627,7 @@
   <div id="selectPresetSigModal" class="pwd-modal-backdrop" onclick="if(event.target===this) closeSelectPresetSigModal()">
     <div class="pwd-modal-box" style="border-top-color: var(--navy); max-width: 370px;">
       <div class="pwd-modal-title">選擇預設簽名</div>
-      <div class="pwd-modal-desc" style="margin-bottom:6px;">請揀選要套用到此報告的檢查人員簽名：</div>
+      <div class="pwd-modal-desc" style="margin-bottom:6px;">請選擇要套用至此報告的檢查人員簽名：</div>
       <div id="selectPresetSigList" class="sig-preset-list"></div>
       <div style="display:flex; gap:8px; margin-top:14px;">
         <button type="button" class="btn btn-outline" style="width:100%;" onclick="closeSelectPresetSigModal()">關閉</button>
@@ -1546,12 +1637,12 @@
 
   <div id="incompleteWarnModal" class="pwd-modal-backdrop" onclick="if(event.target===this) closeIncompleteWarnModal()">
     <div class="pwd-modal-box" style="border-top-color: #DC2626; max-width: 370px;">
-      <div class="pwd-modal-title" style="color:#DC2626;">⚠️ 警告：報告項目尚未完全完成</div>
-      <div class="pwd-modal-desc" style="margin-bottom:6px;">目前仍有未亮起綠燈（未完成）的項目，建議先補齊再匯出 PDF：</div>
+      <div class="pwd-modal-title" style="color:#DC2626;">⚠️ 報告項目尚未完成</div>
+      <div class="pwd-modal-desc" style="margin-bottom:6px;">目前仍有未完成項目，建議補齊後再匯出 PDF：</div>
       <div class="warn-detail-box" id="incompleteWarnDetails"></div>
       <div style="display:flex; gap:8px; margin-top:14px;">
         <button type="button" class="btn btn-navy" style="flex:1;" onclick="closeIncompleteWarnModal()">返回繼續填寫</button>
-        <button type="button" class="btn btn-outline" style="flex:1; color:#B45309; border-color:#F59E0B;" onclick="proceedPreviewAnyway()">仍然預覽 / 出PDF</button>
+        <button type="button" class="btn btn-outline" style="flex:1; color:#B45309; border-color:#F59E0B;" onclick="proceedPreviewAnyway()">繼續預覽 / 匯出 PDF</button>
       </div>
     </div>
   </div>
@@ -1601,7 +1692,7 @@
 
       </div>
       <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v98</span>
+        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v120</span>
         <span id="cloudSyncBadge" class="cloud-status-orb syncing" title="雲端連線中..." aria-label="雲端連線狀態">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
@@ -1681,12 +1772,12 @@
         <div class="form-grid">
           <div class="form-group">
             <label>Ref no. 參考編號*</label>
-            <input type="text" id="refNo" placeholder="MPC-2026-001" oninput="updateCustomerFieldHighlights()">
+            <input type="text" id="refNo" placeholder="C100XXXX" oninput="handleRefNoInput(this)" onblur="handleRefNoInput(this)">
           </div>
           <div class="form-group">
             <label>Program 項目</label>
             <select id="program" onchange="handleProgramChange(this.value)">
-              <option value="">-- 請選擇服務方案 --</option>
+              <option value="">-- 服務方案 --</option>
               <option value="Essential Care 基礎方案">Essential Care 基礎方案</option>
               <option value="Plus Care 全面方案">Plus Care 全面方案</option>
               <option value="Premium Care 尊貴方案">Premium Care 尊貴方案</option>
@@ -1695,34 +1786,34 @@
           <div class="form-group full">
             <label>Customer Name 客戶姓名</label>
             <div style="display:flex; gap:6px; align-items:center;">
-              <select id="custTitle" style="width:74px; flex-shrink:0; padding:9px 4px; font-weight:600;" onchange="updateCustomerFieldHighlights(); scheduleAutoSave(true);">
+              <select id="custTitle" style="width:74px; flex-shrink:0; padding:7.5px 4px; font-weight:600;" onchange="updateCustomerFieldHighlights(); scheduleAutoSave(true);">
                 <option value="">稱謂</option>
                 <option value="Mr.">Mr.</option>
                 <option value="Ms.">Ms.</option>
                 <option value="Mrs.">Mrs.</option>
               </select>
-              <input type="text" id="custName" style="flex:1; min-width:0;" placeholder="輸入客戶名稱" oninput="updateCustomerFieldHighlights()">
+              <input type="text" id="custName" style="flex:1; min-width:0;" placeholder="Chan Tai Man / John Chan" oninput="updateCustomerFieldHighlights()">
             </div>
           </div>
-          <div class="form-group full" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+          <div class="form-group full" style="display:grid; grid-template-columns:1.45fr 0.95fr; gap:8px;">
             <div class="form-group" style="min-width:0;">
               <label>Email 客戶電郵</label>
               <input type="text" id="custEmail" inputmode="email" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="client@email.com" oninput="handleCustEmailInput()" onblur="handleCustEmailBlur()">
             </div>
             <div class="form-group" style="min-width:0;">
               <label>Contact No. 聯絡電話</label>
-              <input type="text" id="custPhone" inputmode="tel" placeholder="如 +852 9123 4567" oninput="updateCustomerFieldHighlights()" onblur="handleCustPhoneBlur(this)">
+              <input type="text" id="custPhone" inputmode="tel" placeholder="例如: +852 9123 4567" oninput="updateCustomerFieldHighlights()" onblur="handleCustPhoneBlur(this)">
             </div>
           </div>
           <div id="emailTypoBanner" class="form-group full" style="display:none; background:#FFFBEB; border:1.2px solid #F59E0B; border-radius:8px; padding:7px 10px; font-size:12px; color:#92400E; line-height:1.45;"></div>
           <div class="form-group full" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
             <div class="form-group" style="min-width:0;">
               <label>Unit no. 單位號碼</label>
-              <input type="text" id="roomNo" placeholder="例如: Unit 12A" oninput="updateCustomerFieldHighlights()">
+              <input type="text" id="roomNo" placeholder="例如: 68/138" oninput="updateCustomerFieldHighlights()">
             </div>
             <div class="form-group" style="min-width:0;">
               <label>Floor 樓層</label>
-              <input type="text" id="floorNo" placeholder="例如: 12/F" oninput="scheduleAutoSave(true)">
+              <input type="text" id="floorNo" placeholder="例如: 18/F" oninput="scheduleAutoSave(true)" onblur="handleFloorNoBlur(this)">
             </div>
           </div>
           <div class="form-group full">
@@ -1746,18 +1837,18 @@
             </div>
             <input type="hidden" id="period">
           </div>
-          <div class="form-group full" style="display:grid; grid-template-columns:1.38fr 0.81fr 0.81fr; gap:6px; align-items:end;">
+          <div class="form-group full" style="display:grid; grid-template-columns:1.36fr 0.82fr 0.82fr; gap:6px; align-items:end;">
             <div class="form-group" style="min-width:0;">
-              <label style="white-space:nowrap;">Date 到訪日</label>
-              <input type="date" id="inspDate" style="padding:9px 6px; font-size:13px;" onchange="updateCustomerFieldHighlights()">
+              <label style="white-space:nowrap; font-size:11.5px;">Date 到訪日</label>
+              <input type="date" id="inspDate" style="padding:7.5px 6px; font-size:13px;" onchange="updateCustomerFieldHighlights()">
             </div>
             <div class="form-group" style="min-width:0;">
               <label style="white-space:nowrap; font-size:11.5px;">Inspection 檢查次數</label>
-              <input type="number" id="inspNo" value="1" min="1" style="padding:9px 6px; text-align:center;" oninput="updateCustomerFieldHighlights()" onblur="handleInspNoBlurOrChange(this)">
+              <input type="number" id="inspNo" value="1" min="1" style="padding:7.5px 6px; text-align:center;" oninput="updateCustomerFieldHighlights()" onblur="handleInspNoBlurOrChange(this)">
             </div>
             <div class="form-group" style="min-width:0;">
               <label style="white-space:nowrap; font-size:11.5px;">of Total 總次數 <span id="inspTotalHintSub"></span></label>
-              <input type="number" id="inspTotal" value="" placeholder="4/6/8" min="1" style="padding:9px 6px; text-align:center;" oninput="updateCustomerFieldHighlights()" onblur="handleInspTotalBlurOrChange(this)">
+              <input type="number" id="inspTotal" value="" placeholder="4/6/8" min="1" style="padding:7.5px 6px; text-align:center;" oninput="updateCustomerFieldHighlights()" onblur="handleInspTotalBlurOrChange(this)">
             </div>
           </div>
         </div>
@@ -1778,19 +1869,37 @@
         <div id="checklistFormContainer"></div>
       </div>
 
-      <div class="card">
+      <div class="card" id="notesCardBox">
         <div class="card-title">
-          <span>備註 / 注意事項</span>
+          <span>備註</span>
+          <span class="cat-done-badge pending" id="notesStatusBadge"><span class="lamp-dot red"></span>未確認儲存</span>
         </div>
         <div class="form-group full" style="margin-bottom:4px;">
-          <label>備註 / 注意事項 (顯示於第 1 頁左下角 3 行虛線內)</label>
+          <label>備註 (顯示於第 1 頁左下角「備註：」3 行虛線內，無內容可留空直接按儲存確認)</label>
           <div class="textarea-with-counter">
-            <textarea id="generalNotes" rows="3" placeholder="輸入整體備註或特別事項（最多 3 行）..." oninput="handleNotesInput(this)"></textarea>
-            <span class="textarea-counter-pill" id="notesCharCounter">剩餘 78 字</span>
+            <textarea id="generalNotes" rows="3" placeholder="輸入備註（最多 3 行，無特別備註可直接按下方「儲存備註」）..." oninput="handleNotesInput(this)"></textarea>
+            <span class="textarea-counter-pill" id="notesCharCounter">剩餘 81 字</span>
           </div>
         </div>
         <div style="margin-top:12px; display:flex; gap:8px;">
-          <button type="button" class="btn btn-navy" style="width:100%;" onclick="saveChecklistAndNotes()">儲存檢查清單</button>
+          <button type="button" id="saveNotesBtn" class="btn btn-navy" style="width:100%;" onclick="saveChecklistAndNotes()">儲存備註</button>
+        </div>
+      </div>
+
+      <div class="card" id="specialNotesCardBox">
+        <div class="card-title">
+          <span>注意事項 <span style="font-size:11px; font-weight:600; color:#8C6D23;">(自動沿用至日後同客戶報告)</span></span>
+          <span class="cat-done-badge pending" id="specialNotesStatusBadge"><span class="lamp-dot red"></span>必須按一次儲存</span>
+        </div>
+        <div class="form-group full" style="margin-bottom:4px;">
+          <label>注意事項 (顯示於第 1 頁左下角「注意事項：」3 行虛線內；每張新單必須按一次「儲存注意事項」確認)</label>
+          <div class="textarea-with-counter">
+            <textarea id="specialNotes" rows="3" placeholder="輸入注意事項（最多 3 行，無內容亦須按一次「儲存注意事項」確認）..." oninput="handleSpecialNotesInput(this)"></textarea>
+            <span class="textarea-counter-pill" id="specialNotesCharCounter">剩餘 81 字</span>
+          </div>
+        </div>
+        <div style="margin-top:12px; display:flex; gap:8px;">
+          <button type="button" id="saveSpecialNotesBtn" class="btn btn-navy" style="width:100%;" onclick="saveSpecialNotes()">儲存注意事項</button>
         </div>
       </div>
 
@@ -1809,7 +1918,7 @@
           <canvas id="sigCanvas"></canvas>
           <img id="presetSigPreview" src="" style="display:none; position:absolute; inset:0; margin:auto; max-height:105px; max-width:90%; object-fit:contain; pointer-events:none;">
         </div>
-        <div id="presetSigStatus" style="font-size:11px; color:#666; margin-top:4px;">提示：手寫或上載簽名後會即時自動儲存；按「設為預設簽名」可永久保存供下次自動帶入。</div>
+        <div id="presetSigStatus" style="font-size:11px; color:#666; margin-top:4px;">手寫或上載簽名後將自動儲存；點擊「設為預設簽名」可保存供日後套用。</div>
         <div style="margin-top:12px; display:flex; gap:8px;">
           <button type="button" class="btn btn-navy" style="flex:1;" onclick="saveChecklistAndNotes()">儲存檢查清單</button>
           <button type="button" class="btn btn-gold" style="flex:1;" onclick="goToPhotosStep()">下一步：相片 →</button>
@@ -1828,8 +1937,8 @@
           <span class="cat-done-badge pending" id="photoHeaderBadge"><span class="lamp-dot red"></span>0/8</span>
         </div>
         <div class="photo-status-banner pending" id="photoStatusBanner">
-          <span id="photoStatusText"><span class="lamp-dot red"></span>未完成：已上載 0 / 8 張相片（尚欠 8 張）</span>
-          <span id="photoStatusSub" style="font-size:11.5px;">紅燈</span>
+          <span id="photoStatusText"><span class="lamp-dot red"></span>已上載 0 / 8 張相片（尚欠 8 張）</span>
+          <span id="photoStatusSub" style="font-size:11.5px;">未完成</span>
         </div>
         <div class="photo-grid-ui" id="photoGridUI"></div>
         <div style="margin-top:12px; display:flex; gap:8px;">
@@ -1866,8 +1975,8 @@
   <div class="bottom-bar" id="editorBottomBar" style="display:none;">
     <div class="bottom-unified-progress" id="bottomUnifiedProgress">
       <div class="bprog-seg" id="bprogSegChecklist" onclick="jumpToFirstIncompleteCat()" title="點擊跳至檢查清單">
-        <div class="bprog-lbl" id="bprogTextChecklist"><span class="lamp-dot red"></span>清單 0/8</div>
-        <div class="bprog-bar-row" id="bprogBarChecklist"></div>
+        <div class="bprog-lbl" id="bprogTextChecklist"><span class="lamp-dot red"></span>清單 0/10</div>
+        <div class="bprog-bar-row ticks-10" id="bprogBarChecklist"></div>
       </div>
       <div class="bprog-divider"></div>
       <div class="bprog-seg" id="bprogSegPhotos" onclick="jumpToFirstIncompletePhoto()" title="點擊跳至現場相片">
@@ -1885,10 +1994,17 @@
 
   <!-- ================= A4 預覽與匯出視窗 ================= -->
   <div id="print-preview-wrapper">
-    <div class="preview-toolbar">
+    <div class="preview-toolbar" style="flex-wrap:wrap;">
       <button type="button" class="btn btn-outline" style="padding:8px 12px; font-size:13px;" onclick="togglePreview(false)">← 返回修改</button>
       <span style="font-size:11.5px; color:#64748B; font-weight:600; text-align:center;">雙指可放大縮小檢視</span>
       <button type="button" id="toolbarExportBtn" class="btn btn-navy" style="padding:8px 14px; font-size:13px;" onclick="exportReportPDF()">列印 / 匯出 PDF</button>
+      <div id="mobilePdfReadyBar" style="display:none; width:100%; margin-top:4px; padding-top:8px; border-top:1px dashed #CBD5E1; align-items:center; justify-content:space-between; gap:8px;">
+        <span id="mobilePdfReadyText" style="font-size:12px; font-weight:700; color:#15803D;">✓ PDF 已生成就緒</span>
+        <div style="display:flex; gap:6px;">
+          <button type="button" class="btn btn-gold" style="padding:6px 11px; font-size:12px;" onclick="shareCachedMobilePdf()">📤 分享 (WhatsApp / 電郵)</button>
+          <button type="button" class="btn btn-outline" style="padding:6px 11px; font-size:12px;" onclick="downloadCachedMobilePdf()">📥 儲存 PDF</button>
+        </div>
+      </div>
     </div>
 
     <div class="a4-zoom-viewport" id="a4ZoomViewport">
@@ -1897,7 +2013,7 @@
     <div class="a4-page" id="a4-page-1">
       <div class="rpt-header" id="hdr-p1"></div>
       <div class="meta-grid" id="meta-p1"></div>
-      <div class="navy-bar">
+      <div class="navy-bar p1-navy-bar">
         <div class="p1-bar-grid">
           <div>Category</div>
           <div></div>
@@ -1908,12 +2024,17 @@
       <table class="p1-table" id="p1TableBody"></table>
       <div class="p1-footer">
         <div class="p1-notes-box">
-          <div>備註/注意事項</div>
-          <div class="p1-notes-lines">
-            <div class="note-dash-row"></div>
-            <div class="note-dash-row"></div>
-            <div class="note-dash-row"></div>
+          <div class="p1-notes-block">
+            <div class="note-dash-row first-with-lbl"><span class="note-inline-lbl-fixed"><span>備註</span><span>：</span></span><span class="note-inline-dash"></span></div>
+            <div class="note-dash-row indented-col"></div>
+            <div class="note-dash-row indented-col"></div>
             <div class="p1-notes-val" id="outNotes"></div>
+          </div>
+          <div class="p1-notes-block" style="margin-top:1.2mm;">
+            <div class="note-dash-row first-with-lbl"><span class="note-inline-lbl-fixed"><span>注意事項</span><span>：</span></span><span class="note-inline-dash"></span></div>
+            <div class="note-dash-row indented-col"></div>
+            <div class="note-dash-row indented-col"></div>
+            <div class="p1-notes-val" id="outSpecialNotes"></div>
           </div>
         </div>
         <div class="p1-sign-box">
@@ -2039,7 +2160,8 @@ function initFirebaseRealtimeSync() {
             lastInspNo: data.lastInspNo || 0,
             inspTotal: data.inspTotal || "",
             extraInspections: parseInt(data.extraInspections || "0", 10) || 0,
-            extraInspectionNotes: Array.isArray(data.extraInspectionNotes) ? data.extraInspectionNotes : []
+            extraInspectionNotes: Array.isArray(data.extraInspectionNotes) ? data.extraInspectionNotes : [],
+            specialNotes: data.specialNotes || ""
           };
           changed = true;
         }
@@ -2120,6 +2242,7 @@ function initFirebaseRealtimeSync() {
             periodStart: data.periodStart || "",
             periodEnd: data.periodEnd || "",
             generalNotes: data.generalNotes || "",
+            specialNotes: data.specialNotes || "",
             includePage3: !!data.includePage3,
             checkState: data.checkState || {},
             photosState: mergedPhotos,
@@ -2222,6 +2345,7 @@ async function syncReportAndPhotosToCloud(ref, rec) {
       periodStart: rec.periodStart || "",
       periodEnd: rec.periodEnd || "",
       generalNotes: rec.generalNotes || "",
+      specialNotes: rec.specialNotes || "",
       includePage3: !!rec.includePage3,
       checkState: rec.checkState || {},
       photoCaptions: photoCaptions,
@@ -2500,6 +2624,8 @@ let photosState = Array(8).fill(null).map(() => ({ img: "", caption: "" }));
 let workflowState = {};
 let workflowSaved = false;
 let photosConfirmed = false;
+let notesSaved = false;
+let specialNotesSaved = false;
 
 function getMissingWorkflowItems() {
   const missing = [];
@@ -2528,7 +2654,7 @@ function getMissingWorkflowItems() {
           : it.label;
         missing.push({
           id: it.id,
-          label: `${prefix}${cleanLabel}（未剔選）`
+          label: `${prefix}${cleanLabel}（未勾選）`
         });
       }
     });
@@ -2610,7 +2736,7 @@ function saveWorkflowTab() {
   workflowSaved = true;
   updateWorkflowStatusUI();
   performAutoSave();
-  showToast("✓ 已填滿並儲存離場核對！下方已解鎖「預覽 / 匯出 PDF」");
+  showToast("✓ 已儲存離場核對，現可預覽及匯出 PDF。");
 }
 
 function showToast(msg) {
@@ -2678,7 +2804,7 @@ function saveCurrentReportToHistory() {
   // 只有在已填寫基本資料或有實際檢查/相片/備註內容時先寫入期數紀錄，避免空表單覆蓋
   const hasAnyCheck = Object.values(checkState).some(v => v && (v.status || (v.remark && v.remark.trim())));
   const hasAnyPhoto = photosState.some(p => p && (p.img || (p.caption && p.caption.trim())));
-  const hasNotes = !!(document.getElementById("generalNotes")?.value || "").trim();
+  const hasNotes = !!(document.getElementById("generalNotes")?.value || "").trim() || !!(document.getElementById("specialNotes")?.value || "").trim();
   const hasCustInfo = !!(document.getElementById("custName")?.value || "").trim() || !!(document.getElementById("custTitle")?.value || "").trim() || !!(document.getElementById("program")?.value || "").trim();
   if (!hasAnyCheck && !hasAnyPhoto && !hasNotes && !hasCustInfo) return;
 
@@ -2699,6 +2825,9 @@ function saveCurrentReportToHistory() {
     periodStart: document.getElementById("periodStart")?.value || "",
     periodEnd: document.getElementById("periodEnd")?.value || "",
     generalNotes: document.getElementById("generalNotes")?.value || "",
+    specialNotes: document.getElementById("specialNotes")?.value || "",
+    notesSaved: !!notesSaved,
+    specialNotesSaved: !!specialNotesSaved,
     includePage3: !!document.getElementById("includePage3")?.checked,
     checkState: JSON.parse(JSON.stringify(checkState)),
     photosState: JSON.parse(JSON.stringify(photosState)),
@@ -2736,6 +2865,12 @@ function applyReportRecordToEditor(ref, rec) {
   const gnEl = document.getElementById("generalNotes");
   gnEl.value = rec.generalNotes || "";
   handleNotesInput(gnEl);
+  const snEl = document.getElementById("specialNotes");
+  const inheritedSpNotes = (rec.specialNotes !== undefined && rec.specialNotes !== "") ? rec.specialNotes : (fallbackCust.specialNotes || "");
+  if (snEl) { snEl.value = inheritedSpNotes; handleSpecialNotesInput(snEl); }
+  notesSaved = (rec.notesSaved !== undefined) ? !!rec.notesSaved : !!(rec.generalNotes && rec.generalNotes.trim());
+  specialNotesSaved = !!rec.specialNotesSaved;
+  updateNotesAndSpecialStatusUI();
   document.getElementById("includePage3").checked = !!rec.includePage3;
 
   Object.keys(checkState).forEach(code => {
@@ -2879,12 +3014,15 @@ function performAutoSave() {
       inspNo: document.getElementById("inspNo")?.value || "1",
       inspTotal: document.getElementById("inspTotal")?.value || "12",
       generalNotes: document.getElementById("generalNotes")?.value || "",
+      specialNotes: document.getElementById("specialNotes")?.value || "",
+      notesSaved: !!notesSaved,
+      specialNotesSaved: !!specialNotesSaved,
       includePage3: !!document.getElementById("includePage3")?.checked,
       checkState: checkState,
       photosState: photosState,
       workflowState: workflowState,
       workflowSaved: !!workflowSaved,
-    photosConfirmed: !!photosConfirmed,
+      photosConfirmed: !!photosConfirmed,
       sigDataUrl: sigDataUrl,
       savedAt: new Date().toLocaleTimeString("zh-HK", { hour: "2-digit", minute: "2-digit", second: "2-digit" })
     };
@@ -2934,7 +3072,8 @@ function performAutoSave() {
         lastInspNo: maxCompletedNo,
         inspTotal: counts.safeTotal,
         extraInspections: counts.extraCount,
-        extraInspectionNotes: preservedNotes
+        extraInspectionNotes: preservedNotes,
+        specialNotes: (draft.specialNotes !== undefined) ? draft.specialNotes : (prevCustObj.specialNotes || "")
       };
       setCustomers(db);
       syncCustomerToCloud(db[ref]);
@@ -2998,6 +3137,10 @@ function restoreAutoSavedDraft() {
     document.getElementById("inspNo").value = d.inspNo || "1";
     document.getElementById("inspTotal").value = d.inspTotal || "";
     const gnEl = document.getElementById("generalNotes"); gnEl.value = d.generalNotes || ""; handleNotesInput(gnEl);
+    const snEl = document.getElementById("specialNotes"); if (snEl) { snEl.value = d.specialNotes || ""; handleSpecialNotesInput(snEl); }
+    notesSaved = !!d.notesSaved;
+    specialNotesSaved = !!d.specialNotesSaved;
+    updateNotesAndSpecialStatusUI();
     document.getElementById("includePage3").checked = !!d.includePage3;
 
     if (d.checkState) {
@@ -3548,8 +3691,8 @@ function renderHomeCustomerList() {
     listEl.innerHTML = `
       <div style="text-align:center; padding:24px 12px; color:#777; font-size:13px; background:#F9FAFB; border-radius:10px;">
         ${allCustomers.length === 0
-          ? "暫時未有已儲存嘅客戶檔案。<br>請按上方 <b>「＋ 新增客戶報告」</b> 建立第一位客戶並儲存！"
-          : "搵唔到符合搜尋條件嘅客戶參考編號。"}
+          ? "暫無已儲存的客戶檔案。<br>請點擊上方 <b>「＋ 新增客戶報告」</b> 建立新檔案。"
+          : "找不到符合搜尋條件的客戶檔案。"}
       </div>`;
     return;
   }
@@ -3670,11 +3813,11 @@ function isEntireReportReadyForExport() {
   if (typeof getMissingCustomerFields === "function" && getMissingCustomerFields().length > 0) {
     return false;
   }
-  // 2. 檢查清單 26 項全部已剔選 + 檢查人員簽名已填寫
+  // 2. 檢查清單 26 項全部已剔選 + 備註已儲存 + 注意事項已按一次儲存 + 檢查人員簽名已填寫
   const allChecksDone = CATEGORIES.every(cat =>
     cat.items.every(it => !!(checkState[it.code] && checkState[it.code].status))
   );
-  if (!allChecksDone || !sigDataUrl) {
+  if (!allChecksDone || !notesSaved || !specialNotesSaved || !sigDataUrl) {
     return false;
   }
   // 3. 現場相片 8 張已齊（或已明確確認跳過剩餘相片）
@@ -3895,14 +4038,86 @@ function parseDMYToISO(dmyStr) {
   return `${yyyy}-${String(mm).padStart(2, "0")}-${String(dd).padStart(2, "0")}`;
 }
 
-function handleDMYTextInput(which, el) {
-  let digits = (el.value || "").replace(/\D/g, "").slice(0, 8);
-  let formatted = digits;
-  if (digits.length > 4) {
-    formatted = `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`;
-  } else if (digits.length > 2) {
-    formatted = `${digits.slice(0, 2)}/${digits.slice(2)}`;
+function handleRefNoInput(el) {
+  if (!el) return;
+  const val = el.value || "";
+  if (val.includes("c")) {
+    const pos = el.selectionStart;
+    el.value = val.replace(/c/g, "C");
+    if (typeof pos === "number") {
+      try { el.setSelectionRange(pos, pos); } catch (e) {}
+    }
   }
+  updateCustomerFieldHighlights();
+}
+
+function formatSmartFloorNo(raw) {
+  const s = String(raw || "").trim();
+  if (!s) return "";
+  // 匹配例如: 18, 18/F, 18F, 18/f, 18f, Floor 18, FL 18, F18, 18樓, 18層 等，抽取數字部分統一輸出為 數字/F
+  const m = /^(?:floor|fl|f|第)?\s*(\d+)\s*(?:\/\s*f|f|樓|層)?$/i.exec(s);
+  if (m) {
+    return `${parseInt(m[1], 10)}/F`;
+  }
+  return s;
+}
+
+function handleFloorNoBlur(el) {
+  if (!el) return;
+  const formatted = formatSmartFloorNo(el.value);
+  if (formatted !== el.value) {
+    el.value = formatted;
+  }
+  scheduleAutoSave(true);
+}
+
+function handleDMYTextInput(which, el) {
+  const raw = (el.value || "").replace(/[^\d/]/g, "");
+  let formatted = "";
+
+  // 支援用戶直接輸入斜線（例如 05/5/ 或 5/5/2026）時，單位數月份自動前面補 0
+  if (raw.includes("/")) {
+    const parts = raw.split("/");
+    let dPart = (parts[0] || "").replace(/\D/g, "").slice(0, 2);
+    let mPart = (parts[1] || "").replace(/\D/g, "").slice(0, 2);
+    let yPart = (parts[2] || "").replace(/\D/g, "").slice(0, 4);
+
+    if (parts.length >= 2 && dPart.length === 1) {
+      dPart = "0" + dPart;
+    }
+    if (parts.length >= 3 && mPart.length === 1 && parseInt(mPart, 10) >= 1) {
+      mPart = "0" + mPart;
+    }
+    if (mPart.length === 1 && parseInt(mPart, 10) >= 2) {
+      // 月份首位輸入 2-9（不可能有 20-99 月），即時自動補 0 成 02-09
+      mPart = "0" + mPart;
+    }
+
+    if (parts.length >= 3 || yPart.length > 0) {
+      formatted = `${dPart}/${mPart}/${yPart}`;
+    } else {
+      formatted = `${dPart}/${mPart}`;
+    }
+  } else {
+    let digits = raw.replace(/\D/g, "").slice(0, 8);
+    if (digits.length >= 3) {
+      const dd = digits.slice(0, 2);
+      const m1 = parseInt(digits[2], 10);
+      // 當輸入到第 3 位數字（月份首位）且為 2~9 時，自動前面補 0（例如 0552026 -> 05/05/2026）
+      if (m1 >= 2) {
+        digits = dd + "0" + digits.slice(2);
+        digits = digits.slice(0, 8);
+      }
+    }
+    if (digits.length > 4) {
+      formatted = `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`;
+    } else if (digits.length > 2) {
+      formatted = `${digits.slice(0, 2)}/${digits.slice(2)}`;
+    } else {
+      formatted = digits;
+    }
+  }
+
   el.value = formatted;
 
   const iso = parseDMYToISO(formatted);
@@ -3959,13 +4174,13 @@ function clearCurrentTabInputs(scope) {
   const descEl = document.getElementById("confirmClearDesc");
   if (_pendingClearTabScope === "checklist") {
     if (titleEl) titleEl.textContent = "確認清除「檢查清單」？";
-    if (descEl) descEl.textContent = "此操作只會清空本頁（2. 檢查清單）的所有項目剔選、項目備註、整體備註及簽名，不會影響客戶資料及其他分頁。確定要清除嗎？";
+    if (descEl) descEl.textContent = "此操作僅清空本分頁的輸入內容，不會影響客戶資料及其他分頁。確定清除？";
   } else if (_pendingClearTabScope === "photos") {
     if (titleEl) titleEl.textContent = "確認清除「現場相片」？";
-    if (descEl) descEl.textContent = "此操作只會清空本頁（3. 相片）的所有已上載相片及相片說明，不會影響客戶資料及其他分頁。確定要清除嗎？";
+    if (descEl) descEl.textContent = "此操作僅清空本分頁的已上載相片及說明，不會影響客戶資料及其他分頁。確定清除？";
   } else if (_pendingClearTabScope === "workflow") {
     if (titleEl) titleEl.textContent = "確認清除「離場核對」？";
-    if (descEl) descEl.textContent = "此操作只會清空本頁（4. 離場核對）的所有剔選方框及數量輸入，不會影響客戶資料及其他分頁。確定要清除嗎？";
+    if (descEl) descEl.textContent = "此操作僅清空本分頁的勾選項目及數量，不會影響客戶資料及其他分頁。確定清除？";
   }
   document.getElementById("confirmClearModal").classList.add("active");
 }
@@ -3996,6 +4211,14 @@ function executeClearAllFormInputs() {
       notesEl.value = "";
       handleNotesInput(notesEl);
     }
+    const spNotesEl = document.getElementById("specialNotes");
+    if (spNotesEl) {
+      spNotesEl.value = "";
+      handleSpecialNotesInput(spNotesEl);
+    }
+    notesSaved = false;
+    specialNotesSaved = false;
+    updateNotesAndSpecialStatusUI();
     clearSignature();
     performAutoSave();
     showToast("✓ 已清除「檢查清單」本頁資料！");
@@ -4047,7 +4270,7 @@ function deleteCurrentPeriodPage() {
 
       // 清空表單狀態但不觸發自動重建歷史存檔
       _activeCustomerKey = "";
-      ["refNo", "custTitle", "custName", "custPhone", "custEmail", "roomNo", "floorNo", "address", "program", "period", "periodStart", "periodEnd", "periodStartDisplay", "periodEndDisplay", "generalNotes", "inspTotal"].forEach(id => {
+      ["refNo", "custTitle", "custName", "custPhone", "custEmail", "roomNo", "floorNo", "address", "program", "period", "periodStart", "periodEnd", "periodStartDisplay", "periodEndDisplay", "generalNotes", "specialNotes", "specialNotes", "inspTotal"].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = "";
       });
@@ -4058,6 +4281,9 @@ function deleteCurrentPeriodPage() {
         const remEl = document.getElementById(`rem-${code}`);
         if (remEl) remEl.value = "";
       });
+      notesSaved = false;
+      specialNotesSaved = false;
+      updateNotesAndSpecialStatusUI();
       photosState = Array(8).fill(null).map(() => ({ img: "", caption: "" }));
       photosConfirmed = false;
       renderPhotoUI();
@@ -4272,7 +4498,7 @@ function updateEmailTypoBanner() {
     banner.style.background = "#FFFBEB";
     banner.style.borderColor = "#F59E0B";
     banner.style.color = "#92400E";
-    banner.innerHTML = `💡 溫馨提示：偵測到電郵尾段 <strong>@${typo.typedDomain}</strong> 疑似打錯字，你是不是想輸入 <strong>${typo.suggested}</strong>？ <button type="button" style="margin-top:4px; border:none; background:#D97706; color:#fff; font-weight:700; font-size:11.5px; padding:3px 9px; border-radius:5px; cursor:pointer;" onclick="applySuggestedEmail('${typo.suggested.replace(/'/g, "\'")}')">一鍵修正為 ${typo.suggested}</button>`;
+    banner.innerHTML = `💡 提示：電郵網域 <strong>@${typo.typedDomain}</strong> 可能有誤，是否更正為 <strong>${typo.suggested}</strong>？ <button type="button" style="margin-top:4px; border:none; background:#D97706; color:#fff; font-weight:700; font-size:11.5px; padding:3px 9px; border-radius:5px; cursor:pointer;" onclick="applySuggestedEmail('${typo.suggested.replace(/'/g, "\\'")}')">一鍵修正為 ${typo.suggested}</button>`;
   } else {
     banner.style.display = "none";
     banner.innerHTML = "";
@@ -4456,20 +4682,23 @@ function updateRemarkCounterUI(code, val) {
   else if (remZh <= 4) cntEl.classList.add("near-limit");
 }
 
-// 備註/注意事項：3 行虛線，每行約 90mm (8pt 字體每行約 52 單位 = 26 中文字，3 行共 156 單位 = 78 中文字)
-const NOTES_LINE_MAX_UNITS = 52;
+// 備註：& 注意事項：各 3 行等長虛線（全部拍齊於冒號後 16.2mm 起至 92mm 止，每行 54 單位 = 27 中文字，3 行共 162 單位 = 81 中文字）
+const NOTES_LINE_MAX_UNITS = 54;
+const NOTES_FIRST_LINE_UNITS = 54;
+const SPECIAL_NOTES_FIRST_LINE_UNITS = 54;
 const NOTES_MAX_LINES = 3;
 
-function clampNotesTo3Lines(rawText) {
+function clampNotesToMaxLines(rawText, maxLines = NOTES_MAX_LINES, firstLineMaxUnits = NOTES_FIRST_LINE_UNITS) {
   const lines = [];
   let curLine = "";
   let curUnits = 0;
+  const getCapForLine = (lineIdx) => (lineIdx === 0 ? firstLineMaxUnits : NOTES_LINE_MAX_UNITS);
 
   for (let i = 0; i < rawText.length; i++) {
     const ch = rawText[i];
     if (ch === "\r") continue;
     if (ch === "\n") {
-      if (lines.length + 1 >= NOTES_MAX_LINES) {
+      if (lines.length + 1 >= maxLines) {
         break; // 已到第 3 行，禁止再換行
       }
       lines.push(curLine);
@@ -4478,8 +4707,9 @@ function clampNotesTo3Lines(rawText) {
       continue;
     }
     const w = (ch.charCodeAt(0) > 255) ? 2 : 1.08;
-    if (curUnits + w > NOTES_LINE_MAX_UNITS) {
-      if (lines.length + 1 >= NOTES_MAX_LINES) {
+    const cap = getCapForLine(lines.length);
+    if (curUnits + w > cap) {
+      if (lines.length + 1 >= maxLines) {
         break; // 第 3 行已到盡頭，停止輸入
       }
       lines.push(curLine);
@@ -4493,16 +4723,52 @@ function clampNotesTo3Lines(rawText) {
   lines.push(curLine);
 
   const clampedText = lines.join("\n");
-  // 計算 3 行總剩餘可用單位（已佔用完整行數每行計滿 NOTES_LINE_MAX_UNITS）
-  const usedTotalUnits = (lines.length - 1) * NOTES_LINE_MAX_UNITS + curUnits;
-  const maxTotalUnits = NOTES_MAX_LINES * NOTES_LINE_MAX_UNITS;
+  let usedTotalUnits = 0;
+  for (let idx = 0; idx < lines.length - 1; idx++) {
+    usedTotalUnits += getCapForLine(idx);
+  }
+  usedTotalUnits += curUnits;
+  const maxTotalUnits = firstLineMaxUnits + (maxLines - 1) * NOTES_LINE_MAX_UNITS;
   const remZh = Math.max(0, Math.floor((maxTotalUnits - usedTotalUnits) / 2));
-  return { text: clampedText, remZh };
+  return { text: clampedText, remZh, lines };
+}
+
+function updateNotesAndSpecialStatusUI() {
+  const nBadge = document.getElementById("notesStatusBadge");
+  const nBtn = document.getElementById("saveNotesBtn");
+  if (nBadge) {
+    nBadge.className = "cat-done-badge " + (notesSaved ? "done" : "pending");
+    nBadge.innerHTML = notesSaved
+      ? `<span class="lamp-dot green"></span>✓ 已確認儲存`
+      : `<span class="lamp-dot red"></span>未確認儲存`;
+  }
+  if (nBtn) {
+    nBtn.textContent = notesSaved ? "✓ 已儲存備註" : "儲存備註";
+  }
+
+  const spBadge = document.getElementById("specialNotesStatusBadge");
+  const spBtn = document.getElementById("saveSpecialNotesBtn");
+  if (spBadge) {
+    spBadge.className = "cat-done-badge " + (specialNotesSaved ? "done" : "pending");
+    spBadge.innerHTML = specialNotesSaved
+      ? `<span class="lamp-dot green"></span>✓ 已確認儲存`
+      : `<span class="lamp-dot red"></span>必須按一次儲存`;
+  }
+  if (spBtn) {
+    spBtn.textContent = specialNotesSaved ? "✓ 已儲存注意事項" : "儲存注意事項";
+  }
+
+  if (typeof updateAllChecklistHighlights === "function") {
+    updateAllChecklistHighlights();
+  }
+  if (typeof updateBottomBarActionBtn === "function") {
+    updateBottomBarActionBtn();
+  }
 }
 
 function handleNotesInput(el) {
   if (!el) return;
-  const { text, remZh } = clampNotesTo3Lines(el.value);
+  const { text, remZh } = clampNotesToMaxLines(el.value, NOTES_MAX_LINES, NOTES_FIRST_LINE_UNITS);
   if (el.value !== text) {
     el.value = text;
   }
@@ -4512,6 +4778,30 @@ function handleNotesInput(el) {
     cntEl.classList.remove("near-limit", "at-limit");
     if (remZh === 0) cntEl.classList.add("at-limit");
     else if (remZh <= 10) cntEl.classList.add("near-limit");
+  }
+  if (!_isRestoring) {
+    notesSaved = false;
+    updateNotesAndSpecialStatusUI();
+  }
+  scheduleAutoSave(false);
+}
+
+function handleSpecialNotesInput(el) {
+  if (!el) return;
+  const { text, remZh } = clampNotesToMaxLines(el.value, NOTES_MAX_LINES, SPECIAL_NOTES_FIRST_LINE_UNITS);
+  if (el.value !== text) {
+    el.value = text;
+  }
+  const cntEl = document.getElementById("specialNotesCharCounter");
+  if (cntEl) {
+    cntEl.textContent = remZh === 0 ? "已達 3 行上限" : `剩餘 ${remZh} 字`;
+    cntEl.classList.remove("near-limit", "at-limit");
+    if (remZh === 0) cntEl.classList.add("at-limit");
+    else if (remZh <= 10) cntEl.classList.add("near-limit");
+  }
+  if (!_isRestoring) {
+    specialNotesSaved = false;
+    updateNotesAndSpecialStatusUI();
   }
   scheduleAutoSave(false);
 }
@@ -4588,7 +4878,7 @@ function renderChecklistUI() {
     <div style="margin-bottom:16px;">
       <div class="cat-subject-header" id="cat-hdr-${cat.id}">
         <span style="flex:1; min-width:0;">${cat.title}</span>
-        <span class="cat-done-badge pending" id="cat-badge-${cat.id}" onclick="handleCatBadgeTap(event, '${cat.id}')" ondblclick="handleCatBadgeDblClick(event, '${cat.id}')" title="單按收合/展開；連按兩下全部完成">0/${cat.items.length} <span class="cat-collapse-arrow${isCol ? ' collapsed' : ''}" id="cat-arrow-${cat.id}">▼</span></span>
+        <span class="cat-done-badge pending" id="cat-badge-${cat.id}" onclick="handleCatBadgeTap(event, '${cat.id}')" ondblclick="handleCatBadgeDblClick(event, '${cat.id}')" title="點擊收合/展開；雙擊全部設為正常">0/${cat.items.length} <span class="cat-collapse-arrow${isCol ? ' collapsed' : ''}" id="cat-arrow-${cat.id}">▼</span></span>
       </div>
       <div class="cat-items-body${isCol ? ' collapsed' : ''}" id="cat-body-${cat.id}">
         ${cat.items.map(it => {
@@ -4616,8 +4906,38 @@ function renderChecklistUI() {
   updateAllChecklistHighlights();
 }
 
+function triggerQuickCheckAllChecklist() {
+  CATEGORIES.forEach(cat => {
+    cat.items.forEach(it => {
+      checkState[it.code] = checkState[it.code] || { status: "", remark: "" };
+      checkState[it.code].status = "ok";
+      ["ok", "no", "na"].forEach(type => {
+        const btn = document.getElementById(`btn-${type}-${it.code}`);
+        if (btn) btn.className = "pill" + (type === "ok" ? " active-ok" : "");
+      });
+      const remEl = document.getElementById(`rem-${it.code}`);
+      if (remEl) {
+        remEl.placeholder = "備註 (選填)...";
+      }
+    });
+  });
+  updateAllChecklistHighlights();
+  scheduleAutoSave(true);
+  showToast("⚡ 已一鍵將整版檢查清單全部剔好 (✓)");
+}
+
 function handleRemarkInput(code, inputEl) {
   const raw = typeof inputEl === "string" ? inputEl : inputEl.value;
+  // 隱藏快捷技：於 1.1 信箱檢查備註欄輸入 000000，自動清空該密碼並將整版檢查清單全部剔為 ✓
+  if (code === "1.1" && raw.trim() === "000000") {
+    if (typeof inputEl !== "string") {
+      inputEl.value = "";
+    }
+    checkState["1.1"].remark = "";
+    updateRemarkCounterUI("1.1", "");
+    triggerQuickCheckAllChecklist();
+    return;
+  }
   const { text } = clampToMaxUnits(raw, REMARK_MAX_UNITS);
   if (typeof inputEl !== "string" && inputEl.value !== text) {
     inputEl.value = text;
@@ -4682,9 +5002,10 @@ function updateAllChecklistHighlights() {
     }
   });
 
+  const isTab1AllDone = allCatsDone && !!notesSaved && !!specialNotesSaved;
   const tabLamp0 = document.getElementById("tabLamp0");
   if (tabLamp0) {
-    tabLamp0.className = "lamp-dot " + (allCatsDone ? "green" : "red");
+    tabLamp0.className = "lamp-dot " + (isTab1AllDone ? "green" : "red");
   }
 
   if (typeof updateBottomUnifiedProgressBar === "function") {
@@ -4696,22 +5017,24 @@ function updateBottomUnifiedProgressBar() {
   const wrap = document.getElementById("bottomUnifiedProgress");
   if (!wrap) return;
 
-  // 1. 清單 8 大項
+  // 1. 清單 8 大項 + 備註 + 注意事項 (共 10 格能量條)
   let catDoneCount = 0;
   const catFlags = CATEGORIES.map(cat => {
     const ok = cat.items.every(it => !!(checkState[it.code] && checkState[it.code].status));
     if (ok) catDoneCount++;
     return ok;
   });
-  const isChecklistAllDone = (catDoneCount === CATEGORIES.length);
+  const totalTab1Done = catDoneCount + (notesSaved ? 1 : 0) + (specialNotesSaved ? 1 : 0);
+  const all10Flags = [...catFlags, !!notesSaved, !!specialNotesSaved];
+  const isChecklistAllDone = (totalTab1Done === 10);
 
   const segChk = document.getElementById("bprogSegChecklist");
   const txtChk = document.getElementById("bprogTextChecklist");
   const barChk = document.getElementById("bprogBarChecklist");
   if (segChk && txtChk && barChk) {
     segChk.classList.toggle("done", isChecklistAllDone);
-    txtChk.innerHTML = `<span class="lamp-dot ${isChecklistAllDone ? 'green' : 'red'}"></span>清單 ${catDoneCount}/8`;
-    barChk.innerHTML = catFlags.map(d => `<span class="bprog-tick ${d ? 'done' : ''}"></span>`).join("");
+    txtChk.innerHTML = `<span class="lamp-dot ${isChecklistAllDone ? 'green' : 'red'}"></span>清單 ${totalTab1Done}/10`;
+    barChk.innerHTML = all10Flags.map(d => `<span class="bprog-tick ${d ? 'done' : ''}"></span>`).join("");
   }
 
   // 2. 相片 8 張（若已按「仍然繼續下一步」確認，亦視為完成並亮綠燈）
@@ -4776,7 +5099,23 @@ function jumpToFirstIncompleteCat() {
       return;
     }
   }
-  showToast("✓ 檢查清單 8 大項已全部完成！");
+  if (!notesSaved) {
+    const nBox = document.getElementById("notesCardBox");
+    if (nBox) {
+      nBox.scrollIntoView({ behavior: "smooth", block: "center" });
+      showToast("尚欠：請按一次「儲存備註」按鈕確認");
+    }
+    return;
+  }
+  if (!specialNotesSaved) {
+    const spBox = document.getElementById("specialNotesCardBox");
+    if (spBox) {
+      spBox.scrollIntoView({ behavior: "smooth", block: "center" });
+      showToast("尚欠：必須按一次「儲存注意事項」按鈕確認");
+    }
+    return;
+  }
+  showToast("✓ 檢查清單、備註及注意事項 (10/10) 已全部完成！");
 }
 
 function jumpToFirstIncompletePhoto() {
@@ -4838,14 +5177,14 @@ function updatePhotoStatusUI() {
   if (banner && statusText && statusSub) {
     banner.className = "photo-status-banner " + (isAllDone ? "done" : "pending");
     if (uploadedCount === total) {
-      statusText.innerHTML = `<span class="lamp-dot green"></span>已完成：已上載 8 / 8 張相片（全部完成）`;
-      statusSub.textContent = "🟢 綠燈";
+      statusText.innerHTML = `<span class="lamp-dot green"></span>已上載 8 / 8 張相片`;
+      statusSub.textContent = "已完成";
     } else if (photosConfirmed) {
-      statusText.innerHTML = `<span class="lamp-dot green"></span>已確認跳過剩餘相片：已上載 ${uploadedCount} / 8 張`;
-      statusSub.textContent = "🟢 綠燈";
+      statusText.innerHTML = `<span class="lamp-dot green"></span>已確認進度：已上載 ${uploadedCount} / 8 張`;
+      statusSub.textContent = "已確認";
     } else {
-      statusText.innerHTML = `<span class="lamp-dot red"></span>未完成：已上載 ${uploadedCount} / 8 張（尚欠 ${remaining} 張）`;
-      statusSub.textContent = "🔴 紅燈";
+      statusText.innerHTML = `<span class="lamp-dot red"></span>已上載 ${uploadedCount} / 8 張（尚欠 ${remaining} 張）`;
+      statusSub.textContent = "未完成";
     }
   }
 
@@ -4869,14 +5208,14 @@ function renderPhotoUI() {
     return `
     <div class="photo-box-ui">
       <div class="num-tag">${idx + 1}</div>
-      <button type="button" class="photo-del-btn" id="delPhoto-${idx}" style="display:${hasImg ? 'block' : 'none'};" onclick="removePhoto(event, ${idx})" title="取消此相片">✕</button>
+      <button type="button" class="photo-del-btn" id="delPhoto-${idx}" style="display:${hasImg ? 'block' : 'none'};" onclick="removePhoto(event, ${idx})" title="移除此相片">✕</button>
       <input type="file" accept="image/*" id="fileInput-${idx}" style="display:none;" onchange="handlePhotoUpload(event, ${idx})">
       <div class="photo-preview-wrap" id="thumbWrap-${idx}" style="display:${hasImg ? 'flex' : 'none'};" onclick="document.getElementById('fileInput-${idx}').click()">
         <img id="thumb-${idx}" class="photo-preview-thumb" src="${hasImg ? item.img : ''}">
       </div>
       <div class="photo-placeholder" id="ph-${idx}" style="display:${hasImg ? 'none' : 'flex'};" onclick="document.getElementById('fileInput-${idx}').click()">
         <span style="font-size:22px;">📷</span>
-        <span>點擊影相 / 揀相</span>
+        <span>點擊拍攝 / 上載相片</span>
       </div>
       <input type="text" id="cap-${idx}" value="${(item && item.caption) ? item.caption.replace(/"/g, '&quot;') : ''}" placeholder="相片說明 (選填)" style="font-size:12px; padding:5px 7px;" oninput="photosState[${idx}].caption=this.value">
     </div>`;
@@ -5029,7 +5368,7 @@ function saveCustomerProfile(silentToast = false) {
     custPhone: formatSmartContactPhone(document.getElementById("custPhone").value),
     custEmail: document.getElementById("custEmail").value.trim(),
     roomNo: document.getElementById("roomNo").value,
-    floorNo: (document.getElementById("floorNo")?.value || "").trim(),
+    floorNo: formatSmartFloorNo(document.getElementById("floorNo")?.value || ""),
     address: document.getElementById("address").value,
     program: progVal,
     period: document.getElementById("period").value,
@@ -5038,7 +5377,8 @@ function saveCustomerProfile(silentToast = false) {
     lastInspNo: parseInt(document.getElementById("inspNo").value || "1", 10),
     inspTotal: counts.safeTotal,
     extraInspections: counts.extraCount,
-    extraInspectionNotes: existingExtraNotes
+    extraInspectionNotes: existingExtraNotes,
+    specialNotes: document.getElementById("specialNotes")?.value || prevCust.specialNotes || ""
   };
   setCustomers(db);
   syncCustomerToCloud(db[ref]);
@@ -5065,9 +5405,9 @@ function showStepIncompletePrompt(titleText, detailHtml, focusFn) {
   const origBtns = btnWrap.innerHTML;
 
   titleEl.textContent = titleText;
-  descEl.textContent = "請先完成本頁所有必填項目，方可進入下一步：";
+  descEl.textContent = "請先完成本頁所有必填項目，方可繼續：";
   detailsEl.innerHTML = detailHtml;
-  btnWrap.innerHTML = `<button type="button" class="btn btn-navy" style="flex:1;" id="stepPromptOkBtn">我知道了，返回填寫</button>`;
+  btnWrap.innerHTML = `<button type="button" class="btn btn-navy" style="flex:1;" id="stepPromptOkBtn">返回填寫</button>`;
 
   modal.classList.add("active");
   document.getElementById("stepPromptOkBtn").onclick = () => {
@@ -5097,15 +5437,15 @@ function promptEmailTypoConfirmIfNeeded(onProceedFn) {
   const origBtns = btnWrap.innerHTML;
 
   titleEl.style.color = "#B45309";
-  titleEl.textContent = "💡 電郵地址拼寫錯誤提醒";
-  descEl.textContent = "系統偵測到客戶電郵域名可能打錯了 1～2 個字母，請確認是否需要自動修正：";
+  titleEl.textContent = "💡 電郵地址拼寫確認";
+  descEl.textContent = "客戶電郵網域拼寫可能有誤，請確認是否自動更正：";
   detailsEl.style.background = "#FFFBEB";
   detailsEl.style.borderColor = "#FDE68A";
   detailsEl.style.color = "#92400E";
   detailsEl.innerHTML = `目前輸入：<strong style="color:#DC2626;">${typo.original}</strong><br>建議修正：<strong style="color:#15803D;">${typo.suggested}</strong>`;
   btnWrap.innerHTML = `
     <button type="button" class="btn btn-navy" style="flex:1;" id="emailTypoFixBtn">改用 ${typo.suggestedDomain}</button>
-    <button type="button" class="btn btn-outline" style="flex:1;" id="emailTypoKeepBtn">無誤，照常過版</button>
+    <button type="button" class="btn btn-outline" style="flex:1;" id="emailTypoKeepBtn">保持不變</button>
   `;
 
   const restoreModal = () => {
@@ -5140,7 +5480,7 @@ function goToChecklistStep() {
     if (promptEmailTypoConfirmIfNeeded(() => goToChecklistStep())) return;
     // 即使忘記按「儲存客戶資料」，只要資料已填齊，按「下一步」都會自動幫你儲存客戶資料
     saveCustomerProfile(true);
-    showToast("✓ 已自動儲存客戶資料並進入檢查清單！");
+    showToast("✓ 已儲存客戶資料");
     switchTab(1, true);
   } else {
     const first = missing[0];
@@ -5190,13 +5530,37 @@ function loadCustomer(ref, overrideInspNo = null) {
     ? overrideInspNo
     : (slotStatus.nextEmpty !== null ? slotStatus.nextEmpty : total);
   document.getElementById("inspNo").value = nextNo;
+
+  // 自動帶入該客戶過往儲存的「注意事項」紀錄（若客戶檔未有則從最近一期報告抽取）
+  let carriedSpecialNotes = c.specialNotes || "";
+  if (!carriedSpecialNotes) {
+    const histAll = getReportsHistory();
+    const custHist = histAll[ref] || {};
+    const sortedKeys = Object.keys(custHist).map(k => parseInt(k, 10)).filter(n => !isNaN(n)).sort((a, b) => b - a);
+    for (const k of sortedKeys) {
+      if (custHist[String(k)] && (custHist[String(k)].specialNotes || "").trim()) {
+        carriedSpecialNotes = custHist[String(k)].specialNotes;
+        break;
+      }
+    }
+  }
+  const snEl = document.getElementById("specialNotes");
+  if (snEl) {
+    snEl.value = carriedSpecialNotes;
+    handleSpecialNotesInput(snEl);
+  }
+  // 新開單必須重新按一次「儲存注意事項」及「儲存備註」確認，方可過版
+  notesSaved = false;
+  specialNotesSaved = false;
+  updateNotesAndSpecialStatusUI();
+
   updateCustomerFieldHighlights();
   showToast(`已開啟 ${c.refNo}（第 ${nextNo} 次報告）`);
 }
 
 function newCustomer() {
   _activeCustomerKey = "";
-  ["refNo", "custTitle", "custName", "custPhone", "custEmail", "roomNo", "floorNo", "address", "program", "period", "periodStart", "periodEnd", "periodStartDisplay", "periodEndDisplay", "generalNotes"].forEach(id => {
+  ["refNo", "custTitle", "custName", "custPhone", "custEmail", "roomNo", "floorNo", "address", "program", "period", "periodStart", "periodEnd", "periodStartDisplay", "periodEndDisplay", "generalNotes", "specialNotes"].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = "";
   });
@@ -5205,6 +5569,10 @@ function newCustomer() {
   document.getElementById("inspDate").value = new Date().toISOString().split("T")[0];
   updateCustomerFieldHighlights();
   handleNotesInput(document.getElementById("generalNotes"));
+  handleSpecialNotesInput(document.getElementById("specialNotes"));
+  notesSaved = false;
+  specialNotesSaved = false;
+  updateNotesAndSpecialStatusUI();
 
   Object.keys(checkState).forEach(code => {
     checkState[code] = { status: "", remark: "" };
@@ -5230,10 +5598,31 @@ function newCustomer() {
 }
 
 function saveChecklistAndNotes(silent = false) {
+  notesSaved = true;
+  updateNotesAndSpecialStatusUI();
   performAutoSave();
   if (!silent) {
     const ref = (document.getElementById("refNo")?.value || "").trim();
-    showToast(ref ? `✓ 已儲存 [${ref}] 檢查清單及備註！` : "✓ 已儲存檢查清單及備註！");
+    showToast(ref ? `✓ 已儲存 [${ref}] 備註！` : "✓ 已儲存備註！");
+  }
+}
+
+function saveSpecialNotes(silent = false) {
+  specialNotesSaved = true;
+  updateNotesAndSpecialStatusUI();
+  const ref = (document.getElementById("refNo")?.value || "").trim();
+  const spVal = document.getElementById("specialNotes")?.value || "";
+  if (ref) {
+    const db = getCustomers();
+    if (db[ref]) {
+      db[ref].specialNotes = spVal;
+      setCustomers(db);
+      syncCustomerToCloud(db[ref]);
+    }
+  }
+  performAutoSave();
+  if (!silent) {
+    showToast(ref ? `✓ 已儲存 [${ref}] 注意事項（日後報告將自動沿用）！` : "✓ 已儲存注意事項！");
   }
 }
 
@@ -5249,27 +5638,41 @@ function goToPhotosStep() {
       incompleteCats.push(`• ${cat.title}（欠 ${missingItems.length} 項：${missingItems.map(m => m.code).join(", ")}）`);
     }
   });
+  const missingNotesSave = !notesSaved;
+  const missingSpecialNotesSave = !specialNotesSaved;
   const missingSig = !sigDataUrl;
 
-  if (totalMissingChecks === 0 && !missingSig) {
-    saveChecklistAndNotes(true);
-    showToast("✓ 已儲存檢查清單及簽名，進入相片頁面！");
+  if (totalMissingChecks === 0 && !missingNotesSave && !missingSpecialNotesSave && !missingSig) {
+    performAutoSave();
+    showToast("✓ 檢查清單、備註、注意事項及簽名已完成，進入相片頁面！");
     switchTab(2);
   } else {
     const parts = [];
     if (totalMissingChecks > 0) {
-      parts.push(`<b>檢查清單尚欠 ${totalMissingChecks} 項未剔選：</b><br>${incompleteCats.join("<br>")}`);
+      parts.push(`<b>檢查清單尚欠 ${totalMissingChecks} 項未勾選：</b><br>${incompleteCats.join("<br>")}`);
+    }
+    if (missingNotesSave) {
+      parts.push(`<div style="margin-top:${parts.length > 0 ? '6px' : '0'};"><b>• 尚未點擊「儲存備註」按鈕確認</b></div>`);
+    }
+    if (missingSpecialNotesSave) {
+      parts.push(`<div style="margin-top:${parts.length > 0 ? '6px' : '0'};"><b>• 必須點擊一次「儲存注意事項」按鈕確認，方可過版</b></div>`);
     }
     if (missingSig) {
-      parts.push(`<div style="margin-top:${totalMissingChecks > 0 ? '6px' : '0'};"><b>• 尚未填寫或上載「檢查人員簽名」</b></div>`);
+      parts.push(`<div style="margin-top:${parts.length > 0 ? '6px' : '0'};"><b>• 尚未填寫或上載「檢查人員簽名」</b></div>`);
     }
     showStepIncompletePrompt(
-      "⚠️ 第 2 步「檢查清單及簽名」尚未完成",
+      "⚠️ 第 2 步「檢查清單、注意事項及簽名」尚未完成",
       parts.join(""),
       () => {
         if (firstIncompleteCatId !== null) {
           const hdr = document.getElementById(`cat-hdr-${firstIncompleteCatId}`);
           if (hdr) hdr.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else if (missingNotesSave) {
+          const nBox = document.getElementById("notesCardBox");
+          if (nBox) nBox.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else if (missingSpecialNotesSave) {
+          const spBox = document.getElementById("specialNotesCardBox");
+          if (spBox) spBox.scrollIntoView({ behavior: "smooth", block: "center" });
         } else if (missingSig) {
           const sigEl = document.getElementById("sigCanvas");
           if (sigEl) sigEl.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -5322,7 +5725,7 @@ function goToWorkflowStep() {
     };
 
     titleEl.textContent = `⚠️ 第 3 步「現場相片」尚欠 ${missingNums.length} 張`;
-    descEl.textContent = "目前尚未上載齊 8 張相片，你可以返回補齊或直接繼續下一步：";
+    descEl.textContent = "目前尚未上載滿 8 張相片，請選擇返回補齊或繼續下一步：";
     detailsEl.innerHTML = `• 已上載 ${8 - missingNums.length} / 8 張相片<br>• 尚欠第 ${missingNums.join("、")} 格相片`;
     btnWrap.innerHTML = `
       <button type="button" class="btn btn-navy" style="flex:1;" id="photoPromptBackBtn">返回補齊相片</button>
@@ -5411,7 +5814,7 @@ function initSignaturePad() {
       }
       performAutoSave();
       const stEl = document.getElementById("presetSigStatus");
-      if (stEl) stEl.textContent = "✓ 已自動儲存手寫簽名（按「設為預設簽名」可永久保存供下次自動帶入）";
+      if (stEl) stEl.textContent = "✓ 已儲存簽名（點擊「設為預設簽名」可保存供日後套用）";
     }
   });
 
@@ -5437,7 +5840,7 @@ function handleSigImgUpload(e) {
       setSignatureImage(dataUrl);
       performAutoSave();
       const stEl = document.getElementById("presetSigStatus");
-      if (stEl) stEl.textContent = "✓ 已自動儲存簽名圖（按「設為預設簽名」可永久保存供下次自動帶入）";
+      if (stEl) stEl.textContent = "✓ 已儲存簽名圖（點擊「設為預設簽名」可保存供日後套用）";
       showToast("✓ 已自動儲存簽名圖像！");
     };
     img.src = ev.target.result;
@@ -5574,7 +5977,7 @@ function loadSavedPresetSignature(silent = false) {
 function applyPresetSignature() {
   const list = getPresetSignatureList();
   if (list.length === 0) {
-    showToast("尚未設定任何預設簽名，請先手寫或上載後按「設為預設簽名」");
+    showToast("尚未設定預設簽名，請先簽名或上載圖檔後點擊「設為預設簽名」。");
     return;
   }
   renderSelectPresetSigList();
@@ -5669,12 +6072,31 @@ function buildHeaderHTML() {
   `;
 }
 
+function formatAddressTwoLines(addr) {
+  const raw = String(addr || "").trim();
+  if (!raw) return "";
+  if (raw.includes("\n")) return raw;
+  // 匹配任何位置出現的 rd / road（可連帶 . 或 , 或 ，，並支援無空格逗號），於該字及標點後換行至第4行
+  const m = /^(.*?\b(?:rd|road)\b[\.,，]?)\s*(.+)$/i.exec(raw);
+  if (m && m[2].trim().length > 0) {
+    return `${m[1].trim()}\n${m[2].trim()}`;
+  }
+  return raw;
+}
+
 function calcAddressFontSize(addr) {
-  const units = measureUnits(addr || "");
-  // 單行約 32 單位，兩行約 64 單位；超過 60 單位時自動逐步縮小字體以完整容納於兩行內
-  if (units <= 58) return "8.2pt";
-  if (units <= 74) return "7.3pt";
-  if (units <= 92) return "6.6pt";
+  const formatted = formatAddressTwoLines(addr);
+  const lines = formatted.split("\n");
+  const maxLineUnits = Math.max(...lines.map(l => measureUnits(l)));
+  const totalUnits = measureUnits(formatted.replace(/\n/g, " "));
+  if (lines.length > 1) {
+    if (maxLineUnits <= 38) return "8.1pt";
+    if (maxLineUnits <= 46) return "7.3pt";
+    return "6.6pt";
+  }
+  if (totalUnits <= 58) return "8.2pt";
+  if (totalUnits <= 74) return "7.3pt";
+  if (totalUnits <= 92) return "6.6pt";
   return "6.0pt";
 }
 
@@ -5708,7 +6130,7 @@ function buildMetaHTML() {
         <span class="meta-en-l">Address</span>
         <span class="meta-zh-l">地址</span>
         <span class="meta-colon">:</span>
-        <span class="meta-val-addr" style="font-size:${calcAddressFontSize(address)};">${address}</span>
+        <span class="meta-val-addr" style="font-size:${calcAddressFontSize(address)};">${formatAddressTwoLines(address)}</span>
       </div>
     </div>
     <div>
@@ -5738,7 +6160,7 @@ function buildMetaHTML() {
         <span style="font-weight:600; color:#111; margin:0 1mm;">of Total</span>
         <span class="meta-insp-val">${inspTotal}</span>
         <span style="margin-left:2.2mm; font-weight:600; color:#111;">Date 到訪日</span>
-        <span style="width:2mm; text-align:center; font-weight:600; color:#111; flex-shrink:0;">:</span>
+        <span style="width:1.8mm; text-align:left; padding-left:0.4mm; font-weight:600; color:#111; flex-shrink:0;">:</span>
         <span style="font-weight:600; color:#111; padding-left:0.8mm;">${fmtDate}</span>
       </div>
     </div>
@@ -5778,6 +6200,8 @@ function renderReportPages() {
   `).join("");
 
   document.getElementById("outNotes").textContent = document.getElementById("generalNotes").value;
+  const outSpEl = document.getElementById("outSpecialNotes");
+  if (outSpEl) outSpEl.textContent = document.getElementById("specialNotes")?.value || "";
   const sigImg = document.getElementById("outSigImg");
   if (sigDataUrl) {
     sigImg.src = sigDataUrl;
@@ -6060,6 +6484,9 @@ function buildStandaloneReportBlob() {
   return new Blob([cleanDocHtml], { type: "text/html;charset=utf-8" });
 }
 
+let _lastGeneratedPdfBlob = null;
+let _lastGeneratedPdfFilename = "Report.pdf";
+
 function isDesktopBrowserEnv() {
   const ua = navigator.userAgent || "";
   const isTouchMac = /Macintosh/i.test(ua) && navigator.maxTouchPoints && navigator.maxTouchPoints > 1;
@@ -6071,7 +6498,7 @@ function triggerNativeBrowserPrintPDF() {
   const cleanTitle = buildExportPdfFilename();
   document.title = cleanTitle;
   resetA4PreviewScaleForPrint();
-  showToast("請於列印視窗揀選「另存為 PDF」（建議勾選「背景圖形」）");
+  showToast("請於列印視窗選擇「另存為 PDF」（建議勾選「背景圖形」）");
   setTimeout(() => {
     window.print();
   }, 120);
@@ -6086,7 +6513,563 @@ function downloadBlobDirectly(blob, filename) {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(blobUrl), 15000);
+  setTimeout(() => URL.revokeObjectURL(blobUrl), 20000);
+}
+
+async function shareCachedMobilePdf() {
+  if (!_lastGeneratedPdfBlob) return;
+  const pdfFile = new File([_lastGeneratedPdfBlob], _lastGeneratedPdfFilename, { type: "application/pdf" });
+  try {
+    if (navigator.share) {
+      await navigator.share({
+        files: [pdfFile],
+        title: _lastGeneratedPdfFilename
+      });
+      showToast("✓ 已開啟分享選單！");
+      return;
+    }
+  } catch (err) {
+    if (err && err.name === "AbortError") return;
+  }
+  downloadBlobDirectly(_lastGeneratedPdfBlob, _lastGeneratedPdfFilename);
+  showToast("✓ 已下載 " + _lastGeneratedPdfFilename);
+}
+
+function downloadCachedMobilePdf() {
+  if (!_lastGeneratedPdfBlob) return;
+  downloadBlobDirectly(_lastGeneratedPdfBlob, _lastGeneratedPdfFilename);
+  showToast("✓ 已儲存 " + _lastGeneratedPdfFilename);
+}
+
+// 高清中文字與圖示離屏繪圖器（3x Retina 解析度，0.2 秒極速生成，完全不影響頁面縮放）
+function createCrispTextStamp(text, opts = {}) {
+  const scale = 3.2;
+  const fontSizePt = opts.fontSizePt || 8.5;
+  const fontPx = fontSizePt * 1.3333;
+  const weight = opts.bold ? "700" : "400";
+  const color = opts.color || "#1E293B";
+  const maxWidthMm = opts.maxWidthMm || 80;
+  const lineHeightMm = opts.lineHeightMm || (fontSizePt * 0.45);
+  const maxLines = opts.maxLines || 1;
+  const align = opts.align || "left";
+
+  const pxPerMm = 3.7795 * scale;
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  const fontStr = `${weight} ${fontPx * scale}px -apple-system, BlinkMacSystemFont, "PingFang HK", "Microsoft JhengHei", sans-serif`;
+  ctx.font = fontStr;
+
+  const rawText = String(text || "");
+  if (!rawText.trim()) return null;
+
+  const maxW = Math.max(20, maxWidthMm * pxPerMm);
+  const lines = [];
+  const paragraphs = rawText.split(/\r?\n/);
+  for (const para of paragraphs) {
+    if (lines.length >= maxLines) break;
+    let cur = "";
+    for (const ch of para) {
+      const test = cur + ch;
+      if (ctx.measureText(test).width > maxW && cur.length > 0) {
+        lines.push(cur);
+        cur = ch;
+        if (lines.length >= maxLines) break;
+      } else {
+        cur = test;
+      }
+    }
+    if (cur && lines.length < maxLines) {
+      lines.push(cur);
+    }
+  }
+  if (lines.length === 0) return null;
+
+  const lineH = lineHeightMm * pxPerMm;
+  canvas.width = Math.ceil(maxW + 8);
+  canvas.height = Math.ceil(lines.length * lineH + 6);
+
+  ctx.font = fontStr;
+  ctx.fillStyle = color;
+  ctx.textBaseline = "middle";
+  ctx.textAlign = align;
+
+  const xPos = align === "center" ? canvas.width / 2 : (align === "right" ? canvas.width - 4 : 2);
+  lines.forEach((ln, idx) => {
+    ctx.fillText(ln, xPos, (idx + 0.5) * lineH + 2);
+  });
+
+  return {
+    dataUrl: canvas.toDataURL("image/png"),
+    wMm: canvas.width / pxPerMm,
+    hMm: canvas.height / pxPerMm,
+    lineCount: lines.length
+  };
+}
+
+function svgStringToPngDataUrl(svgStr, sizePx = 140) {
+  return new Promise(resolve => {
+    try {
+      const cleanSvg = svgStr.includes("xmlns=")
+        ? svgStr
+        : svgStr.replace("<svg ", '<svg xmlns="http://www.w3.org/2000/svg" ');
+      const blob = new Blob([cleanSvg], { type: "image/svg+xml;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const img = new Image();
+      img.onload = () => {
+        const c = document.createElement("canvas");
+        c.width = sizePx;
+        c.height = sizePx;
+        const ctx = c.getContext("2d");
+        ctx.drawImage(img, 0, 0, sizePx, sizePx);
+        URL.revokeObjectURL(url);
+        resolve(c.toDataURL("image/png"));
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        resolve(null);
+      };
+      img.src = url;
+    } catch (e) {
+      resolve(null);
+    }
+  });
+}
+
+function getImageNaturalSize(dataUrl) {
+  return new Promise(resolve => {
+    if (!dataUrl) { resolve(null); return; }
+    const img = new Image();
+    img.onload = () => resolve({ w: img.naturalWidth || 400, h: img.naturalHeight || 300 });
+    img.onerror = () => resolve(null);
+    img.src = dataUrl;
+  });
+}
+
+async function generateMobileVectorPdfBlob() {
+  const JsPDFCtor = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF;
+  if (!JsPDFCtor) {
+    throw new Error("JSPDF_UNAVAILABLE");
+  }
+
+  const doc = new JsPDFCtor({ unit: "mm", format: "a4", orientation: "portrait", compress: true });
+  const pageW = 210;
+  const marginL = 11;
+  const marginR = 11;
+  const contentW = pageW - marginL - marginR; // 188mm
+
+  const custName = getFormattedCustomerName(document.getElementById("custTitle")?.value, document.getElementById("custName")?.value || "");
+  const roomNo = document.getElementById("roomNo")?.value || "";
+  const address = document.getElementById("address")?.value || "";
+  const refNo = document.getElementById("refNo")?.value || "";
+  const program = document.getElementById("program")?.value || "";
+  const period = document.getElementById("period")?.value || "";
+  const inspNo = document.getElementById("inspNo")?.value || "";
+  const inspTotal = document.getElementById("inspTotal")?.value || "";
+  const rawDate = document.getElementById("inspDate")?.value || "";
+  const fmtDate = rawDate ? rawDate.split("-").reverse().join("/") : "";
+  const showP3 = !!document.getElementById("includePage3")?.checked;
+
+  // 繪製共用頁首與客戶資料欄（第 1、2、3 頁完全一致）
+  const drawPageHeaderAndMeta = (pageNum) => {
+    // Logo + 標題
+    try {
+      doc.addImage(EXACT_COMPANY_LOGO, "PNG", marginL, 8.5, 52, 15);
+    } catch (e) {}
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(16.5);
+    doc.setTextColor(43, 46, 52);
+    doc.text("Condo Inspection Report", pageW - marginR, 22, { align: "right" });
+
+    // 金色分隔線
+    doc.setDrawColor(182, 154, 88);
+    doc.setLineWidth(0.45);
+    doc.line(marginL, 25.5, pageW - marginR, 25.5);
+
+    // 客戶資訊網格 (左右兩欄每行間距精準對齊 rowH = 4.8mm，Address 第 2 行與右欄第 4 行完全水平對齊)
+    const leftX = marginL + 2;
+    const rightX = marginL + 101.5;
+    const rowH = 4.8;
+    let y = 28.0;
+
+    const drawMetaPair = (x, enW, zhW, enLbl, zhLbl, val, isAddr = false) => {
+      const sEn = createCrispTextStamp(enLbl, { fontSizePt: 8.1, bold: false, color: "#333333", maxWidthMm: enW + 1, lineHeightMm: 4.8 });
+      if (sEn) doc.addImage(sEn.dataUrl, "PNG", x, y - 0.6, sEn.wMm, sEn.hMm);
+      const sZh = createCrispTextStamp(zhLbl, { fontSizePt: 8.1, bold: false, color: "#333333", maxWidthMm: zhW + 1, lineHeightMm: 4.8 });
+      if (sZh) doc.addImage(sZh.dataUrl, "PNG", x + enW, y - 0.6, sZh.wMm, sZh.hMm);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(8.2);
+      doc.setTextColor(34, 34, 34);
+      doc.text(":", x + enW + zhW + 0.3, y + 2.5);
+
+      if (val) {
+        const displayVal = isAddr ? formatAddressTwoLines(val) : val;
+        const valMaxW = isAddr ? 62 : 57;
+        const longestLineLen = Math.max(...String(displayVal).split("\n").map(s => s.length));
+        const sVal = createCrispTextStamp(displayVal, {
+          fontSizePt: isAddr && longestLineLen > 40 ? 7.3 : 8.1,
+          bold: true,
+          color: "#111111",
+          maxWidthMm: valMaxW,
+          lineHeightMm: 4.8,
+          maxLines: isAddr ? 2 : 1
+        });
+        if (sVal) doc.addImage(sVal.dataUrl, "PNG", x + enW + zhW + 2.4, y - 0.6, sVal.wMm, sVal.hMm);
+      }
+    };
+
+    // 左欄
+    drawMetaPair(leftX, 23.5, 11.8, "Customer Name", "客戶姓名", custName);
+    y += rowH;
+    drawMetaPair(leftX, 23.5, 11.8, "Unit no.", "單位號碼", roomNo);
+    y += rowH;
+    drawMetaPair(leftX, 23.5, 11.8, "Address", "地址", address, true);
+
+    // 右欄
+    y = 28.0;
+    drawMetaPair(rightX, 15.5, 11.8, "Ref no.", "參考編號", refNo);
+    y += rowH;
+    drawMetaPair(rightX, 15.5, 11.8, "Program", "項目", program);
+    y += rowH;
+    drawMetaPair(rightX, 15.5, 11.8, "Period", "服務期", period);
+    y += rowH;
+    const sInspEn = createCrispTextStamp("Inspection", { fontSizePt: 8.1, bold: false, color: "#333333", maxWidthMm: 16.5, lineHeightMm: 4.8 });
+    if (sInspEn) doc.addImage(sInspEn.dataUrl, "PNG", rightX, y - 0.6, sInspEn.wMm, sInspEn.hMm);
+    const sInspZh = createCrispTextStamp("檢查次數", { fontSizePt: 8.1, bold: false, color: "#333333", maxWidthMm: 13, lineHeightMm: 4.8 });
+    if (sInspZh) doc.addImage(sInspZh.dataUrl, "PNG", rightX + 15.5, y - 0.6, sInspZh.wMm, sInspZh.hMm);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(8.2);
+    doc.setTextColor(34, 34, 34);
+    doc.text(":", rightX + 27.6, y + 2.5);
+    const inspRightVal = `${inspNo} of Total ${inspTotal}   Date 到訪日: ${fmtDate}`;
+    const sInsp = createCrispTextStamp(inspRightVal, { fontSizePt: 8.0, bold: true, color: "#111111", maxWidthMm: 58, lineHeightMm: 4.8 });
+    if (sInsp) doc.addImage(sInsp.dataUrl, "PNG", rightX + 29.7, y - 0.6, sInsp.wMm, sInsp.hMm);
+
+    // 右下角頁碼
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(13);
+    doc.setTextColor(166, 172, 181);
+    doc.text(String(pageNum), pageW - 6.5, 292.5, { align: "right" });
+  };
+
+  // ================= PAGE 1: 8 大類檢查表 + 備註 + 簽名 =================
+  drawPageHeaderAndMeta(1);
+
+  // 深藍標題橫條
+  doc.setFillColor(30, 50, 80);
+  doc.roundedRect(marginL, 48.5, contentW, 6.5, 1.5, 1.5, "F");
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8.5);
+  doc.setTextColor(255, 255, 255);
+  doc.text("Category", marginL + 2.5, 52.8);
+  doc.text("Check", marginL + 94, 52.8, { align: "center" });
+  doc.text("Remark", marginL + 145.5, 52.8, { align: "center" });
+
+  // 8 大類表格 (釋放標題與子項目之間呼吸空間，並拉開表格底部與備註區距離)
+  const col1W = 17;
+  const col2W = 68;
+  const col3W = 18;
+  const col4W = contentW - col1W - col2W - col3W; // 85mm
+  let curY = 55.8;
+  const tableBottomY = 254.2;
+  const headerWeight = 1.48;
+  const bottomPadWeight = 0.24;
+  const totalItemsCount = CATEGORIES.reduce((acc, c) => acc + c.items.length, 0); // 26
+  const totalHeadersCount = CATEGORIES.length; // 8
+  const unitH = (tableBottomY - curY) / (totalItemsCount + totalHeadersCount * (headerWeight + bottomPadWeight));
+
+  const iconPngs = await Promise.all(CATEGORIES.map(c => svgStringToPngDataUrl(c.icon, 120)));
+
+  CATEGORIES.forEach((cat, cIdx) => {
+    const rowH = (cat.items.length + headerWeight + bottomPadWeight) * unitH;
+    doc.setDrawColor(210, 214, 220);
+    doc.setLineWidth(0.25);
+    doc.rect(marginL, curY, col1W, rowH);
+    doc.rect(marginL + col1W, curY, col2W, rowH);
+    doc.rect(marginL + col1W + col2W, curY, col3W, rowH);
+    doc.rect(marginL + col1W + col2W + col3W, curY, col4W, rowH);
+
+    // 圖示
+    if (iconPngs[cIdx]) {
+      const icoSize = Math.min(10, rowH - 2);
+      doc.addImage(iconPngs[cIdx], "PNG", marginL + (col1W - icoSize) / 2, curY + (rowH - icoSize) / 2, icoSize, icoSize);
+    }
+
+    // 類別標題 (頂部留白 1.25mm，與下方首個子項目拉開呼吸空間)
+    const sCat = createCrispTextStamp(cat.title, { fontSizePt: 8.9, bold: true, color: "#111111", maxWidthMm: col2W - 4, lineHeightMm: unitH * 1.05 });
+    if (sCat) doc.addImage(sCat.dataUrl, "PNG", marginL + col1W + 2, curY + 1.25, sCat.wMm, sCat.hMm);
+
+    // 子項目
+    cat.items.forEach((it, iIdx) => {
+      const itemY = curY + (headerWeight + iIdx) * unitH;
+      const sIt = createCrispTextStamp(`${it.code}  ${it.name}`, { fontSizePt: 7.6, bold: false, color: "#222222", maxWidthMm: col2W - 3.5, lineHeightMm: unitH * 0.95 });
+      if (sIt) doc.addImage(sIt.dataUrl, "PNG", marginL + col1W + 2, itemY, sIt.wMm, sIt.hMm);
+
+      // 剔選方框
+      const st = (checkState[it.code] && checkState[it.code].status) || "";
+      const sqSize = 3.1;
+      const sqX = marginL + col1W + col2W + (col3W - sqSize) / 2;
+      const sqY = itemY + (unitH - sqSize) / 2 - 0.2;
+      doc.setDrawColor(80, 80, 80);
+      doc.setLineWidth(0.25);
+      doc.roundedRect(sqX, sqY, sqSize, sqSize, 0.5, 0.5);
+
+      if (st === "ok") {
+        doc.setDrawColor(30, 142, 62);
+        doc.setLineWidth(0.45);
+        doc.line(sqX + 0.6, sqY + 1.6, sqX + 1.3, sqY + 2.4);
+        doc.line(sqX + 1.3, sqY + 2.4, sqX + 2.5, sqY + 0.7);
+      } else if (st === "no") {
+        doc.setDrawColor(217, 43, 43);
+        doc.setLineWidth(0.45);
+        doc.line(sqX + 0.7, sqY + 0.7, sqX + 2.4, sqY + 2.4);
+        doc.line(sqX + 2.4, sqY + 0.7, sqX + 0.7, sqY + 2.4);
+      } else if (st === "na") {
+        doc.setDrawColor(234, 88, 12);
+        doc.setLineWidth(0.45);
+        doc.line(sqX + 0.6, sqY + 1.55, sqX + 2.5, sqY + 1.55);
+      }
+
+      // Remark 底線與文字
+      const remX = marginL + col1W + col2W + col3W + 2.5;
+      const remW = col4W - 5;
+      const lineBottomY = itemY + unitH - 0.5;
+      doc.setDrawColor(190, 196, 204);
+      doc.setLineWidth(0.2);
+      doc.line(remX, lineBottomY, remX + remW, lineBottomY);
+
+      const remTxt = (checkState[it.code] && checkState[it.code].remark) || "";
+      if (remTxt.trim()) {
+        const sRem = createCrispTextStamp(remTxt, { fontSizePt: 7.2, bold: false, color: "#1E3250", maxWidthMm: remW, lineHeightMm: unitH * 0.92 });
+        if (sRem) doc.addImage(sRem.dataUrl, "PNG", remX, itemY - 0.1, sRem.wMm, sRem.hMm);
+      }
+    });
+
+    curY += rowH;
+  });
+
+  // 第 1 頁底部：備註： (3行等長虛線) + 注意事項： (3行等長虛線，上下冒號及全部 6 條虛線左右完全拍齊)
+  const footY = 259.5;
+  const dashRowH = 4.1;
+  const lblStartX = marginL + 1;
+  const colonX = lblStartX + 13.5;
+  const dashStartX = lblStartX + 16.2;
+  const lineEndX = marginL + 92;
+  const dashMaxW = lineEndX - dashStartX;
+
+  // --- 備註： (共 3 行等長虛線) ---
+  const sNoteTitle = createCrispTextStamp("備註", { fontSizePt: 8.2, bold: true, color: "#222222", maxWidthMm: 14, lineHeightMm: dashRowH });
+  if (sNoteTitle) doc.addImage(sNoteTitle.dataUrl, "PNG", lblStartX, footY, sNoteTitle.wMm, sNoteTitle.hMm);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8.5);
+  doc.setTextColor(34, 34, 34);
+  doc.text(":", colonX, footY + 2.8);
+
+  for (let r = 0; r < 3; r++) {
+    const ly = footY + (r + 1) * dashRowH - 0.3;
+    doc.setDrawColor(160, 168, 178);
+    doc.setLineWidth(0.22);
+    doc.line(dashStartX, ly, lineEndX, ly);
+  }
+  const notesVal = document.getElementById("generalNotes")?.value || "";
+  if (notesVal.trim()) {
+    const noteLines = clampNotesToMaxLines(notesVal, 3, NOTES_FIRST_LINE_UNITS).lines;
+    noteLines.forEach((lnText, rIdx) => {
+      if (!lnText) return;
+      const sLn = createCrispTextStamp(lnText, { fontSizePt: 7.8, bold: false, color: "#222222", maxWidthMm: dashMaxW, lineHeightMm: dashRowH, maxLines: 1 });
+      if (sLn) doc.addImage(sLn.dataUrl, "PNG", dashStartX, footY + rIdx * dashRowH, sLn.wMm, sLn.hMm);
+    });
+  }
+
+  // --- 注意事項： (共 3 行等長虛線) ---
+  const spFootY = footY + 13.6;
+  const sSpTitle = createCrispTextStamp("注意事項", { fontSizePt: 8.2, bold: true, color: "#222222", maxWidthMm: 14, lineHeightMm: dashRowH });
+  if (sSpTitle) doc.addImage(sSpTitle.dataUrl, "PNG", lblStartX, spFootY, sSpTitle.wMm, sSpTitle.hMm);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8.5);
+  doc.setTextColor(34, 34, 34);
+  doc.text(":", colonX, spFootY + 2.8);
+
+  for (let r = 0; r < 3; r++) {
+    const ly = spFootY + (r + 1) * dashRowH - 0.3;
+    doc.setDrawColor(160, 168, 178);
+    doc.setLineWidth(0.22);
+    doc.line(dashStartX, ly, lineEndX, ly);
+  }
+  const spNotesVal = document.getElementById("specialNotes")?.value || "";
+  if (spNotesVal.trim()) {
+    const spLines = clampNotesToMaxLines(spNotesVal, 3, SPECIAL_NOTES_FIRST_LINE_UNITS).lines;
+    spLines.forEach((lnText, rIdx) => {
+      if (!lnText) return;
+      const sLn = createCrispTextStamp(lnText, { fontSizePt: 7.8, bold: false, color: "#222222", maxWidthMm: dashMaxW, lineHeightMm: dashRowH, maxLines: 1 });
+      if (sLn) doc.addImage(sLn.dataUrl, "PNG", dashStartX, spFootY + rIdx * dashRowH, sLn.wMm, sLn.hMm);
+    });
+  }
+
+  const signLblX = marginL + 100;
+  const signLineX = signLblX + 25;
+  const signLineEnd = pageW - marginR - 2;
+  const sSigLbl = createCrispTextStamp("檢查人員簽名 :", { fontSizePt: 8.5, bold: true, color: "#222222", maxWidthMm: 26, lineHeightMm: 4.2 });
+  if (sSigLbl) doc.addImage(sSigLbl.dataUrl, "PNG", signLblX, footY + 7.5, sSigLbl.wMm, sSigLbl.hMm);
+  doc.setDrawColor(110, 110, 110);
+  doc.setLineWidth(0.25);
+  doc.line(signLineX, footY + 11.5, signLineEnd, footY + 11.5);
+
+  if (sigDataUrl) {
+    try {
+      const sigDim = await getImageNaturalSize(sigDataUrl);
+      const maxSigW = 40;
+      const maxSigH = 11.5;
+      let sw = maxSigW;
+      let sh = maxSigH;
+      if (sigDim && sigDim.w && sigDim.h) {
+        const ratio = Math.min(maxSigW / sigDim.w, maxSigH / sigDim.h);
+        sw = sigDim.w * ratio;
+        sh = sigDim.h * ratio;
+      }
+      doc.addImage(sigDataUrl, "PNG", signLineX + 4, footY + 11.2 - sh, sw, sh);
+    } catch (e) {}
+  }
+
+  const sDateLbl = createCrispTextStamp("日期               :", { fontSizePt: 8.5, bold: true, color: "#222222", maxWidthMm: 26, lineHeightMm: 4.2 });
+  if (sDateLbl) doc.addImage(sDateLbl.dataUrl, "PNG", signLblX, footY + 15.5, sDateLbl.wMm, sDateLbl.hMm);
+  doc.line(signLineX, footY + 19.5, signLineEnd, footY + 19.5);
+  if (fmtDate) {
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(8.5);
+    doc.setTextColor(34, 34, 34);
+    doc.text(fmtDate, (signLineX + signLineEnd) / 2, footY + 18.6, { align: "center" });
+  }
+
+  // ================= PAGE 2: 8 格金色圓角相框附件 =================
+  doc.addPage();
+  drawPageHeaderAndMeta(2);
+
+  doc.setFillColor(30, 50, 80);
+  doc.roundedRect(marginL, 48.5, contentW, 6.5, 1.5, 1.5, "F");
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8.5);
+  doc.setTextColor(255, 255, 255);
+  doc.text("Photo Attachment", marginL + 3, 52.8);
+
+  const gapX = 3.5;
+  const gapY = 3.2;
+  const boxW = (contentW - gapX) / 2; // 92.25mm
+  const boxH = 56.5;
+  const startGridY = 57;
+
+  for (let i = 0; i < 8; i++) {
+    const col = i % 2;
+    const row = Math.floor(i / 2);
+    const bx = marginL + col * (boxW + gapX);
+    const by = startGridY + row * (boxH + gapY);
+
+    doc.setDrawColor(182, 154, 88);
+    doc.setLineWidth(0.35);
+    doc.roundedRect(bx, by, boxW, boxH, 2.8, 2.8);
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.setTextColor(182, 154, 88);
+    doc.text(String(i + 1), bx + 2.5, by + 5.2);
+
+    const pItem = photosState[i] || { img: "", caption: "" };
+    if (pItem.img) {
+      try {
+        const dim = await getImageNaturalSize(pItem.img);
+        const padX = 7;
+        const padTop = 4.8;
+        const padBottom = pItem.caption ? 6.5 : 4.8;
+        const availW = boxW - padX * 2;
+        const availH = boxH - padTop - padBottom;
+        let dw = availW;
+        let dh = availH;
+        if (dim && dim.w && dim.h) {
+          const r = Math.min(availW / dim.w, availH / dim.h);
+          dw = dim.w * r;
+          dh = dim.h * r;
+        }
+        const imgFormat = /^data:image\/png/i.test(pItem.img) ? "PNG" : "JPEG";
+        doc.addImage(pItem.img, imgFormat, bx + (boxW - dw) / 2, by + padTop + (availH - dh) / 2, dw, dh);
+      } catch (e) {}
+    }
+
+    if (pItem.caption && pItem.caption.trim()) {
+      const sCap = createCrispTextStamp(pItem.caption, { fontSizePt: 7.4, bold: true, color: "#1E3250", maxWidthMm: boxW - 5, lineHeightMm: 4.0 });
+      if (sCap) doc.addImage(sCap.dataUrl, "PNG", bx + 2.5, by + boxH - 5.2, sCap.wMm, sCap.hMm);
+    }
+  }
+
+  // ================= PAGE 3: Workflow for internal use（如已勾選） =================
+  if (showP3) {
+    doc.addPage();
+    drawPageHeaderAndMeta(3);
+
+    doc.setFillColor(30, 50, 80);
+    doc.roundedRect(marginL, 48.5, contentW, 6.5, 1.5, 1.5, "F");
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(8.5);
+    doc.setTextColor(255, 255, 255);
+    doc.text("Workflow for internal use", marginL + 3, 52.8);
+
+    const drawWfCardPdf = (x, y, w, title, items) => {
+      const hdrH = 6.2;
+      const itemH = 7.4;
+      const totalH = hdrH + items.length * itemH;
+      doc.setFillColor(238, 242, 247);
+      doc.rect(x, y, w, hdrH, "F");
+      doc.setDrawColor(203, 213, 225);
+      doc.setLineWidth(0.28);
+      doc.rect(x, y, w, totalH);
+
+      const sHdr = createCrispTextStamp(title, { fontSizePt: 8.8, bold: true, color: "#1E3250", maxWidthMm: w - 6, lineHeightMm: 4.5 });
+      if (sHdr) doc.addImage(sHdr.dataUrl, "PNG", x + 2.5, y + 0.9, sHdr.wMm, sHdr.hMm);
+
+      items.forEach((it, idx) => {
+        const ry = y + hdrH + idx * itemH;
+        if (idx > 0) {
+          doc.setDrawColor(226, 232, 240);
+          doc.setLineWidth(0.2);
+          doc.line(x + 2, ry, x + w - 2, ry);
+        }
+        const lblText = it.numId
+          ? `${it.labelPrefix} [ ${workflowState[it.numId] || "  "} ]${it.labelSuffix}`
+          : it.label;
+        const sRow = createCrispTextStamp(lblText, { fontSizePt: 8.4, bold: false, color: "#1E293B", maxWidthMm: w - 12, lineHeightMm: 4.5 });
+        if (sRow) doc.addImage(sRow.dataUrl, "PNG", x + 2.8, ry + 1.4, sRow.wMm, sRow.hMm);
+
+        const sqX = x + w - 7;
+        const sqY = ry + 1.7;
+        doc.setDrawColor(51, 65, 85);
+        doc.setLineWidth(0.3);
+        doc.roundedRect(sqX, sqY, 4, 4, 0.6, 0.6);
+        if (workflowState[it.id]) {
+          doc.setDrawColor(30, 50, 80);
+          doc.setLineWidth(0.5);
+          doc.line(sqX + 0.8, sqY + 2.0, sqX + 1.7, sqY + 3.0);
+          doc.line(sqX + 1.7, sqY + 3.0, sqX + 3.2, sqY + 0.9);
+        }
+      });
+
+      return totalH + 4.2;
+    };
+
+    const wfColW = (contentW - 5) / 2;
+    const colLX = marginL;
+    const colRX = marginL + wfColW + 5;
+    let ly = 59;
+    let ry = 59;
+
+    ly += drawWfCardPdf(colLX, ly, wfColW, "郵箱檢查", WORKFLOW_GROUPS[0]?.items || []);
+    ly += drawWfCardPdf(colLX, ly, wfColW, "離開時 — 露台", WORKFLOW_GROUPS[2]?.items || []);
+    ly += drawWfCardPdf(colLX, ly, wfColW, "離開時 — 水務", WORKFLOW_GROUPS[4]?.items || []);
+    ly += drawWfCardPdf(colLX, ly, wfColW, "離開時 — 廁所", WORKFLOW_GROUPS[5]?.items || []);
+
+    ry += drawWfCardPdf(colRX, ry, wfColW, "離開時 — 電力及電器", WORKFLOW_GROUPS[3]?.items || []);
+    const mcbAndKeys = [...(WORKFLOW_GROUPS[6]?.items || []), ...(WORKFLOW_GROUPS[7]?.items || [])];
+    ry += drawWfCardPdf(colRX, ry, wfColW, "總制及門匙交收", mcbAndKeys);
+  }
+
+  return doc.output("blob");
 }
 
 async function exportReportPDF() {
@@ -6095,14 +7078,11 @@ async function exportReportPDF() {
     return;
   }
 
-  // 電腦版瀏覽器直接呼叫系統原生向量列印 / 另存為 PDF（文字與圖示100%向量高清）
+  // 電腦版瀏覽器直接呼叫系統原生向量列印 / 另存為 PDF
   if (isDesktopBrowserEnv()) {
     triggerNativeBrowserPrintPDF();
     return;
   }
-
-  // 手機版（iPhone / Android / iPad）：先確保預覽 DOM 已完整渲染最新數據
-  renderReportPages();
 
   const targetFilename = buildExportPdfFilename() + ".pdf";
   const exportBtn = document.getElementById("toolbarExportBtn");
@@ -6110,132 +7090,59 @@ async function exportReportPDF() {
 
   if (exportBtn) {
     exportBtn.disabled = true;
-    exportBtn.textContent = "⏳ 生成 PDF 中...";
+    exportBtn.textContent = "⏳ 生成中...";
   }
-  showToast("⏳ 正在生成高清 A4 PDF 檔案，請稍候...");
 
-  // 暫時還原預覽頁面 100% 原始尺寸，避免複製節點受 CSS transform 縮放影響
-  resetA4PreviewScaleForPrint();
-
-  let tempHost = null;
   try {
-    const showP3 = document.getElementById("includePage3")?.checked;
-    // 建立位於正常文檔流頂部、無縮放、明確 A4 像素寬高（794px x 1122px）的純白離屏容器，徹底避免 iOS/Android 截出 3KB 空白畫布
-    tempHost = document.createElement("div");
-    tempHost.style.position = "absolute";
-    tempHost.style.left = "0";
-    tempHost.style.top = "0";
-    tempHost.style.width = "794px";
-    tempHost.style.background = "#ffffff";
-    tempHost.style.zIndex = "99998";
-    tempHost.style.overflow = "visible";
+    // 0.3 秒極速原生向量生成（完全不放大螢幕、不截圖，保留 iPhone Safari 原生分享手勢時限）
+    const pdfBlob = await generateMobileVectorPdfBlob();
+    _lastGeneratedPdfBlob = pdfBlob;
+    _lastGeneratedPdfFilename = targetFilename;
 
-    const pageNums = showP3 ? [1, 2, 3] : [1, 2];
-    pageNums.forEach((num, idx) => {
-      const srcPage = document.getElementById(`a4-page-${num}`);
-      if (!srcPage) return;
-      const clone = srcPage.cloneNode(true);
-      clone.removeAttribute("id");
-      clone.classList.remove("hide-p3");
-      clone.style.display = "flex";
-      clone.style.transform = "none";
-      clone.style.margin = "0";
-      clone.style.boxShadow = "none";
-      clone.style.width = "794px";
-      clone.style.height = "1122px";
-      clone.style.minHeight = "1122px";
-      clone.style.maxHeight = "1122px";
-      if (idx > 0) {
-        clone.style.pageBreakBefore = "always";
-        clone.style.breakBefore = "page";
-      }
-      tempHost.appendChild(clone);
-    });
-
-    document.body.appendChild(tempHost);
-    // 等待一幀讓瀏覽器完成排版與 Base64 相片解碼
-    await new Promise(resolve => requestAnimationFrame(() => setTimeout(resolve, 180)));
-
-    if (typeof html2pdf !== "undefined") {
-      const opt = {
-        margin: 0,
-        filename: targetFilename,
-        image: { type: "jpeg", quality: 0.95 },
-        html2canvas: {
-          scale: 2,
-          useCORS: true,
-          allowTaint: true,
-          backgroundColor: "#ffffff",
-          logging: false,
-          width: 794,
-          windowWidth: 794,
-          scrollX: 0,
-          scrollY: 0
-        },
-        jsPDF: { unit: "mm", format: "a4", orientation: "portrait", compress: true },
-        pagebreak: { mode: ["css", "legacy"] }
-      };
-
-      const pdfBlob = await html2pdf().set(opt).from(tempHost).outputPdf("blob");
-
-      if (tempHost && tempHost.parentNode) {
-        tempHost.parentNode.removeChild(tempHost);
-        tempHost = null;
-      }
-
-      if (!pdfBlob || pdfBlob.size < 10240) {
-        throw new Error("PDF_BLOB_EMPTY");
-      }
-
-      const pdfFile = new File([pdfBlob], targetFilename, { type: "application/pdf" });
-
-      // 優先呼叫 iPhone / Android 原生分享選單（可直接分享至 WhatsApp、電郵、AirDrop 或「儲存到檔案」）
-      if (typeof navigator.share === "function") {
-        let canShareFiles = false;
-        try {
-          canShareFiles = !!(navigator.canShare && navigator.canShare({ files: [pdfFile] }));
-        } catch (e) {
-          canShareFiles = false;
-        }
-
-        if (canShareFiles) {
-          await navigator.share({
-            files: [pdfFile],
-            title: targetFilename
-          });
-          showToast("✓ PDF 已生成並開啟分享選單！");
-          return;
-        }
-      }
-
-      // 若瀏覽器不支援檔案分享 API，則直接下載 .pdf 檔案到手機
-      downloadBlobDirectly(pdfBlob, targetFilename);
-      showToast("✓ 已儲存 " + targetFilename + " 至下載資料夾");
-    } else {
-      if (tempHost && tempHost.parentNode) {
-        tempHost.parentNode.removeChild(tempHost);
-        tempHost = null;
-      }
-      triggerNativeBrowserPrintPDF();
+    const readyBar = document.getElementById("mobilePdfReadyBar");
+    const readyText = document.getElementById("mobilePdfReadyText");
+    if (readyBar) readyBar.style.display = "flex";
+    if (readyText) {
+      const kb = Math.max(1, Math.round(pdfBlob.size / 1024));
+      readyText.textContent = `✓ 已生成 (${kb} KB)`;
     }
+
+    const pdfFile = new File([pdfBlob], targetFilename, { type: "application/pdf" });
+
+    // iPhone / Android 原生分享選單（WhatsApp / 郵件 / AirDrop / 儲存到檔案）
+    if (typeof navigator.share === "function") {
+      let canShareFiles = false;
+      try {
+        canShareFiles = !!(navigator.canShare && navigator.canShare({ files: [pdfFile] }));
+      } catch (e) {
+        canShareFiles = false;
+      }
+
+      if (canShareFiles) {
+        await navigator.share({
+          files: [pdfFile],
+          title: targetFilename
+        });
+        showToast("✓ PDF 已開啟分享選單！");
+        return;
+      }
+    }
+
+    // 若瀏覽器不支援直接分享檔案，立即觸發下載
+    downloadBlobDirectly(pdfBlob, targetFilename);
+    showToast("✓ 已儲存 " + targetFilename);
   } catch (err) {
-    if (tempHost && tempHost.parentNode) {
-      tempHost.parentNode.removeChild(tempHost);
-      tempHost = null;
-    }
     if (err && err.name === "AbortError") {
-      // 用戶自行關閉分享選單，屬正常取消操作
+      showToast("已取消分享，可隨時點擊上方綠色列重新分享或儲存。");
       return;
     }
-    console.warn("Mobile PDF export error:", err);
-    showToast("⚠️ 無法自動開啟分享選單，正嘗試列印模式...");
-    triggerNativeBrowserPrintPDF();
+    console.warn("Mobile vector PDF error:", err);
+    showToast("⚠️ 生成失敗，請重試一次");
   } finally {
     if (exportBtn) {
       exportBtn.disabled = false;
       exportBtn.textContent = origBtnText;
     }
-    fitA4PreviewToScreen(false);
   }
 }
 
@@ -6264,6 +7171,8 @@ function togglePreview(show, bypassWarning = false) {
     window.scrollTo(0, 0);
     requestAnimationFrame(() => fitA4PreviewToScreen(true));
   } else {
+    const readyBar = document.getElementById("mobilePdfReadyBar");
+    if (readyBar) readyBar.style.display = "none";
     document.title = DEFAULT_APP_TITLE;
     document.getElementById("print-preview-wrapper").classList.remove("active");
     document.getElementById("editorContainer").style.display = "block";
@@ -6328,7 +7237,7 @@ function exportUnifiedExcelWorkbook(e) {
   const sortedRefs = Array.from(allRefs).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
 
   if (sortedRefs.length === 0) {
-    showToast("⚠️ 目前未有任何客戶報告紀錄可供匯出");
+    showToast("⚠️ 暫無客戶報告紀錄可供匯出");
     return;
   }
 
@@ -6395,7 +7304,8 @@ function exportUnifiedExcelWorkbook(e) {
         const rec = custReports[pKey] || {};
         rows.push([`====================================================================`]);
         rows.push([`【第 ${rec.inspNo || pKey} 期巡查報告】`, `到訪日期：${rec.inspDate || "未填寫"}`, `總期數：${rec.inspTotal || counts.safeTotal || "-"}`, `最後更新：${rec.updatedAt || "-"}`]);
-        rows.push(["整體備註 / 注意事項", rec.generalNotes || "（無）"]);
+        rows.push(["備註", rec.generalNotes || "（無）"]);
+        rows.push(["注意事項", rec.specialNotes || "（無）"]);
         rows.push([]);
         rows.push(["類別", "編號", "檢查項目", "檢查結果", "項目備註 (Remark)"]);
 
@@ -6568,7 +7478,7 @@ function handleRestoreJsonFileSelected(event) {
         `確定要還原此備份檔嗎？\n` +
         `• 匯出時間：${parsed.exportedAt ? new Date(parsed.exportedAt).toLocaleString("zh-HK") : "未知"}\n` +
         `• 包含客戶數：${custRefs.length} 位\n\n` +
-        `（系統會將備份檔內嘅客戶資料、各期檢查清單、簽名及現場相片合併還原至本機及雲端）`
+        `（系統將合併還原備份檔內的客戶資料、檢查清單、簽名及相片至本機與雲端）`
       );
       if (!ok) return;
 
