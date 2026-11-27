@@ -107,6 +107,50 @@
     padding: 4px 8px;
     font-size: 10.5px;
   }
+  .topbar-action-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    height: 27px;
+    padding: 0 11px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: all 0.18s ease;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+  }
+  .topbar-action-pill:active {
+    transform: scale(0.96);
+  }
+  .topbar-action-pill.lock-locked {
+    border: 1.2px solid var(--gold);
+    background: linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%);
+    color: var(--navy);
+  }
+  .topbar-action-pill.lock-unlocked {
+    border: 1.2px solid #86EFAC;
+    background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
+    color: #15803D;
+  }
+  .topbar-action-pill.pill-delete {
+    border: 1.2px solid #FECACA;
+    background: linear-gradient(135deg, #FFF5F5 0%, #FEE2E2 100%);
+    color: #DC2626;
+  }
+  .last-edited-subtle-footer {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 400;
+    color: #9CA3AF;
+    letter-spacing: 0.2px;
+    user-select: none;
+  }
   .app-topbar h1 { font-size: 15px; margin: 0; font-weight: 800; color: var(--navy); display: flex; align-items: center; gap: 8px; letter-spacing: -0.2px; }
   .app-topbar span.badge { background: var(--gold); color: #fff; font-size: 11px; padding: 2px 7px; border-radius: 10px; }
 
@@ -1791,7 +1835,7 @@
 
       </div>
       <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v131</span>
+        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v134</span>
         <span id="cloudSyncBadge" class="cloud-status-orb syncing" title="雲端連線中..." aria-label="雲端連線狀態">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
@@ -1823,8 +1867,9 @@
     </div>
     <div class="topbar-actions-row" id="topbarActionsRow">
       <button type="button" class="btn btn-sm" id="btnBackHome" style="flex:0 0 auto; padding:6px 12px; background:#F4F6F9; color:var(--navy); border:1px solid #D5DCE4;" onclick="goHome()">← 返回主頁</button>
-      <div style="margin-left:auto; display:flex; align-items:center; gap:6px;">
-        <button type="button" class="btn btn-compact" id="btnTopDeletePage" style="background:#FEF2F2; color:#DC2626; border:1px solid #FECACA;" onclick="deleteCurrentPeriodPage()">刪除巡查</button>
+      <div style="margin-left:auto; display:flex; align-items:center; gap:7px;">
+        <button type="button" class="topbar-action-pill lock-unlocked" id="btnTopLockToggle" onclick="toggleReportLockState()" title="點擊鎖定或解鎖編輯">🔓 編輯中</button>
+        <button type="button" class="topbar-action-pill pill-delete" id="btnTopDeletePage" onclick="deleteCurrentPeriodPage()" title="刪除此期巡查紀錄">🗑️ 刪除巡查</button>
       </div>
     </div>
   </div>
@@ -1959,6 +2004,7 @@
           <button type="button" class="btn btn-navy" style="flex:1;" onclick="saveCustomerProfile()">儲存客戶資料</button>
           <button type="button" class="btn btn-gold" style="flex:1;" onclick="goToChecklistStep()">下一步：檢查清單 →</button>
         </div>
+        <div class="last-edited-subtle-footer" id="lastEditedFooterText">最後編輯：尚未儲存</div>
       </div>
     </div>
 
@@ -2355,6 +2401,7 @@ function initFirebaseRealtimeSync() {
             workflowState: data.workflowState || {},
             workflowSaved: !!data.workflowSaved,
             photosConfirmed: !!data.photosConfirmed,
+            isLocked: data.isLocked !== undefined ? !!data.isLocked : !!data.workflowSaved,
             sigDataUrl: data.sigDataUrl || "",
             updatedAt: data.updatedAt || ""
           };
@@ -2460,6 +2507,7 @@ async function syncReportAndPhotosToCloud(ref, rec) {
       workflowState: rec.workflowState || {},
       workflowSaved: !!rec.workflowSaved,
       photosConfirmed: !!rec.photosConfirmed,
+      isLocked: !!rec.isLocked,
       sigDataUrl: rec.sigDataUrl || "",
       updatedAt: rec.updatedAt || "",
       updatedAtMs: Date.now()
@@ -2823,7 +2871,90 @@ function markWorkflowDirty() {
   updateWorkflowStatusUI();
 }
 
+let isReportLocked = false;
+let shouldLockOnNextOpen = false;
+let currentReportUpdatedAt = "";
+
+function formatNowDateTimeHK() {
+  const d = new Date();
+  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const yyyy = d.getFullYear();
+  const hh = String(d.getHours()).padStart(2, "0");
+  const min = String(d.getMinutes()).padStart(2, "0");
+  return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
+}
+
+function updateLastEditedBannerUI() {
+  const footerEl = document.getElementById("lastEditedFooterText");
+  if (footerEl) {
+    footerEl.textContent = currentReportUpdatedAt
+      ? `最後編輯：${currentReportUpdatedAt}`
+      : "最後編輯：尚未儲存";
+  }
+}
+
+function applyReportLockUI() {
+  const btn = document.getElementById("btnTopLockToggle");
+  if (btn) {
+    if (isReportLocked) {
+      btn.className = "topbar-action-pill lock-locked";
+      btn.innerHTML = "🔒 已鎖定";
+      btn.title = "此報告已完工鎖定，點擊即可解鎖編輯";
+    } else {
+      btn.className = "topbar-action-pill lock-unlocked";
+      btn.innerHTML = "🔓 編輯中";
+      btn.title = "點擊可立即手動鎖定報告";
+    }
+  }
+  const editor = document.getElementById("editorContainer");
+  if (editor) {
+    const controls = editor.querySelectorAll("input, select, textarea");
+    controls.forEach(el => {
+      if (el.id === "homeSearchInput") return;
+      el.disabled = !!isReportLocked;
+    });
+    const sigCanvas = document.getElementById("sigCanvas");
+    if (sigCanvas) {
+      sigCanvas.style.pointerEvents = isReportLocked ? "none" : "auto";
+      sigCanvas.style.opacity = isReportLocked ? "0.78" : "1";
+    }
+  }
+  updateLastEditedBannerUI();
+}
+
+function setReportLockState(locked, showNotice = false) {
+  isReportLocked = !!locked;
+  applyReportLockUI();
+  if (showNotice) {
+    showToast(isReportLocked ? "🔒 報告已鎖定（唯讀保護中）" : "🔓 已解鎖，可編輯報告內容");
+  }
+}
+
+function toggleReportLockState() {
+  if (isReportLocked) {
+    shouldLockOnNextOpen = true;
+    setReportLockState(false, true);
+  } else {
+    shouldLockOnNextOpen = true;
+    setReportLockState(true, true);
+    performAutoSave();
+  }
+}
+
+function guardLockedEditAction() {
+  if (!isReportLocked) return false;
+  showToast("🔒 此報告已鎖定，請先按上方「🔒 已鎖定」解鎖後再編輯");
+  const btn = document.getElementById("btnTopLockToggle");
+  if (btn) {
+    btn.style.transform = "scale(1.08)";
+    setTimeout(() => { btn.style.transform = ""; }, 200);
+  }
+  return true;
+}
+
 function saveWorkflowTab() {
+  if (guardLockedEditAction()) return;
   const { missing } = getMissingWorkflowItems();
   if (missing.length > 0) {
     const first = missing[0];
@@ -2842,9 +2973,11 @@ function saveWorkflowTab() {
     return;
   }
   workflowSaved = true;
+  shouldLockOnNextOpen = true;
   updateWorkflowStatusUI();
   performAutoSave();
-  showToast("✓ 已儲存離場核對，現可預覽及匯出 PDF。");
+  updateLastEditedBannerUI();
+  showToast("✓ 已儲存離場核對（退出後將自動鎖定）");
 }
 
 function showToast(msg) {
@@ -2942,9 +3075,11 @@ function saveCurrentReportToHistory() {
     workflowState: JSON.parse(JSON.stringify(workflowState)),
     workflowSaved: !!workflowSaved,
     photosConfirmed: !!photosConfirmed,
+    isLocked: !!(shouldLockOnNextOpen || workflowSaved),
     sigDataUrl: sigDataUrl || "",
-    updatedAt: new Date().toLocaleDateString("zh-HK")
+    updatedAt: (!isReportLocked || !currentReportUpdatedAt) ? (currentReportUpdatedAt = formatNowDateTimeHK()) : currentReportUpdatedAt
   };
+  updateLastEditedBannerUI();
   setReportsHistory(hist);
   syncReportAndPhotosToCloud(ref, hist[ref][String(inspNo)]);
 }
@@ -3021,9 +3156,16 @@ function applyReportRecordToEditor(ref, rec) {
     loadSavedPresetSignature(true);
   }
 
+  currentReportUpdatedAt = rec.updatedAt || "";
+  const autoLockThisReport = !!(rec.isLocked || rec.workflowSaved);
+  shouldLockOnNextOpen = autoLockThisReport;
+  setReportLockState(autoLockThisReport, false);
+
   updateCustomerFieldHighlights();
   _isRestoring = false;
-  performAutoSave();
+  if (!autoLockThisReport) {
+    performAutoSave();
+  }
 }
 
 function openHistoricalReport(e, ref, inspNo) {
@@ -3306,6 +3448,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const topLogo = document.getElementById("topbarLogoImg");
   if (topLogo) topLogo.src = EXACT_COMPANY_LOGO;
 
+  const editorEl = document.getElementById("editorContainer");
+  if (editorEl) {
+    editorEl.addEventListener("click", (e) => {
+      if (!isReportLocked) return;
+      const target = e.target;
+      if (target && (target.matches("input, select, textarea") || target.closest(".photo-placeholder, .photo-preview-wrap"))) {
+        guardLockedEditAction();
+      }
+    }, true);
+  }
+
 
   document.getElementById("inspDate").value = new Date().toISOString().split("T")[0];
   renderChecklistUI();
@@ -3323,7 +3476,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initFirebaseRealtimeSync();
 
   // 監聽整個編輯區所有輸入與變更事件，觸發即時儲存
-  const editorEl = document.getElementById("editorContainer");
   if (editorEl) {
     editorEl.addEventListener("input", () => scheduleAutoSave(false));
     editorEl.addEventListener("change", () => scheduleAutoSave(true));
@@ -4283,6 +4435,7 @@ function handlePeriodStartChange() {
 let _pendingClearTabScope = "checklist";
 
 function clearCurrentTabInputs(scope) {
+  if (guardLockedEditAction()) return;
   _pendingClearTabScope = scope || "checklist";
   const titleEl = document.getElementById("confirmClearTitle");
   const descEl = document.getElementById("confirmClearDesc");
@@ -4995,6 +5148,7 @@ function handleCatBadgeTap(e, catId) {
 }
 
 function handleCatBadgeDblClick(e, catId) {
+  if (guardLockedEditAction()) return;
   if (e) {
     e.stopPropagation();
     e.preventDefault();
@@ -5086,6 +5240,7 @@ function handleRemarkInput(code, inputEl) {
 }
 
 function setCheck(code, val) {
+  if (guardLockedEditAction()) return;
   const cur = checkState[code].status;
   checkState[code].status = (cur === val) ? "" : val;
   updatePillUI(code);
@@ -5361,6 +5516,7 @@ function renderPhotoUI() {
 }
 
 function removePhoto(e, idx) {
+  if (guardLockedEditAction()) return;
   if (e) e.stopPropagation();
   photosState[idx].img = "";
   photosConfirmed = false;
@@ -5452,6 +5608,7 @@ function setCustomers(db) {
 }
 
 function saveCustomerProfile(silentToast = false) {
+  if (!silentToast && guardLockedEditAction()) return false;
   updateCustomerFieldHighlights();
   const missing = getMissingCustomerFields();
   if (missing.length > 0) {
@@ -5729,6 +5886,9 @@ function newCustomer() {
   updateWorkflowStatusUI();
   clearSignature();
   loadSavedPresetSignature(true);
+  currentReportUpdatedAt = "";
+  shouldLockOnNextOpen = false;
+  setReportLockState(false, false);
 
   showToast("已清空表單，請輸入新客戶 Ref no.");
   const refInput = document.getElementById("refNo");
@@ -5737,6 +5897,7 @@ function newCustomer() {
 }
 
 function saveChecklistAndNotes(silent = false) {
+  if (!silent && guardLockedEditAction()) return;
   notesSaved = true;
   updateNotesAndSpecialStatusUI();
   performAutoSave();
@@ -5747,6 +5908,7 @@ function saveChecklistAndNotes(silent = false) {
 }
 
 function saveSpecialNotes(silent = false) {
+  if (!silent && guardLockedEditAction()) return;
   specialNotesSaved = true;
   updateNotesAndSpecialStatusUI();
   const ref = (document.getElementById("refNo")?.value || "").trim();
@@ -5822,6 +5984,7 @@ function goToPhotosStep() {
 }
 
 function savePhotosTab(silent = false) {
+  if (!silent && guardLockedEditAction()) return;
   performAutoSave();
   if (!silent) {
     const uploadedCount = photosState.filter(p => !!(p && p.img)).length;
@@ -6039,6 +6202,7 @@ function setPresetSignatureList(list) {
 }
 
 function savePresetSignature() {
+  if (guardLockedEditAction()) return;
   if (!sigDataUrl) {
     showToast("請先手寫簽名或上載簽名圖像！");
     return;
@@ -6114,6 +6278,7 @@ function loadSavedPresetSignature(silent = false) {
 }
 
 function applyPresetSignature() {
+  if (guardLockedEditAction()) return;
   const list = getPresetSignatureList();
   if (list.length === 0) {
     showToast("尚未設定預設簽名，請先簽名或上載圖檔後點擊「設為預設簽名」。");
@@ -6187,6 +6352,7 @@ function deletePresetSigItem(e, sigId) {
 }
 
 function clearSignature() {
+  if (!_isRestoring && guardLockedEditAction()) return;
   const canvas = document.getElementById("sigCanvas");
   canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
   const prevImg = document.getElementById("presetSigPreview");
@@ -7294,6 +7460,11 @@ async function exportReportPDF() {
     showToast("⚠️ 報告仍有未完成項目，請補齊後再匯出 PDF！");
     return;
   }
+  if (!_previewOnlyPage3) {
+    shouldLockOnNextOpen = true;
+    performAutoSave();
+    updateLastEditedBannerUI();
+  }
 
   // 電腦版瀏覽器直接呼叫系統原生向量列印 / 另存為 PDF
   if (isDesktopBrowserEnv()) {
@@ -7419,7 +7590,11 @@ function togglePreview(show, bypassWarning = false, onlyPage3 = false) {
     if (wrapper) wrapper.classList.toggle("only-p3-mode", _previewOnlyPage3);
 
     const canExport = _previewOnlyPage3 ? true : isEntireReportReadyForExport();
+    if (!_previewOnlyPage3 && canExport) {
+      shouldLockOnNextOpen = true;
+    }
     performAutoSave();
+    updateLastEditedBannerUI();
     renderReportPages();
 
     if (_previewOnlyPage3) {
