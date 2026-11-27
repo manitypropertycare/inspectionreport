@@ -7701,7 +7701,7 @@ function togglePreview(show, bypassWarning = false, onlyPage3 = false) {
 </script>
 
 <script>
-// ================= 全庫統一多客戶分頁 Excel 匯出 + 完整系統 JSON 備份與還原 (v95) =================
+// ================= 全庫統一多客戶分頁 Excel 匯出 + 完整系統 JSON 備份與還原 (v137) =================
 function toggleHomeBackupMenu(e) {
   if (e) e.stopPropagation();
   const menu = document.getElementById("homeBackupDropdown");
@@ -7948,7 +7948,7 @@ async function exportFullSystemJsonBackup(e) {
 
   const backupPayload = {
     app: "Manity Inspection Report",
-    version: "v95",
+    version: "v137",
     exportedAt: new Date().toISOString(),
     customersCount: Object.keys(customers).length,
     customers: customers,
