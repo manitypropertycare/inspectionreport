@@ -2718,10 +2718,17 @@
         <div id="cslPwdPhoneHint" style="font-size:10.5px; color:#92400E; margin-top:4px; display:none;"></div>
       </div>
 
-      <!-- 訊息內容預覽（一鍵合併發送：連結 + 得體密碼規則提示，不直接寫出密碼數字） -->
+      <!-- 訊息內容預覽（支援一鍵切換 中文 / English / 中英雙語，不含明文密碼） -->
       <div style="background:#FAF7F0; border:1px solid #E5D4A8; border-radius:8px; padding:8px 10px; margin-bottom:10px;">
-        <div style="font-size:10.5px; font-weight:800; color:#8C6D23; margin-bottom:4px;">📨 發送訊息內容預覽（不含明文密碼）：</div>
-        <textarea id="cslCombinedMsgPreview" readonly rows="6" style="font-size:11.5px; line-height:1.45; color:#1E3250; background:#fff; border:1px solid #E2D5B5; border-radius:6px; padding:6px 8px; resize:none; height:112px; min-height:112px;" onclick="this.select()"></textarea>
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; margin-bottom:5px; flex-wrap:wrap;">
+          <span style="font-size:10.5px; font-weight:800; color:#8C6D23;">📨 訊息預覽（不含明文密碼）：</span>
+          <div style="display:inline-flex; gap:3px; background:#EFE6CF; padding:2px; border-radius:999px;">
+            <button type="button" id="cslLangBtn_zh" onclick="setCslShareLang('zh')" style="border:none; border-radius:999px; padding:2px 8px; font-size:10px; font-weight:800; cursor:pointer; background:var(--navy); color:#fff;">中文</button>
+            <button type="button" id="cslLangBtn_en" onclick="setCslShareLang('en')" style="border:none; border-radius:999px; padding:2px 8px; font-size:10px; font-weight:800; cursor:pointer; background:transparent; color:var(--navy);">English</button>
+            <button type="button" id="cslLangBtn_bi" onclick="setCslShareLang('bi')" style="border:none; border-radius:999px; padding:2px 8px; font-size:10px; font-weight:800; cursor:pointer; background:transparent; color:var(--navy);">雙語</button>
+          </div>
+        </div>
+        <textarea id="cslCombinedMsgPreview" readonly rows="6" style="font-size:11.5px; line-height:1.45; color:#1E3250; background:#fff; border:1px solid #E2D5B5; border-radius:6px; padding:6px 8px; resize:none; height:118px; min-height:118px;" onclick="this.select()"></textarea>
       </div>
 
       <!-- 一鍵合併發送按鈕 -->
@@ -2756,11 +2763,8 @@
       <!-- 客戶端密碼驗證關卡 -->
       <div id="remotePasswordGateCard" class="card" style="display:none; max-width:400px; margin:20px auto; padding:20px 16px; border-top:4px solid var(--navy); text-align:center;">
         <div style="font-size:28px; margin-bottom:6px;">🔐</div>
-        <div style="font-size:16px; font-weight:800; color:var(--navy); margin-bottom:6px;">請輸入專屬閱覽密碼</div>
-        <div id="remotePwdGateDesc" style="font-size:12.5px; color:#475569; line-height:1.5; margin-bottom:12px;">
-          為保障您的個人資料安全，請輸入職員向您發送的閱覽密碼以檢視發票文件（格式：<code>manity</code> + 電話尾 6 位數字）：
-        </div>
-        <input type="text" id="remoteAccessPwdInput" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="請輸入密碼（例如 manity123456）" style="text-align:center; font-size:14px; font-weight:700; height:38px; margin-bottom:8px;" onkeydown="if(event.key==='Enter') verifyRemoteClientPassword()">
+        <div style="font-size:16px; font-weight:800; color:var(--navy); margin-bottom:12px;">請輸入密碼</div>
+        <input type="text" id="remoteAccessPwdInput" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="請輸入密碼" style="text-align:center; font-size:14px; font-weight:700; height:38px; margin-bottom:8px;" onkeydown="if(event.key==='Enter') verifyRemoteClientPassword()">
         <div id="remoteAccessPwdErr" style="display:none; font-size:12px; font-weight:700; color:#DC2626; margin-bottom:8px;">⚠️ 密碼不正確，請核對後重新輸入！</div>
         <button type="button" class="btn btn-navy" style="width:100%; padding:11px; font-size:14px; font-weight:800;" onclick="verifyRemoteClientPassword()">🔓 解鎖並閱覽發票文件</button>
       </div>
@@ -2812,20 +2816,20 @@
 
         <!-- 完成簽署後顯示 -->
         <div id="remoteSignedSuccessCard" class="card" style="display:none; padding:18px 14px; border-top:4px solid #16A34A; text-align:center;">
-          <div style="font-size:18px; font-weight:800; color:#15803D; margin-bottom:6px;">🎉 已完成電子簽署！</div>
-          <div id="remoteSignedSuccessDesc" style="font-size:13px; color:#334155; line-height:1.5; margin-bottom:14px;">
-            您的簽署已即時同步至 Manity Property Care 系統。您可一鍵通知職員或下載已簽署的發票 PDF 留底：
+          <div style="font-size:17.5px; font-weight:800; color:#15803D; margin-bottom:6px;">感謝您選用 Manity Property Care</div>
+          <div id="remoteSignedSuccessDesc" style="font-size:13px; color:#334155; line-height:1.55; margin-bottom:14px;">
+            發票已完成電子簽署並安全存檔。我們將竭誠為您的物業提供貼心專業的管理服務。您可透過以下方式通知專員或下載發票副本：
           </div>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
             <button type="button" class="btn" style="background:#16A34A; color:#fff; padding:10px 8px; font-size:13px; font-weight:800;" onclick="notifyStaffViaWhatsAppAfterSign()">
-              💬 WhatsApp 通知職員
+              💬 WhatsApp 通知Manity
             </button>
             <button type="button" class="btn btn-gold" style="padding:10px 8px; font-size:13px; font-weight:800;" onclick="notifyStaffViaEmailAfterSign()">
-              ✉️ 電郵通知職員
+              ✉️ 電郵通知Manity
             </button>
           </div>
           <button type="button" id="btnRemoteDownloadPdf" class="btn btn-navy" style="width:100%; padding:11px 16px; font-size:14px;" onclick="downloadRemoteSignedInvoicePdf()">
-            📥 下載已簽署發票 PDF 留底
+            📥 保存已簽署發票 (PDF)
           </button>
         </div>
       </div>
@@ -2842,7 +2846,7 @@
 
       </div>
       <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v243</span>
+        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v246</span>
         <span id="cloudSyncBadge" class="cloud-status-orb syncing" title="雲端連線中..." aria-label="雲端連線狀態">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
@@ -14275,9 +14279,39 @@ function closeClientSignLinkModal() {
   document.getElementById("clientSignLinkModal")?.classList.remove("active");
 }
 
-function buildPoliteClientSignShareText(refNo, url) {
-  const refLabel = refNo ? `（參考編號：${refNo}）` : "";
-  return `您好！感謝您選用 Manity Property Care 物業管理服務。\n\n茲附上您的專屬發票文件閱覽及電子簽署連結${refLabel}：\n${url}\n\n🔐 為保障您的個人資料私隱，文件已設密碼保護。請於打開連結後輸入閱覽密碼：manity 加上閣下登記的聯絡電話號碼最後 6 位數字（全部小寫，無需空格）。\n\n請細閱文件內容，確認無誤後即可直接於頁底電子簽署，謝謝！`;
+let _cslShareLang = "zh";
+
+function setCslShareLang(lang) {
+  _cslShareLang = (lang === "en" || lang === "bi") ? lang : "zh";
+  ["zh", "en", "bi"].forEach(k => {
+    const btn = document.getElementById(`cslLangBtn_${k}`);
+    if (!btn) return;
+    if (k === _cslShareLang) {
+      btn.style.background = "var(--navy)";
+      btn.style.color = "#fff";
+    } else {
+      btn.style.background = "transparent";
+      btn.style.color = "var(--navy)";
+    }
+  });
+  const urlInp = document.getElementById("cslGeneratedUrlInput");
+  const url = urlInp ? urlInp.value.trim() : "";
+  const ref = document.getElementById("cslModalRefBadge")?.textContent || "";
+  const msgPrev = document.getElementById("cslCombinedMsgPreview");
+  if (msgPrev && url) {
+    msgPrev.value = buildPoliteClientSignShareText(ref, url, _cslShareLang);
+  }
+}
+
+function buildPoliteClientSignShareText(refNo, url, lang) {
+  const mode = lang || _cslShareLang || "zh";
+  const refZh = refNo ? `（參考編號：${refNo}）` : "";
+  const refEn = refNo ? ` (Ref: ${refNo})` : "";
+  const zhText = `您好！感謝您選用 Manity Property Care 物業管理服務。\n\n茲附上您的專屬發票文件閱覽及電子簽署連結${refZh}：\n${url}\n\n🔐 為保障您的個人資料私隱，文件已設密碼保護。請於打開連結後輸入閱覽密碼：manity 加上閣下登記的聯絡電話號碼最後 6 位數字（全部小寫，無需空格）。\n\n請細閱文件內容，確認無誤後即可直接於頁底電子簽署，謝謝！`;
+  const enText = `Thank you for choosing Manity Property Care.\n\nPlease find your exclusive invoice viewing and e-signature link below${refEn}:\n${url}\n\n🔐 For your privacy and security, this document is password-protected. Please enter the password: manity followed by the last 6 digits of your registered phone number (all lowercase, no spaces).\n\nKindly review the details and complete your e-signature at the bottom of the page. Thank you!`;
+  if (mode === "en") return enText;
+  if (mode === "bi") return `${zhText}\n\n--------------------\n\n${enText}`;
+  return zhText;
 }
 
 async function copyCombinedClientSignMessage() {
