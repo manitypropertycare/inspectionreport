@@ -2756,8 +2756,12 @@
               <input type="text" id="remoteCustSignName" placeholder="請輸入您的姓名">
             </div>
             <div class="form-group">
-              <label>簽署日期 Date</label>
-              <input type="text" id="remoteCustSignDate" readonly style="background:#F8FAFC; color:#475569;">
+              <label>簽署日期 Date (可點日曆修改)</label>
+              <div style="position:relative; display:flex; align-items:center;">
+                <input type="text" id="remoteCustSignDate" placeholder="例如: 28 Nov 2026" style="padding-right:30px; background:#FFFFFF; color:#1E3250; font-weight:700;">
+                <input type="date" id="remoteCustSignDatePicker" style="position:absolute; right:4px; width:28px; height:30px; opacity:0; cursor:pointer;" onchange="handleRemoteSignDatePicked(this.value)">
+                <span style="position:absolute; right:8px; pointer-events:none; font-size:14px;">📅</span>
+              </div>
             </div>
           </div>
           <button type="button" id="btnSubmitRemoteSign" class="btn btn-gold" style="width:100%; margin-top:14px; padding:12px 16px; font-size:15px; font-weight:800; box-shadow:0 3px 10px rgba(158,124,50,0.28);" onclick="submitRemoteClientSignature()">
@@ -2797,7 +2801,7 @@
 
       </div>
       <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v240</span>
+        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v241</span>
         <span id="cloudSyncBadge" class="cloud-status-orb syncing" title="雲端連線中..." aria-label="雲端連線狀態">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
@@ -13581,7 +13585,7 @@ async function generateMobileInvoiceVectorPdfBlob(overrideData = null) {
 
   // 3. 主項目表格外框 (Rounded Champagne Gold Box)
   const boxTopY = metaBottomY + 2.0;
-  const boxBottomY = 250.5;
+  const boxBottomY = 243.5;
   const boxH = boxBottomY - boxTopY;
   doc.setDrawColor(189, 171, 125);
   doc.setLineWidth(0.35);
@@ -13773,9 +13777,9 @@ async function generateMobileInvoiceVectorPdfBlob(overrideData = null) {
   drawSumRow("Total Amount", "總額", `${formatMoneyCommas(data.grandTotal)} ${cur}`, true);
 
   // 6. 雙方簽署區 (Customer Signature & Authorized Signature)
-  const signTopY = boxBottomY + 2.5;
+  const signTopY = boxBottomY + 2.2;
   const sigW = 62;
-  const sigPadH = 16.5;
+  const sigPadH = 15.5;
   const leftSigX = marginL + 4;
   const rightSigX = pageW - marginR - 4 - sigW;
 
@@ -14055,8 +14059,7 @@ async function shareClientSignLink() {
     try {
       await navigator.share({
         title: `Manity Property Care Invoice (${ref})`,
-        text: shareText,
-        url: /^https?:\/\//i.test(url) ? url : undefined
+        text: shareText
       });
       return;
     } catch (e) {
@@ -14064,6 +14067,14 @@ async function shareClientSignLink() {
     }
   }
   await copyClientSignLink();
+}
+
+
+function handleRemoteSignDatePicked(isoVal) {
+  if (!isoVal) return;
+  const formatted = formatEnglishShortFromISOorDMY(isoVal);
+  const inp = document.getElementById("remoteCustSignDate");
+  if (inp && formatted) inp.value = formatted;
 }
 
 function setupRemoteClientSignaturePad() {
@@ -14207,7 +14218,15 @@ async function initClientRemoteSignModeIfRequested() {
   const signNameInp = document.getElementById("remoteCustSignName");
   const signDateInp = document.getElementById("remoteCustSignDate");
   if (signNameInp) signNameInp.value = invDoc.custSignName || fullCustName || "";
-  if (signDateInp) signDateInp.value = formatEnglishShortDate(new Date());
+  const todayObj = new Date();
+  if (signDateInp) signDateInp.value = formatEnglishShortDate(todayObj);
+  const signDatePickerEl = document.getElementById("remoteCustSignDatePicker");
+  if (signDatePickerEl) {
+    const yyyy = todayObj.getFullYear();
+    const mm = String(todayObj.getMonth() + 1).padStart(2, "0");
+    const dd = String(todayObj.getDate()).padStart(2, "0");
+    signDatePickerEl.value = `${yyyy}-${mm}-${dd}`;
+  }
 
   if (invDoc.clientSignedRemote && invDoc.custSigDataUrl) {
     document.getElementById("remoteSignFormCard").style.display = "none";
