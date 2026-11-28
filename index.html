@@ -2678,27 +2678,58 @@
     </div>
   </div>
 
-  <!-- 職員端：客戶專屬簽署連結分享彈窗 -->
+
+  <!-- 已簽署發票防誤改／防重複發送警告彈窗 -->
+  <div id="signedReeditWarnModal" class="pwd-modal-backdrop" onclick="if(event.target===this) closeSignedReeditWarnModal()">
+    <div class="pwd-modal-box" style="border-top-color: #DC2626; max-width: 380px;">
+      <div class="pwd-modal-title" style="color:#DC2626;" id="signedWarnModalTitle">⚠️ 此發票已完成客戶簽署</div>
+      <div class="pwd-modal-desc" id="signedWarnModalDesc" style="margin-bottom:12px; color:#334155; line-height:1.5;">
+        客戶已完成電子簽署。確定要繼續操作嗎？
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button type="button" class="btn btn-navy" style="flex:1;" onclick="closeSignedReeditWarnModal()">取消返回</button>
+        <button type="button" class="btn" style="flex:1; background:#DC2626; color:#fff;" id="signedWarnConfirmBtn" onclick="confirmSignedReeditWarnModal()">確認繼續</button>
+      </div>
+    </div>
+  </div>
+  <!-- 職員端：客戶專屬簽署連結及獨立密碼分發彈窗 -->
   <div id="clientSignLinkModal" class="pwd-modal-backdrop" onclick="if(event.target===this) closeClientSignLinkModal()">
-    <div class="pwd-modal-box" style="border-top-color: var(--navy); max-width: 390px;">
+    <div class="pwd-modal-box" style="border-top-color: var(--navy); max-width: 400px;">
       <div class="pwd-modal-title" style="display:flex; justify-content:space-between; align-items:center;">
-        <span>🔗 客戶專屬簽署連結</span>
+        <span>🔐 加密簽署連結及分開發送</span>
         <span id="cslModalRefBadge" class="cust-ref-pill" style="margin:0; font-size:11px;">C001280</span>
       </div>
-      <div class="pwd-modal-desc" style="margin-bottom:8px;">
-        客戶打開此連結後，會先<strong>完整閱覽發票文件</strong>（唯讀防改），確認無誤後即可直接電子簽署並<strong>即時同步回傳</strong>至同一份紀錄。
+      <div class="pwd-modal-desc" style="margin-bottom:8px; font-size:12px;">
+        為保障客戶私隱，連結已啟用<strong>密碼鎖保護</strong>（<code>manity</code> + 電話尾 6 位）。建議分開兩則訊息發送給客戶，防止誤傳洩露資料：
       </div>
       <div id="cslLocalFileWarn" style="display:none; background:#FFFBEB; border:1.2px solid #F59E0B; border-radius:8px; padding:8px 10px; margin-bottom:8px; font-size:11.5px; color:#92400E; line-height:1.45;">
-        💡 <strong>溫馨提示：</strong>您目前以本機檔案開啟系統。請貼上您已部署的公開網址（例如 <code>https://your-site.web.app/index.html</code>），系統會自動記憶並產生客戶可開啟的連結：
+        💡 <strong>溫馨提示：</strong>您目前以本機檔案開啟系統。請貼上您已部署的公開網址（例如 <code>https://your-site.web.app/index.html</code>）：
         <input type="text" id="cslHostedBaseInput" placeholder="https://..." style="margin-top:6px; font-size:12px; height:30px; min-height:30px;" oninput="handleHostedBaseUrlChange(this.value)">
       </div>
-      <div style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:8px; padding:8px 10px; margin-bottom:10px;">
-        <div style="font-size:10.5px; font-weight:700; color:#64748B; margin-bottom:4px;">專屬簽署網址（自動同步雲端）：</div>
-        <input type="text" id="cslGeneratedUrlInput" readonly style="font-size:11.5px; color:var(--navy); font-weight:700; background:#fff; height:30px; min-height:30px;" onclick="this.select()">
+
+      <!-- 第一組：專屬文件連結 -->
+      <div style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:8px; padding:8px 10px; margin-bottom:8px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+          <span style="font-size:10.5px; font-weight:800; color:var(--navy);">① 專屬簽署網址（不含密碼）：</span>
+          <button type="button" class="btn btn-outline btn-sm" style="padding:2px 8px; font-size:10.5px;" onclick="copyClientSignLink()">📋 複製連結</button>
+        </div>
+        <input type="text" id="cslGeneratedUrlInput" readonly style="font-size:11px; color:var(--navy); font-weight:700; background:#fff; height:28px; min-height:28px;" onclick="this.select()">
       </div>
+
+      <!-- 第二組：獨立閱覽密碼 -->
+      <div style="background:#FAF7F0; border:1px solid #E5D4A8; border-radius:8px; padding:8px 10px; margin-bottom:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+          <span style="font-size:10.5px; font-weight:800; color:#8C6D23;">② 客戶閱覽密碼（manity + 電話尾6位）：</span>
+          <button type="button" class="btn btn-outline btn-sm" style="padding:2px 8px; font-size:10.5px; border-color:#D5C49A;" onclick="copyClientSignPassword()">📋 複製密碼</button>
+        </div>
+        <input type="text" id="cslGeneratedPwdInput" readonly style="font-size:13px; color:#1E3250; font-weight:800; letter-spacing:0.6px; background:#fff; height:30px; min-height:30px; text-align:center;" onclick="this.select()">
+        <div id="cslPwdPhoneHint" style="font-size:10.5px; color:#92400E; margin-top:4px; display:none;"></div>
+      </div>
+
+      <!-- 兩個獨立一鍵發送按鈕 -->
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-        <button type="button" class="btn btn-navy" style="padding:9px 8px; font-size:12.5px;" onclick="copyClientSignLink()">📋 複製連結</button>
-        <button type="button" class="btn btn-gold" style="padding:9px 8px; font-size:12.5px;" onclick="shareClientSignLink()">📤 傳送給客戶</button>
+        <button type="button" class="btn btn-navy" style="padding:10px 6px; font-size:12px; font-weight:800;" onclick="shareClientSignLinkOnly()">📄 1. 發送文件連結</button>
+        <button type="button" class="btn btn-gold" style="padding:10px 6px; font-size:12px; font-weight:800;" onclick="shareClientSignPasswordOnly()">🔑 2. 發送密碼通知</button>
       </div>
       <button type="button" class="btn btn-outline" style="width:100%; margin-top:8px; padding:7px; font-size:12px;" onclick="closeClientSignLinkModal()">關閉</button>
     </div>
@@ -2722,6 +2753,18 @@
       <div id="remoteErrorBox" class="card" style="display:none; text-align:center; padding:28px 16px; border-top:4px solid #DC2626;">
         <div style="font-size:16px; font-weight:800; color:#DC2626; margin-bottom:6px;">⚠️ 找不到此發票文件</div>
         <div id="remoteErrorMsg" style="font-size:13px; color:#475569; line-height:1.5;">連結可能已失效或尚未同步，請聯絡 Manity Property Care 職員重新發送連結。</div>
+      </div>
+
+      <!-- 客戶端密碼驗證關卡 -->
+      <div id="remotePasswordGateCard" class="card" style="display:none; max-width:400px; margin:20px auto; padding:20px 16px; border-top:4px solid var(--navy); text-align:center;">
+        <div style="font-size:28px; margin-bottom:6px;">🔐</div>
+        <div style="font-size:16px; font-weight:800; color:var(--navy); margin-bottom:6px;">請輸入專屬閱覽密碼</div>
+        <div id="remotePwdGateDesc" style="font-size:12.5px; color:#475569; line-height:1.5; margin-bottom:12px;">
+          為保障您的個人資料安全，請輸入職員向您發送的閱覽密碼以檢視發票文件（格式：<code>manity</code> + 電話尾 6 位數字）：
+        </div>
+        <input type="text" id="remoteAccessPwdInput" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="請輸入密碼（例如 manity123456）" style="text-align:center; font-size:14px; font-weight:700; height:38px; margin-bottom:8px;" onkeydown="if(event.key==='Enter') verifyRemoteClientPassword()">
+        <div id="remoteAccessPwdErr" style="display:none; font-size:12px; font-weight:700; color:#DC2626; margin-bottom:8px;">⚠️ 密碼不正確，請核對後重新輸入！</div>
+        <button type="button" class="btn btn-navy" style="width:100%; padding:11px; font-size:14px; font-weight:800;" onclick="verifyRemoteClientPassword()">🔓 解鎖並閱覽發票文件</button>
       </div>
 
       <div id="remoteMainContent" style="display:none;">
@@ -2801,7 +2844,7 @@
 
       </div>
       <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v241</span>
+        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v242</span>
         <span id="cloudSyncBadge" class="cloud-status-orb syncing" title="雲端連線中..." aria-label="雲端連線狀態">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
@@ -3491,9 +3534,21 @@
         </div>
         <div style="margin-top:8px;">
           <button type="button" class="btn btn-outline" style="width:100%; border:1.5px solid var(--navy); color:var(--navy); background:#F8FAFC; padding:10px 12px; font-size:13px; font-weight:800;" onclick="openClientSignLinkForCurrentInvoice()">
-            🔗 產生客戶簽署連結（客戶先閱覽文件再簽名）
+            🔐 產生加密簽署連結（分開發送連結及密碼）
           </button>
         </div>
+      </div>
+
+      <!-- 連結外發與客戶簽署完整時間追蹤紀錄（唯讀留底） -->
+      <div class="card" id="invAuditLogCard" style="border-top:3px solid var(--navy); background:#FAFBFD;">
+        <div class="card-title" style="margin-bottom:6px; padding-bottom:5px;">
+          <span style="font-size:13.5px;">📋 外發與電子簽署完整紀錄 (Audit Log)</span>
+          <span id="invAuditLogCountBadge" style="font-size:11px; font-weight:800; padding:2px 8px; border-radius:999px; background:#EEF2F6; color:var(--navy);">0 筆紀錄</span>
+        </div>
+        <div style="font-size:11px; color:#64748B; margin-bottom:8px; line-height:1.4;">
+          系統自動記錄每次外發連結、密碼通知、客戶解鎖閱覽及每次電子簽署（包括重簽）的完整日期與時間，供私隱及合約核對：
+        </div>
+        <div id="invAuditLogList" style="display:flex; flex-direction:column; gap:6px; max-height:260px; overflow-y:auto;"></div>
       </div>
     </div>
 
@@ -4536,6 +4591,28 @@ function toggleReportLockState() {
   const invEd = document.getElementById("invoiceEditorContainer");
   if (invEd && invEd.style.display !== "none") {
     if (_isInvoiceLocked) {
+      const curId = _currentInvoiceId || (document.getElementById("invRefNo")?.value || "").trim();
+      const prevInv = getInvoicesDb()[curId] || {};
+      if (prevInv.clientSignedRemote || _invCustSigDataUrl) {
+        const signedTimeText = prevInv.clientSignedAt || prevInv.custSignDate || "較早前";
+        showSignedReeditWarnModal(
+          "⚠️ 警告：此發票已由客戶簽署",
+          `客戶已於 <strong>${escapeHtmlSafe(signedTimeText)}</strong> 完成此發票的電子簽署。<br><br>解鎖修改內容後，必須重新產生連結讓客戶再次簽署，且所有操作都會記錄於底部紀錄表。確定要解鎖編輯嗎？`,
+          "確定解鎖編輯",
+          () => {
+            _shouldLockInvoiceOnNextOpen = true;
+            setInvoiceLockState(false, true);
+            if (curId) {
+              appendInvoiceAuditLog(curId, {
+                actor: "職員",
+                action: "🔓 職員解鎖修改已簽署發票",
+                detail: "已確認警告並解鎖編輯已簽署之發票"
+              }, true);
+            }
+          }
+        );
+        return;
+      }
       _shouldLockInvoiceOnNextOpen = true;
       setInvoiceLockState(false, true);
     } else {
@@ -10825,6 +10902,7 @@ goHome = function() {
 };
 
 function startNewInvoiceFromHome() {
+  renderInvoiceAuditLogsUI({ auditLogs: [] });
   openInvoiceEditor();
   resetInvoiceForm(false);
 }
@@ -12519,6 +12597,11 @@ function saveCurrentInvoiceRecord(silent = false, exportActivated = false) {
   if (prevInv.paymentStatus) data.paymentStatus = prevInv.paymentStatus;
   if (prevInv.paymentDate) data.paymentDate = prevInv.paymentDate;
   if (prevInv.paymentMethod) data.paymentMethod = prevInv.paymentMethod;
+  data.accessPassword = buildInvoiceClientAccessPassword(data.custPhone);
+  if (prevInv.clientSignedRemote) data.clientSignedRemote = prevInv.clientSignedRemote;
+  if (prevInv.clientSignedAt) data.clientSignedAt = prevInv.clientSignedAt;
+  if (prevInv.signCount) data.signCount = prevInv.signCount;
+  if (Array.isArray(prevInv.auditLogs)) data.auditLogs = [...prevInv.auditLogs];
 
   if (exportActivated) {
     const wasAlreadyCreated = !!data.reportCreated;
@@ -12620,6 +12703,7 @@ function loadInvoiceIntoEditor(invId) {
 
   setInvSignatureImage("cust", data.custSigDataUrl || "");
   setInvSignatureImage("auth", data.authSigDataUrl || "");
+  renderInvoiceAuditLogsUI(data);
   const foot = document.getElementById("invLastEditedFooterText");
   if (foot) foot.textContent = data.updatedAt ? `最後編輯：${data.updatedAt}` : "最後編輯：尚未儲存";
   updateInvoiceFieldHighlights();
@@ -13968,6 +14052,171 @@ function handleHostedBaseUrlChange(val) {
   }
 }
 
+let _signedWarnCallback = null;
+function showSignedReeditWarnModal(title, descHtml, confirmLabel, onConfirm) {
+  const modal = document.getElementById("signedReeditWarnModal");
+  if (!modal) {
+    if (typeof onConfirm === "function") onConfirm();
+    return;
+  }
+  const tEl = document.getElementById("signedWarnModalTitle");
+  const dEl = document.getElementById("signedWarnModalDesc");
+  const bEl = document.getElementById("signedWarnConfirmBtn");
+  if (tEl) tEl.textContent = title || "⚠️ 此發票已完成客戶簽署";
+  if (dEl) dEl.innerHTML = descHtml || "";
+  if (bEl) bEl.textContent = confirmLabel || "確認繼續";
+  _signedWarnCallback = typeof onConfirm === "function" ? onConfirm : null;
+  modal.classList.add("active");
+}
+function closeSignedReeditWarnModal() {
+  document.getElementById("signedReeditWarnModal")?.classList.remove("active");
+  _signedWarnCallback = null;
+}
+function confirmSignedReeditWarnModal() {
+  const cb = _signedWarnCallback;
+  closeSignedReeditWarnModal();
+  if (typeof cb === "function") cb();
+}
+
+function buildInvoiceClientAccessPassword(phoneStr) {
+  const digits = String(phoneStr || "").replace(/\D/g, "");
+  const tail6 = digits.slice(-6);
+  return `manity${tail6}`;
+}
+
+function formatAuditTimestampNow() {
+  const d = new Date();
+  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const yyyy = d.getFullYear();
+  const hh = String(d.getHours()).padStart(2, "0");
+  const mi = String(d.getMinutes()).padStart(2, "0");
+  const ss = String(d.getSeconds()).padStart(2, "0");
+  return `${dd}/${mm}/${yyyy} ${hh}:${mi}:${ss}`;
+}
+
+function appendInvoiceAuditLog(invId, entryObj, syncCloudNow = true) {
+  if (!invId || !entryObj) return;
+  const db = getInvoicesDb();
+  const doc = db[invId];
+  if (!doc) return;
+  const logs = Array.isArray(doc.auditLogs) ? [...doc.auditLogs] : [];
+  logs.push({
+    time: entryObj.time || formatAuditTimestampNow(),
+    timeMs: entryObj.timeMs || Date.now(),
+    actor: entryObj.actor || "職員",
+    action: entryObj.action || "",
+    detail: entryObj.detail || ""
+  });
+  doc.auditLogs = logs;
+  db[invId] = doc;
+  setInvoicesDb(db);
+  if (syncCloudNow) {
+    syncInvoiceToCloud(doc);
+  }
+  if (_currentInvoiceId === invId) {
+    renderInvoiceAuditLogsUI(doc);
+  }
+}
+
+function renderInvoiceAuditLogsUI(invData) {
+  const listEl = document.getElementById("invAuditLogList");
+  const badgeEl = document.getElementById("invAuditLogCountBadge");
+  if (!listEl) return;
+  const logs = Array.isArray(invData?.auditLogs) ? invData.auditLogs : [];
+  if (badgeEl) badgeEl.textContent = `${logs.length} 筆紀錄`;
+  if (logs.length === 0) {
+    listEl.innerHTML = `<div style="text-align:center; padding:14px 8px; font-size:11.5px; color:#94A3B8; background:#fff; border:1px dashed #CBD5E1; border-radius:8px;">暫無外發或簽署紀錄（產生連結或客戶簽署後會自動留底）</div>`;
+    return;
+  }
+  // 最新紀錄排最上，方便即時檢視
+  const reversed = [...logs].reverse();
+  listEl.innerHTML = reversed.map((lg, idx) => {
+    const seqNo = logs.length - idx;
+    const isClientSign = String(lg.action || "").includes("完成電子簽署");
+    const isClientOpen = String(lg.action || "").includes("解鎖閱覽");
+    const isWarnUnlock = String(lg.action || "").includes("解鎖修改");
+    const bg = isClientSign ? "#F0FDF4" : (isClientOpen ? "#EFF6FF" : (isWarnUnlock ? "#FEF2F2" : "#FFFFFF"));
+    const borderCol = isClientSign ? "#86EFAC" : (isClientOpen ? "#BFDBFE" : (isWarnUnlock ? "#FECACA" : "#E2E8F0"));
+    const tagCol = isClientSign ? "#15803D" : (isClientOpen ? "#1D4ED8" : (isWarnUnlock ? "#DC2626" : "var(--navy)"));
+    return `
+      <div style="background:${bg}; border:1px solid ${borderCol}; border-radius:8px; padding:7px 9px; font-size:11.5px; line-height:1.4;">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; margin-bottom:2px;">
+          <span style="font-weight:800; color:${tagCol};">#${seqNo} ${escapeHtmlSafe(lg.action || "")}</span>
+          <span style="font-size:10.5px; font-weight:700; color:#64748B; white-space:nowrap;">${escapeHtmlSafe(lg.time || "")}</span>
+        </div>
+        ${lg.detail ? `<div style="font-size:11px; color:#334155;">${escapeHtmlSafe(lg.detail)}</div>` : ""}
+      </div>
+    `;
+  }).join("");
+}
+
+function proceedOpenClientSignLinkModal() {
+  const data = collectCurrentInvoiceData();
+  const db = getInvoicesDb();
+  const prevInv = db[data.invId] || {};
+  const accessPwd = buildInvoiceClientAccessPassword(data.custPhone);
+
+  data.manualSaved = true;
+  data.accessPassword = accessPwd;
+  if (prevInv.paymentStatus) data.paymentStatus = prevInv.paymentStatus;
+  if (prevInv.paymentDate) data.paymentDate = prevInv.paymentDate;
+  if (prevInv.paymentMethod) data.paymentMethod = prevInv.paymentMethod;
+  if (prevInv.reportCreated) data.reportCreated = prevInv.reportCreated;
+  if (prevInv.clientSignedRemote) data.clientSignedRemote = prevInv.clientSignedRemote;
+  if (prevInv.clientSignedAt) data.clientSignedAt = prevInv.clientSignedAt;
+  if (prevInv.signCount) data.signCount = prevInv.signCount;
+  if (Array.isArray(prevInv.auditLogs)) data.auditLogs = [...prevInv.auditLogs];
+
+  db[data.invId] = data;
+  setInvoicesDb(db);
+
+  appendInvoiceAuditLog(
+    data.invId,
+    {
+      actor: data.issuer || "職員",
+      action: "🔗 產生客戶加密簽署連結",
+      detail: `發件人：${data.issuer || "職員"} ｜ 已啟用密碼保護（客戶電話尾 6 位）`
+    },
+    true
+  );
+  renderHomeInvoiceList();
+
+  _cslCurrentInvId = data.invId;
+  const refBadge = document.getElementById("cslModalRefBadge");
+  if (refBadge) refBadge.textContent = data.refNo || data.invId;
+
+  const isHttp = /^https?:$/i.test(window.location.protocol);
+  const warnBox = document.getElementById("cslLocalFileWarn");
+  if (warnBox) {
+    warnBox.style.display = isHttp ? "none" : "block";
+    if (!isHttp) {
+      const savedBase = (localStorage.getItem("manity_hosted_app_url") || "").trim();
+      const baseInp = document.getElementById("cslHostedBaseInput");
+      if (baseInp && savedBase) baseInp.value = savedBase;
+    }
+  }
+
+  const urlInp = document.getElementById("cslGeneratedUrlInput");
+  if (urlInp) urlInp.value = buildClientSignUrlForInvId(data.invId);
+
+  const pwdInp = document.getElementById("cslGeneratedPwdInput");
+  if (pwdInp) pwdInp.value = accessPwd;
+
+  const phoneDigits = String(data.custPhone || "").replace(/\D/g, "");
+  const pwdHint = document.getElementById("cslPwdPhoneHint");
+  if (pwdHint) {
+    if (phoneDigits.length < 6) {
+      pwdHint.style.display = "block";
+      pwdHint.textContent = `⚠️ 提示：客戶電話數字不足 6 位，目前密碼為「${accessPwd}」，建議先補全客戶電話號碼。`;
+    } else {
+      pwdHint.style.display = "none";
+    }
+  }
+
+  document.getElementById("clientSignLinkModal")?.classList.add("active");
+}
+
 function openClientSignLinkForCurrentInvoice() {
   // 檢查除「客戶簽名圖」以外的必填欄位是否齊全
   const missing = getMissingInvoiceFieldsBeforePreview();
@@ -13991,39 +14240,24 @@ function openClientSignLinkForCurrentInvoice() {
     return;
   }
 
-  // 立即儲存並同步上雲端 Firestore（不強制鎖死，讓客戶簽名可以回寫）
-  const data = collectCurrentInvoiceData();
-  const db = getInvoicesDb();
-  const prevInv = db[data.invId] || {};
-  data.manualSaved = true;
-  if (prevInv.paymentStatus) data.paymentStatus = prevInv.paymentStatus;
-  if (prevInv.paymentDate) data.paymentDate = prevInv.paymentDate;
-  if (prevInv.paymentMethod) data.paymentMethod = prevInv.paymentMethod;
-  if (prevInv.reportCreated) data.reportCreated = prevInv.reportCreated;
-  db[data.invId] = data;
-  setInvoicesDb(db);
-  syncInvoiceToCloud(data);
-  renderHomeInvoiceList();
-
-  _cslCurrentInvId = data.invId;
-  const refBadge = document.getElementById("cslModalRefBadge");
-  if (refBadge) refBadge.textContent = data.refNo || data.invId;
-
-  const isHttp = /^https?:$/i.test(window.location.protocol);
-  const warnBox = document.getElementById("cslLocalFileWarn");
-  if (warnBox) {
-    warnBox.style.display = isHttp ? "none" : "block";
-    if (!isHttp) {
-      const savedBase = (localStorage.getItem("manity_hosted_app_url") || "").trim();
-      const baseInp = document.getElementById("cslHostedBaseInput");
-      if (baseInp && savedBase) baseInp.value = savedBase;
-    }
+  // 若客戶已經完成簽署，先彈出警告確認，避免重複發送！
+  const curId = _currentInvoiceId || (document.getElementById("invRefNo")?.value || "").trim();
+  const prevInv = getInvoicesDb()[curId] || {};
+  if (prevInv.clientSignedRemote || _invCustSigDataUrl) {
+    const signedTimeText = prevInv.clientSignedAt || prevInv.custSignDate || "較早前";
+    const signerText = prevInv.custSignName || document.getElementById("invCustSignName")?.value || "客戶";
+    showSignedReeditWarnModal(
+      "⚠️ 客戶已完成簽署 — 確定再次發送？",
+      `<strong>${escapeHtmlSafe(signerText)}</strong> 已於 <strong>${escapeHtmlSafe(signedTimeText)}</strong> 完成此發票的電子簽署。<br><br>如非需要客戶重新簽署，請勿重複外發連結。確定要繼續產生／發送連結嗎？`,
+      "確定再次產生連結",
+      () => {
+        proceedOpenClientSignLinkModal();
+      }
+    );
+    return;
   }
 
-  const urlInp = document.getElementById("cslGeneratedUrlInput");
-  if (urlInp) urlInp.value = buildClientSignUrlForInvId(data.invId);
-
-  document.getElementById("clientSignLinkModal")?.classList.add("active");
+  proceedOpenClientSignLinkModal();
 }
 
 function closeClientSignLinkModal() {
@@ -14037,24 +14271,58 @@ async function copyClientSignLink() {
   try {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       await navigator.clipboard.writeText(url);
-      showToast("✓ 已複製客戶專屬簽署連結！");
-      return;
+    } else if (urlInp) {
+      urlInp.focus();
+      urlInp.select();
+      document.execCommand("copy");
     }
   } catch (e) {}
-  if (urlInp) {
-    urlInp.focus();
-    urlInp.select();
-    try { document.execCommand("copy"); } catch (e) {}
+  if (_cslCurrentInvId) {
+    appendInvoiceAuditLog(_cslCurrentInvId, {
+      actor: "職員",
+      action: "📋 複製專屬簽署連結",
+      detail: "已複製文件連結（不含密碼）"
+    }, true);
   }
-  showToast("✓ 已複製客戶專屬簽署連結！");
+  showToast("✓ 已複製專屬簽署連結（不含密碼）！");
 }
 
-async function shareClientSignLink() {
+async function copyClientSignPassword() {
+  const pwdInp = document.getElementById("cslGeneratedPwdInput");
+  const pwd = pwdInp ? pwdInp.value.trim() : "";
+  if (!pwd) return;
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(pwd);
+    } else if (pwdInp) {
+      pwdInp.focus();
+      pwdInp.select();
+      document.execCommand("copy");
+    }
+  } catch (e) {}
+  if (_cslCurrentInvId) {
+    appendInvoiceAuditLog(_cslCurrentInvId, {
+      actor: "職員",
+      action: "🔑 複製閱覽密碼",
+      detail: "已複製獨立閱覽密碼"
+    }, true);
+  }
+  showToast(`✓ 已複製閱覽密碼：${pwd}`);
+}
+
+async function shareClientSignLinkOnly() {
   const urlInp = document.getElementById("cslGeneratedUrlInput");
   const url = urlInp ? urlInp.value.trim() : "";
   if (!url) return;
   const ref = document.getElementById("cslModalRefBadge")?.textContent || "";
-  const shareText = `Manity Property Care 發票閱覽及電子簽署連結 (${ref})：\n${url}`;
+  const shareText = `Manity Property Care 發票閱覽及電子簽署連結 (${ref})：\n${url}\n\n（為保障您的個人資料私隱，閱覽密碼將於下一則訊息獨立發送。）`;
+  if (_cslCurrentInvId) {
+    appendInvoiceAuditLog(_cslCurrentInvId, {
+      actor: "職員",
+      action: "📤 發送文件連結給客戶",
+      detail: `已發送專屬網址（${ref}，不含密碼）`
+    }, true);
+  }
   if (typeof navigator.share === "function") {
     try {
       await navigator.share({
@@ -14067,6 +14335,33 @@ async function shareClientSignLink() {
     }
   }
   await copyClientSignLink();
+}
+
+async function shareClientSignPasswordOnly() {
+  const pwdInp = document.getElementById("cslGeneratedPwdInput");
+  const pwd = pwdInp ? pwdInp.value.trim() : "";
+  if (!pwd) return;
+  const ref = document.getElementById("cslModalRefBadge")?.textContent || "";
+  const shareText = `Manity Property Care 專屬文件閱覽密碼 (${ref})：\n${pwd}\n\n請於打開剛才發送的發票連結後輸入此密碼檢視及簽署。`;
+  if (_cslCurrentInvId) {
+    appendInvoiceAuditLog(_cslCurrentInvId, {
+      actor: "職員",
+      action: "🔐 發送獨立密碼通知給客戶",
+      detail: `已發送閱覽密碼通知（${ref}）`
+    }, true);
+  }
+  if (typeof navigator.share === "function") {
+    try {
+      await navigator.share({
+        title: `Manity Property Care 閱覽密碼 (${ref})`,
+        text: shareText
+      });
+      return;
+    } catch (e) {
+      if (e && e.name === "AbortError") return;
+    }
+  }
+  await copyClientSignPassword();
 }
 
 
@@ -14205,6 +14500,61 @@ async function initClientRemoteSignModeIfRequested() {
   }
 
   _remoteSignInvoiceDoc = invDoc;
+  const expectedPwd = (invDoc.accessPassword || buildInvoiceClientAccessPassword(invDoc.custPhone || "")).trim();
+  if (expectedPwd && expectedPwd.length > 6) {
+    const gateCard = document.getElementById("remotePasswordGateCard");
+    if (gateCard) gateCard.style.display = "block";
+    setTimeout(() => document.getElementById("remoteAccessPwdInput")?.focus(), 120);
+  } else {
+    revealRemoteInvoiceAfterPasswordVerified(false);
+  }
+  return true;
+}
+
+async function verifyRemoteClientPassword() {
+  if (!_remoteSignInvoiceDoc) return;
+  const inp = document.getElementById("remoteAccessPwdInput");
+  const errEl = document.getElementById("remoteAccessPwdErr");
+  const entered = (inp?.value || "").trim().toLowerCase();
+  const expected = (_remoteSignInvoiceDoc.accessPassword || buildInvoiceClientAccessPassword(_remoteSignInvoiceDoc.custPhone || "")).trim().toLowerCase();
+  if (!entered || entered !== expected) {
+    if (errEl) errEl.style.display = "block";
+    if (inp) inp.focus();
+    return;
+  }
+  if (errEl) errEl.style.display = "none";
+  const gateCard = document.getElementById("remotePasswordGateCard");
+  if (gateCard) gateCard.style.display = "none";
+  await revealRemoteInvoiceAfterPasswordVerified(true);
+}
+
+async function revealRemoteInvoiceAfterPasswordVerified(recordUnlockLog) {
+  const invDoc = _remoteSignInvoiceDoc;
+  if (!invDoc) return;
+
+  if (recordUnlockLog) {
+    const nowStr = formatAuditTimestampNow();
+    const prevLogs = Array.isArray(invDoc.auditLogs) ? [...invDoc.auditLogs] : [];
+    prevLogs.push({
+      time: nowStr,
+      timeMs: Date.now(),
+      actor: "客戶",
+      action: "🔓 客戶通過密碼驗證並打開文件",
+      detail: `已驗證閱覽密碼並進入發票檢視頁（${invDoc.refNo || ""}）`
+    });
+    invDoc.auditLogs = prevLogs;
+    try {
+      if (fbDb) {
+        await fbDb.collection("invoices").doc(encodeFbId(invDoc.invId)).set({ auditLogs: prevLogs }, { merge: true });
+      }
+      const localDb = getInvoicesDb();
+      if (localDb[invDoc.invId]) {
+        localDb[invDoc.invId].auditLogs = prevLogs;
+        setInvoicesDb(localDb);
+      }
+    } catch (e) {}
+  }
+
   document.getElementById("remoteMainContent").style.display = "block";
 
   // 渲染完整正式發票 A4 預覽供客戶細閱
@@ -14240,7 +14590,6 @@ async function initClientRemoteSignModeIfRequested() {
       setupRemoteClientSignaturePad();
     });
   }
-  return true;
 }
 
 async function submitRemoteClientSignature() {
@@ -14264,13 +14613,26 @@ async function submitRemoteClientSignature() {
   }
 
   try {
+    const nowExact = formatAuditTimestampNow();
+    const nextSignCount = (Number(_remoteSignInvoiceDoc.signCount) || 0) + 1;
+    const prevLogs = Array.isArray(_remoteSignInvoiceDoc.auditLogs) ? [..._remoteSignInvoiceDoc.auditLogs] : [];
+    prevLogs.push({
+      time: nowExact,
+      timeMs: Date.now(),
+      actor: signName,
+      action: `✍️ 客戶完成電子簽署（第 ${nextSignCount} 次）`,
+      detail: `簽署人：${signName} ｜ 文件簽署日期：${signDate} ｜ 實際提交時間：${nowExact}`
+    });
+
     const updatedDoc = {
       ..._remoteSignInvoiceDoc,
       custSigDataUrl: _remoteCustSigDataUrl,
       custSignName: signName,
       custSignDate: signDate,
       clientSignedRemote: true,
-      clientSignedAt: formatDateTimeDeviceLocal(Date.now()),
+      clientSignedAt: nowExact,
+      signCount: nextSignCount,
+      auditLogs: prevLogs,
       isLocked: true,
       updatedAt: formatDateTimeDeviceLocal(Date.now()),
       updatedAtMs: Date.now()
