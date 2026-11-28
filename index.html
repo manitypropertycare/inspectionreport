@@ -2692,44 +2692,42 @@
       </div>
     </div>
   </div>
-  <!-- 職員端：客戶專屬簽署連結及獨立密碼分發彈窗 -->
+  <!-- 職員端：客戶專屬加密簽署連結一鍵合併發送彈窗 -->
   <div id="clientSignLinkModal" class="pwd-modal-backdrop" onclick="if(event.target===this) closeClientSignLinkModal()">
-    <div class="pwd-modal-box" style="border-top-color: var(--navy); max-width: 400px;">
+    <div class="pwd-modal-box" style="border-top-color: var(--navy); max-width: 405px;">
       <div class="pwd-modal-title" style="display:flex; justify-content:space-between; align-items:center;">
-        <span>🔐 加密簽署連結及分開發送</span>
+        <span>🔐 客戶加密簽署連結</span>
         <span id="cslModalRefBadge" class="cust-ref-pill" style="margin:0; font-size:11px;">C001280</span>
       </div>
       <div class="pwd-modal-desc" style="margin-bottom:8px; font-size:12px;">
-        為保障客戶私隱，連結已啟用<strong>密碼鎖保護</strong>（<code>manity</code> + 電話尾 6 位）。建議分開兩則訊息發送給客戶，防止誤傳洩露資料：
+        連結已啟用<strong>密碼鎖保護</strong>（<code>manity</code> + 客戶電話尾 6 位數字）。發送訊息時系統只會附上<strong>密碼輸入規則提示</strong>，不會直接明文顯示密碼數字，兼顧私隱安全與便利：
       </div>
       <div id="cslLocalFileWarn" style="display:none; background:#FFFBEB; border:1.2px solid #F59E0B; border-radius:8px; padding:8px 10px; margin-bottom:8px; font-size:11.5px; color:#92400E; line-height:1.45;">
         💡 <strong>溫馨提示：</strong>您目前以本機檔案開啟系統。請貼上您已部署的公開網址（例如 <code>https://your-site.web.app/index.html</code>）：
         <input type="text" id="cslHostedBaseInput" placeholder="https://..." style="margin-top:6px; font-size:12px; height:30px; min-height:30px;" oninput="handleHostedBaseUrlChange(this.value)">
       </div>
 
-      <!-- 第一組：專屬文件連結 -->
-      <div style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:8px; padding:8px 10px; margin-bottom:8px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-          <span style="font-size:10.5px; font-weight:800; color:var(--navy);">① 專屬簽署網址（不含密碼）：</span>
-          <button type="button" class="btn btn-outline btn-sm" style="padding:2px 8px; font-size:10.5px;" onclick="copyClientSignLink()">📋 複製連結</button>
+      <!-- 專屬文件連結 -->
+      <div style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:8px; padding:7px 10px; margin-bottom:8px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
+          <span style="font-size:10.5px; font-weight:800; color:var(--navy);">專屬簽署網址：</span>
+          <span style="font-size:10px; font-weight:700; color:#15803D;">內部核對密碼：<code id="cslStaffPwdPreview" style="font-weight:800;">manity------</code></span>
         </div>
         <input type="text" id="cslGeneratedUrlInput" readonly style="font-size:11px; color:var(--navy); font-weight:700; background:#fff; height:28px; min-height:28px;" onclick="this.select()">
-      </div>
-
-      <!-- 第二組：獨立閱覽密碼 -->
-      <div style="background:#FAF7F0; border:1px solid #E5D4A8; border-radius:8px; padding:8px 10px; margin-bottom:10px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-          <span style="font-size:10.5px; font-weight:800; color:#8C6D23;">② 客戶閱覽密碼（manity + 電話尾6位）：</span>
-          <button type="button" class="btn btn-outline btn-sm" style="padding:2px 8px; font-size:10.5px; border-color:#D5C49A;" onclick="copyClientSignPassword()">📋 複製密碼</button>
-        </div>
-        <input type="text" id="cslGeneratedPwdInput" readonly style="font-size:13px; color:#1E3250; font-weight:800; letter-spacing:0.6px; background:#fff; height:30px; min-height:30px; text-align:center;" onclick="this.select()">
+        <input type="hidden" id="cslGeneratedPwdInput" value="">
         <div id="cslPwdPhoneHint" style="font-size:10.5px; color:#92400E; margin-top:4px; display:none;"></div>
       </div>
 
-      <!-- 兩個獨立一鍵發送按鈕 -->
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-        <button type="button" class="btn btn-navy" style="padding:10px 6px; font-size:12px; font-weight:800;" onclick="shareClientSignLinkOnly()">📄 1. 發送文件連結</button>
-        <button type="button" class="btn btn-gold" style="padding:10px 6px; font-size:12px; font-weight:800;" onclick="shareClientSignPasswordOnly()">🔑 2. 發送密碼通知</button>
+      <!-- 訊息內容預覽（一鍵合併發送：連結 + 得體密碼規則提示，不直接寫出密碼數字） -->
+      <div style="background:#FAF7F0; border:1px solid #E5D4A8; border-radius:8px; padding:8px 10px; margin-bottom:10px;">
+        <div style="font-size:10.5px; font-weight:800; color:#8C6D23; margin-bottom:4px;">📨 發送訊息內容預覽（不含明文密碼）：</div>
+        <textarea id="cslCombinedMsgPreview" readonly rows="6" style="font-size:11.5px; line-height:1.45; color:#1E3250; background:#fff; border:1px solid #E2D5B5; border-radius:6px; padding:6px 8px; resize:none; height:112px; min-height:112px;" onclick="this.select()"></textarea>
+      </div>
+
+      <!-- 一鍵合併發送按鈕 -->
+      <div style="display:grid; grid-template-columns:1fr 1.25fr; gap:8px;">
+        <button type="button" class="btn btn-outline" style="padding:10px 6px; font-size:12px; font-weight:800; border-color:var(--navy); color:var(--navy);" onclick="copyCombinedClientSignMessage()">📋 複製訊息</button>
+        <button type="button" class="btn btn-gold" style="padding:10px 8px; font-size:12.5px; font-weight:800; box-shadow:0 2px 8px rgba(158,124,50,0.25);" onclick="shareCombinedClientSignMessage()">📤 一鍵發送給客戶</button>
       </div>
       <button type="button" class="btn btn-outline" style="width:100%; margin-top:8px; padding:7px; font-size:12px;" onclick="closeClientSignLinkModal()">關閉</button>
     </div>
@@ -2844,7 +2842,7 @@
 
       </div>
       <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v242</span>
+        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v243</span>
         <span id="cloudSyncBadge" class="cloud-status-orb syncing" title="雲端連線中..." aria-label="雲端連線狀態">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
@@ -3534,7 +3532,7 @@
         </div>
         <div style="margin-top:8px;">
           <button type="button" class="btn btn-outline" style="width:100%; border:1.5px solid var(--navy); color:var(--navy); background:#F8FAFC; padding:10px 12px; font-size:13px; font-weight:800;" onclick="openClientSignLinkForCurrentInvoice()">
-            🔐 產生加密簽署連結（分開發送連結及密碼）
+            🔐 產生加密簽署連結（一鍵發送給客戶）
           </button>
         </div>
       </div>
@@ -14047,8 +14045,12 @@ function handleHostedBaseUrlChange(val) {
     else localStorage.removeItem("manity_hosted_app_url");
   } catch (e) {}
   if (_cslCurrentInvId) {
+    const newUrl = buildClientSignUrlForInvId(_cslCurrentInvId);
     const inp = document.getElementById("cslGeneratedUrlInput");
-    if (inp) inp.value = buildClientSignUrlForInvId(_cslCurrentInvId);
+    if (inp) inp.value = newUrl;
+    const ref = document.getElementById("cslModalRefBadge")?.textContent || _cslCurrentInvId;
+    const msgPrev = document.getElementById("cslCombinedMsgPreview");
+    if (msgPrev) msgPrev.value = buildPoliteClientSignShareText(ref, newUrl);
   }
 }
 
@@ -14197,11 +14199,20 @@ function proceedOpenClientSignLinkModal() {
     }
   }
 
+  const generatedUrl = buildClientSignUrlForInvId(data.invId);
   const urlInp = document.getElementById("cslGeneratedUrlInput");
-  if (urlInp) urlInp.value = buildClientSignUrlForInvId(data.invId);
+  if (urlInp) urlInp.value = generatedUrl;
 
   const pwdInp = document.getElementById("cslGeneratedPwdInput");
   if (pwdInp) pwdInp.value = accessPwd;
+
+  const staffPwdPrev = document.getElementById("cslStaffPwdPreview");
+  if (staffPwdPrev) staffPwdPrev.textContent = accessPwd;
+
+  const msgPreviewEl = document.getElementById("cslCombinedMsgPreview");
+  if (msgPreviewEl) {
+    msgPreviewEl.value = buildPoliteClientSignShareText(data.refNo || data.invId, generatedUrl);
+  }
 
   const phoneDigits = String(data.custPhone || "").replace(/\D/g, "");
   const pwdHint = document.getElementById("cslPwdPhoneHint");
@@ -14264,69 +14275,55 @@ function closeClientSignLinkModal() {
   document.getElementById("clientSignLinkModal")?.classList.remove("active");
 }
 
-async function copyClientSignLink() {
-  const urlInp = document.getElementById("cslGeneratedUrlInput");
-  const url = urlInp ? urlInp.value.trim() : "";
-  if (!url) return;
-  try {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      await navigator.clipboard.writeText(url);
-    } else if (urlInp) {
-      urlInp.focus();
-      urlInp.select();
-      document.execCommand("copy");
-    }
-  } catch (e) {}
-  if (_cslCurrentInvId) {
-    appendInvoiceAuditLog(_cslCurrentInvId, {
-      actor: "職員",
-      action: "📋 複製專屬簽署連結",
-      detail: "已複製文件連結（不含密碼）"
-    }, true);
-  }
-  showToast("✓ 已複製專屬簽署連結（不含密碼）！");
+function buildPoliteClientSignShareText(refNo, url) {
+  const refLabel = refNo ? `（參考編號：${refNo}）` : "";
+  return `您好！感謝您選用 Manity Property Care 物業管理服務。\n\n茲附上您的專屬發票文件閱覽及電子簽署連結${refLabel}：\n${url}\n\n🔐 為保障您的個人資料私隱，文件已設密碼保護。請於打開連結後輸入閱覽密碼：manity 加上閣下登記的聯絡電話號碼最後 6 位數字（全部小寫，無需空格）。\n\n請細閱文件內容，確認無誤後即可直接於頁底電子簽署，謝謝！`;
 }
 
-async function copyClientSignPassword() {
-  const pwdInp = document.getElementById("cslGeneratedPwdInput");
-  const pwd = pwdInp ? pwdInp.value.trim() : "";
-  if (!pwd) return;
-  try {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      await navigator.clipboard.writeText(pwd);
-    } else if (pwdInp) {
-      pwdInp.focus();
-      pwdInp.select();
-      document.execCommand("copy");
-    }
-  } catch (e) {}
-  if (_cslCurrentInvId) {
-    appendInvoiceAuditLog(_cslCurrentInvId, {
-      actor: "職員",
-      action: "🔑 複製閱覽密碼",
-      detail: "已複製獨立閱覽密碼"
-    }, true);
-  }
-  showToast(`✓ 已複製閱覽密碼：${pwd}`);
-}
-
-async function shareClientSignLinkOnly() {
+async function copyCombinedClientSignMessage() {
   const urlInp = document.getElementById("cslGeneratedUrlInput");
   const url = urlInp ? urlInp.value.trim() : "";
   if (!url) return;
   const ref = document.getElementById("cslModalRefBadge")?.textContent || "";
-  const shareText = `Manity Property Care 發票閱覽及電子簽署連結 (${ref})：\n${url}\n\n（為保障您的個人資料私隱，閱覽密碼將於下一則訊息獨立發送。）`;
+  const msgEl = document.getElementById("cslCombinedMsgPreview");
+  const shareText = (msgEl && msgEl.value.trim()) ? msgEl.value.trim() : buildPoliteClientSignShareText(ref, url);
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(shareText);
+    } else if (msgEl) {
+      msgEl.focus();
+      msgEl.select();
+      document.execCommand("copy");
+    }
+  } catch (e) {}
   if (_cslCurrentInvId) {
     appendInvoiceAuditLog(_cslCurrentInvId, {
       actor: "職員",
-      action: "📤 發送文件連結給客戶",
-      detail: `已發送專屬網址（${ref}，不含密碼）`
+      action: "📋 複製加密簽署連結及密碼提示訊息",
+      detail: `已複製完整訊息（${ref}，附密碼格式提示、不含明文密碼）`
+    }, true);
+  }
+  showToast("✓ 已複製完整發送訊息（含連結及密碼提示）！");
+}
+
+async function shareCombinedClientSignMessage() {
+  const urlInp = document.getElementById("cslGeneratedUrlInput");
+  const url = urlInp ? urlInp.value.trim() : "";
+  if (!url) return;
+  const ref = document.getElementById("cslModalRefBadge")?.textContent || "";
+  const msgEl = document.getElementById("cslCombinedMsgPreview");
+  const shareText = (msgEl && msgEl.value.trim()) ? msgEl.value.trim() : buildPoliteClientSignShareText(ref, url);
+  if (_cslCurrentInvId) {
+    appendInvoiceAuditLog(_cslCurrentInvId, {
+      actor: "職員",
+      action: "📤 一鍵發送加密簽署連結及密碼提示給客戶",
+      detail: `已發送專屬連結及密碼規則提示（${ref}，不含明文密碼）`
     }, true);
   }
   if (typeof navigator.share === "function") {
     try {
       await navigator.share({
-        title: `Manity Property Care Invoice (${ref})`,
+        title: `Manity Property Care 發票閱覽及電子簽署 (${ref})`,
         text: shareText
       });
       return;
@@ -14334,34 +14331,7 @@ async function shareClientSignLinkOnly() {
       if (e && e.name === "AbortError") return;
     }
   }
-  await copyClientSignLink();
-}
-
-async function shareClientSignPasswordOnly() {
-  const pwdInp = document.getElementById("cslGeneratedPwdInput");
-  const pwd = pwdInp ? pwdInp.value.trim() : "";
-  if (!pwd) return;
-  const ref = document.getElementById("cslModalRefBadge")?.textContent || "";
-  const shareText = `Manity Property Care 專屬文件閱覽密碼 (${ref})：\n${pwd}\n\n請於打開剛才發送的發票連結後輸入此密碼檢視及簽署。`;
-  if (_cslCurrentInvId) {
-    appendInvoiceAuditLog(_cslCurrentInvId, {
-      actor: "職員",
-      action: "🔐 發送獨立密碼通知給客戶",
-      detail: `已發送閱覽密碼通知（${ref}）`
-    }, true);
-  }
-  if (typeof navigator.share === "function") {
-    try {
-      await navigator.share({
-        title: `Manity Property Care 閱覽密碼 (${ref})`,
-        text: shareText
-      });
-      return;
-    } catch (e) {
-      if (e && e.name === "AbortError") return;
-    }
-  }
-  await copyClientSignPassword();
+  await copyCombinedClientSignMessage();
 }
 
 
