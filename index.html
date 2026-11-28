@@ -576,11 +576,11 @@
     background: linear-gradient(90deg, #FBF6EA 0%, #F4E9CE 100%);
     border-bottom: 1px solid #E5D4A8;
     border-radius: 10px 10px 0 0;
-    padding: 8px 12px;
+    padding: 7px 8px 7px 12px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    gap: 8px;
+    align-items: flex-start;
+    gap: 6px;
   }
   .cust-card-body {
     padding: 10px 12px 12px 12px;
@@ -596,13 +596,13 @@
     flex-shrink: 0;
   }
   .cust-dots-btn {
-    width: 28px;
-    height: 28px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     border: 1px solid rgba(182, 154, 88, 0.55);
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(255, 255, 255, 0.94);
     color: var(--navy);
-    font-size: 16px;
+    font-size: 13.5px;
     font-weight: 800;
     line-height: 1;
     display: inline-flex;
@@ -610,7 +610,7 @@
     justify-content: center;
     cursor: pointer;
     padding: 0;
-    box-shadow: 0 1px 3px rgba(30, 50, 80, 0.08);
+    box-shadow: 0 1px 2px rgba(30, 50, 80, 0.08);
   }
   .btn-start-patrol {
     background: linear-gradient(135deg, #C6A456 0%, #9E7C32 100%);
@@ -623,7 +623,7 @@
   .cust-dropdown-menu {
     position: absolute;
     right: 0;
-    top: 32px;
+    top: 26px;
     background: #fff;
     border: 1px solid #DCE1E8;
     border-radius: 9px;
@@ -2084,7 +2084,7 @@
 
   .inv-a4-table-box {
     margin-top: 2mm;
-    border: 0.9pt solid #BDAB7D;
+    border: 1pt solid #BDAB7D;
     border-radius: 3mm;
     flex: 1;
     display: flex;
@@ -2095,7 +2095,7 @@
     display: grid;
     grid-template-columns: 1fr 24mm 27.5mm 24mm;
     padding: 1.85mm 3.6mm;
-    border-bottom: 0.9pt solid #BDAB7D;
+    border-bottom: 1pt solid #BDAB7D;
     background: #FDFBF7;
     font-size: 8.4pt;
     font-weight: 700;
@@ -2223,7 +2223,7 @@
   .inv-a4-sum-row.grand {
     margin-top: 0.8mm;
     padding-top: 1.2mm;
-    border-top: 1.2pt solid #1E3250;
+    border-top: 1pt solid #1E3250;
     font-size: 9.8pt;
     font-weight: 700;
     color: #1E3250;
@@ -2249,7 +2249,7 @@
   .inv-a4-sign-pad {
     width: 100%;
     height: 17.5mm;
-    border-bottom: 1.2pt solid #BDAB7D;
+    border-bottom: 1pt solid #BDAB7D;
     position: relative;
     display: flex;
     align-items: flex-end;
@@ -2301,7 +2301,7 @@
   }
   .inv-a4-sign-val-line {
     flex: 1;
-    border-bottom: 0.65pt dashed #C5CBD3;
+    border-bottom: 0.7pt dashed #C5CBD3;
     padding-left: 1.5mm;
     padding-bottom: 0.2mm;
     font-weight: 600;
@@ -2323,8 +2323,13 @@
   @media print {
     #print-preview-wrapper.invoice-preview-mode #slot-page-1,
     #print-preview-wrapper.invoice-preview-mode #slot-page-2,
-    #print-preview-wrapper.invoice-preview-mode #slot-page-3 {
+    #print-preview-wrapper.invoice-preview-mode #slot-page-3,
+    #print-preview-wrapper.invoice-preview-mode #a4-page-1,
+    #print-preview-wrapper.invoice-preview-mode #a4-page-2,
+    #print-preview-wrapper.invoice-preview-mode #a4-page-3 {
       display: none !important;
+      page-break-before: avoid !important;
+      break-before: avoid !important;
     }
     #print-preview-wrapper.invoice-preview-mode #slot-invoice-page {
       display: block !important;
@@ -2332,13 +2337,23 @@
       height: 296.5mm !important;
       margin: 0 !important;
       padding: 0 !important;
+      position: relative !important;
+      left: 0 !important;
+      top: 0 !important;
     }
     #print-preview-wrapper.invoice-preview-mode #a4-invoice-page {
       width: 210mm !important;
       height: 296.5mm !important;
+      box-sizing: border-box !important;
       margin: 0 !important;
+      padding: 6.5mm 9.5mm 5.5mm 9.5mm !important;
       box-shadow: none !important;
       transform: none !important;
+      position: relative !important;
+      left: 0 !important;
+      top: 0 !important;
+      page-break-inside: avoid !important;
+      break-inside: avoid !important;
     }
   }
 
@@ -2491,6 +2506,49 @@
     </div>
   </div>
 
+  <div id="invPaymentModal" class="pwd-modal-backdrop" onclick="if(event.target===this) closeInvPaymentModal()">
+    <div class="pwd-modal-box" style="border-top-color: var(--gold); max-width: 375px;">
+      <div class="pwd-modal-title" style="display:flex; justify-content:space-between; align-items:center;">
+        <span>💳 繳費狀態與紀錄</span>
+        <span id="invPayModalRefBadge" class="cust-ref-pill" style="margin:0; font-size:11px;">C001280</span>
+      </div>
+      <div class="pwd-modal-desc" id="invPayModalCustDesc" style="margin-bottom:10px; font-weight:600; color:var(--navy);"></div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px;">
+        <button type="button" id="invPayBtnUnpaid" class="btn" style="padding:9px 8px; font-size:13px; border-radius:9px;" onclick="selectInvPaymentStatusTab('unpaid')">⏳ 未繳費</button>
+        <button type="button" id="invPayBtnPaid" class="btn" style="padding:9px 8px; font-size:13px; border-radius:9px;" onclick="selectInvPaymentStatusTab('paid')">✅ 已繳費</button>
+      </div>
+
+      <div id="invPaidDetailsFields" style="display:none; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:10px; margin-bottom:10px;">
+        <div class="form-group" style="margin-bottom:9px;">
+          <label style="font-size:11.5px; color:var(--navy); font-weight:700;">繳費日期 (幾時幾日)</label>
+          <div style="position:relative; display:flex; align-items:center;">
+            <input type="text" id="invPayDateText" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" style="padding-right:30px; font-weight:700; color:var(--navy);" oninput="handleInvPayDateTextInput(this)">
+            <input type="date" id="invPayDatePicker" style="position:absolute; right:4px; width:28px; height:30px; opacity:0; cursor:pointer;" onchange="handleInvPayDatePicked(this.value)">
+            <span style="position:absolute; right:8px; pointer-events:none; font-size:14px;">📅</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label style="font-size:11.5px; color:var(--navy); font-weight:700;">繳費模式 (Payment Method)</label>
+          <div style="display:flex; flex-wrap:wrap; gap:5px; margin-bottom:6px;" id="invPayMethodQuickChips">
+            <button type="button" class="btn btn-outline btn-sm" style="padding:4px 9px; font-size:11.5px; border-radius:999px;" onclick="pickInvPayMethodPreset('FPS')">FPS</button>
+            <button type="button" class="btn btn-outline btn-sm" style="padding:4px 9px; font-size:11.5px; border-radius:999px;" onclick="pickInvPayMethodPreset('PromptPay')">PromptPay</button>
+            <button type="button" class="btn btn-outline btn-sm" style="padding:4px 9px; font-size:11.5px; border-radius:999px;" onclick="pickInvPayMethodPreset('Cash 現金')">Cash 現金</button>
+            <button type="button" class="btn btn-outline btn-sm" style="padding:4px 9px; font-size:11.5px; border-radius:999px;" onclick="pickInvPayMethodPreset('Bank Transfer 銀行轉帳')">銀行轉帳</button>
+          </div>
+          <input type="text" id="invPayMethodInput" placeholder="選擇上方或輸入繳費模式（如 FPS / Cash / PromptPay）">
+        </div>
+      </div>
+
+      <div id="invPayModalErr" class="pwd-modal-err">請填寫繳費日期及繳費模式！</div>
+
+      <div style="display:flex; gap:8px; margin-top:12px;">
+        <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeInvPaymentModal()">取消</button>
+        <button type="button" class="btn btn-navy" style="flex:1;" onclick="saveInvPaymentStatusModal()">確認儲存</button>
+      </div>
+    </div>
+  </div>
+
   <div id="toastMsg" class="toast-msg"></div>
 
   <!-- 手機頂部標題欄 (第1行：原裝公司 Logo + 標題；第2行：返回主頁 / 全部清除 / 預覽出PDF) -->
@@ -2501,7 +2559,7 @@
 
       </div>
       <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v179</span>
+        <span style="display:inline-flex; align-items:center; justify-content:center; padding:3px 9px; border-radius:999px; background:linear-gradient(135deg, #FBF6EA 0%, #F3E7CA 100%); border:1px solid var(--gold-light); color:var(--navy); font-size:11px; font-weight:800; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(30, 50, 80, 0.08);">v193</span>
         <span id="cloudSyncBadge" class="cloud-status-orb syncing" title="雲端連線中..." aria-label="雲端連線狀態">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
@@ -2609,7 +2667,7 @@
         <div class="form-grid">
           <div class="form-group">
             <label>Ref no. 參考編號*</label>
-            <input type="text" id="refNo" placeholder="C100XXXX" oninput="handleRefNoInput(this)" onblur="handleRefNoInput(this)">
+            <input type="text" id="refNo" placeholder="C001280" oninput="handleRefNoInput(this)" onblur="handleRefNoInput(this)">
           </div>
           <div class="form-group">
             <label>Program 項目</label>
@@ -2762,7 +2820,7 @@
     <div class="tab-panel" id="tab2">
       <div class="card">
         <div class="card-title" style="margin-bottom:6px;">
-          <span>Photo Attachment (第 2 頁相片附件)</span>
+          <span>相片附件 (第 2 頁)</span>
           <button type="button" class="btn btn-compact" style="background:#FFFBEB; color:#B45309; border:1px solid #FDE68A; padding:4px 11px; height:27px; border-radius:999px; font-size:11px; font-weight:700; flex-shrink:0;" onclick="clearCurrentTabInputs('photos')">全部清除</button>
         </div>
         <div style="display:flex; justify-content:flex-end; margin-bottom:8px;">
@@ -2784,7 +2842,7 @@
     <div class="tab-panel" id="tab3">
       <div class="card">
         <div class="card-title" style="margin-bottom:6px;">
-          <span>Workflow for internal use (第 3 頁)</span>
+          <span>離場核對 (第 3 頁)</span>
           <button type="button" class="btn btn-compact" style="background:#FFFBEB; color:#B45309; border:1px solid #FDE68A; padding:4px 11px; height:27px; border-radius:999px; font-size:11px; font-weight:700; flex-shrink:0;" onclick="clearCurrentTabInputs('workflow')">全部清除</button>
         </div>
         <div style="display:flex; justify-content:flex-end; margin-bottom:8px;">
@@ -2825,7 +2883,7 @@
         <div class="form-grid">
           <div class="form-group">
             <label>Ref no. 參考編號*</label>
-            <input type="text" id="invRefNo" placeholder="C100XXXX" oninput="handleInvRefNoInput(this)" onblur="handleInvRefNoInput(this)">
+            <input type="text" id="invRefNo" placeholder="C001280" oninput="handleInvRefNoInput(this)" onblur="handleInvRefNoInput(this)">
           </div>
           <div class="form-group">
             <label>Issuer 發件人</label>
@@ -3121,8 +3179,10 @@
   <!-- ================= A4 預覽與匯出視窗 ================= -->
   <div id="print-preview-wrapper">
     <div class="preview-toolbar" style="flex-wrap:wrap;">
-      <button type="button" class="btn btn-outline" style="padding:8px 12px; font-size:13px;" onclick="togglePreview(false)">← 返回修改</button>
-      <span style="font-size:11.5px; color:#64748B; font-weight:600; text-align:center;">雙指可放大縮小檢視</span>
+      <div style="display:flex; align-items:center; gap:6px;">
+        <button type="button" class="btn btn-outline" style="padding:8px 12px; font-size:13px;" onclick="togglePreview(false)">← 返回</button>
+        <button type="button" class="btn btn-outline" style="padding:8px 12px; font-size:13px; color:var(--navy); border-color:#CBD5E1; background:#F8FAFC;" onclick="goHomeFromPreview()">回主頁</button>
+      </div>
       <button type="button" id="toolbarExportBtn" class="btn btn-navy" style="padding:8px 14px; font-size:13px;" onclick="exportReportPDF()">列印 / 匯出 PDF</button>
       <div id="mobilePdfReadyBar" style="display:none; width:100%; margin-top:4px; padding-top:8px; border-top:1px dashed #CBD5E1; align-items:center; justify-content:space-between; gap:8px;">
         <span id="mobilePdfReadyText" style="font-size:12px; font-weight:700; color:#15803D;">✓ PDF 已生成就緒</span>
@@ -3156,7 +3216,7 @@
         <div class="inv-a4-footer-pay">
           <div><strong>Accepted Payment Method 繳費方法</strong></div>
           <div>Hong Kong: FPS, Cash / Thailand: PromptPay, Cash (according to the exchange rate at that time)</div>
-          <div><strong>Contact Number 聯絡號碼:</strong> +6662064 1601 &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Email 電郵:</strong> manity.propertycare@gmail.com</div>
+          <div><strong>Contact Number 聯絡號碼:</strong> +66 62 064 1601 &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Email 電郵:</strong> manity.propertycare@gmail.com</div>
         </div>
       </div>
     </div>
@@ -5024,17 +5084,30 @@ function renderHomeCustomerList() {
   if (!listEl) return;
 
   const db = getCustomers();
+  const invDb = getInvoicesDb();
+  const invById = invDb || {};
+  const invByRef = {};
+  Object.values(invById).forEach(inv => {
+    if (!inv || !inv.refNo) return;
+    const r = String(inv.refNo).trim();
+    if (!invByRef[r] || (inv.updatedAtMs || 0) > (invByRef[r].updatedAtMs || 0)) {
+      invByRef[r] = inv;
+    }
+  });
+
   const allCustomers = Object.values(db).sort((a, b) => (a.refNo || "").localeCompare(b.refNo || "", undefined, { numeric: true }));
   if (badgeEl) badgeEl.textContent = `${allCustomers.length} 位客戶`;
 
   const kw = (document.getElementById("homeSearchInput")?.value || "").trim().toLowerCase();
   const filtered = kw
-    ? allCustomers.filter(c =>
-        (c.refNo || "").toLowerCase().includes(kw) ||
-        getFormattedCustomerName(c.custTitle, c.custName).toLowerCase().includes(kw) ||
-        (c.roomNo || "").toLowerCase().includes(kw) ||
-        (c.address || "").toLowerCase().includes(kw)
-      )
+    ? allCustomers.filter(c => {
+        const parsed = splitCustTitleAndName(c.custTitle, c.custName);
+        const dispName = getFormattedCustomerName(parsed.title, parsed.name);
+        return (c.refNo || "").toLowerCase().includes(kw) ||
+          dispName.toLowerCase().includes(kw) ||
+          (c.roomNo || "").toLowerCase().includes(kw) ||
+          (c.address || "").toLowerCase().includes(kw);
+      })
     : allCustomers;
 
   if (filtered.length === 0) {
@@ -5088,15 +5161,37 @@ function renderHomeCustomerList() {
         ? `<button type="button" class="btn btn-sm" disabled style="background:#E6F4EA; color:#1E8E3E; border:1px solid #A7F3D0; cursor:not-allowed; opacity:1;">✓ 已完成所有服務</button>`
         : `<button type="button" class="btn btn-start-patrol btn-sm" data-ref="${refEsc}" onclick="startNextNewPeriodForCustomer(event, this.dataset.ref)">＋ 開始巡查</button>`;
 
-      // 生效期格式整理為「幾年至到幾幾幾幾年」
+      // 關聯發票資料（獲取簽單日子及補全稱謂/樓層）
+      const linkedInv = (c.sourceInvoiceId && invById[c.sourceInvoiceId]) ? invById[c.sourceInvoiceId] : invByRef[String(c.refNo || "").trim()];
+
+      // 客戶稱謂 + 姓名
+      const pName = splitCustTitleAndName(c.custTitle || (linkedInv && linkedInv.custTitle) || "", c.custName || (linkedInv && linkedInv.custName) || "");
+      const fullCustDisplayName = getFormattedCustomerName(pName.title, pName.name) || "（未填寫客戶姓名）";
+
+      // 詳細地址（單位 + 樓層 + 地址）
+      const floorVal = (c.floorNo || (linkedInv && linkedInv.floorNo) || "").trim();
+      const floorPart = floorVal ? `(${floorVal})` : "";
+      const unitAndAddrText = [c.roomNo, floorPart, c.address].filter(Boolean).join(" ") || "未填寫地址";
+
+      // 簽單日子（優先取發票簽署日期或發票日期，其次取首期檢查或開始日期）
+      const rawSignDate = (linkedInv && (linkedInv.custSignDate || linkedInv.invDate))
+        || (custHist["1"] && custHist["1"].inspDate)
+        || c.periodStart
+        || "";
+      const dSign = parseFlexibleEnglishOrIsoDate(String(rawSignDate || "").trim());
+      const signDateDisp = dSign ? formatDMYFromISO(formatIsoLocal(dSign)) : (String(rawSignDate || "").trim() || "-");
+
+      // 生效期格式整理為「DD/MM/YYYY 至 DD/MM/YYYY」
       let effectivePeriodText = "";
       if (c.periodStart && c.periodEnd) {
         effectivePeriodText = `${fmtDMY(c.periodStart)} 至 ${fmtDMY(c.periodEnd)}`;
       } else if (c.period) {
         effectivePeriodText = String(c.period).replace(/\s*-\s*/g, " 至 ");
+      } else {
+        effectivePeriodText = "-";
       }
 
-      const unitAndAddrText = [c.roomNo, c.address].filter(Boolean).join(" · ");
+      const programHeaderDisp = (c.program || "未選擇方案").trim();
       const extraBadgeHtml = extraCount > 0
         ? `<span class="program-extra-badge">＋額外增加 ${extraCount} 次</span>`
         : "";
@@ -5109,12 +5204,17 @@ function renderHomeCustomerList() {
         extraRemarkHtml = `<div class="extra-insp-remark">${remarkLines}</div>`;
       }
 
+      const metaRowStyle = "display:grid; grid-template-columns:18px 50px 10px 1fr; align-items:baseline; line-height:1.52; font-size:12.5px;";
+      const metaLblStyle = "font-weight:700; color:#475569; letter-spacing:0.3px; white-space:nowrap; text-align:justify; text-align-last:justify;";
+      const metaColonStyle = "font-weight:700; color:#64748B; text-align:center;";
+      const metaValStyle = "font-weight:500; color:#1E293B; letter-spacing:0.15px; word-break:break-word;";
+
       return `
         <div class="cust-card-v21" style="${isAllDone ? 'border-color:#A7F3D0; background:#FAFDFB;' : ''}">
           <div class="cust-card-header-band" style="${isAllDone ? 'background:linear-gradient(90deg, #E6F4EA 0%, #D1FAE5 100%); border-bottom-color:#A7F3D0;' : ''}">
-            <div style="display:flex; align-items:center; gap:8px; min-width:0; flex-wrap:wrap;">
-              <span class="cust-ref-pill" style="margin-bottom:0;">${c.refNo}</span>
-              <span style="font-size:12px; font-weight:800; color:${isAllDone ? '#1E8E3E' : '#8C6D23'};">已完成 ${completedCount} / ${total} 次</span>
+            <div style="display:flex; align-items:center; gap:7px; min-width:0; flex-wrap:wrap; flex:1; padding-top:1px;">
+              <span class="cust-ref-pill" style="margin:0; letter-spacing:0.4px;">${escapeHtmlSafe(c.refNo)}</span>
+              <span style="font-size:13.5px; font-weight:800; color:${isAllDone ? '#1E8E3E' : '#8C6D23'}; letter-spacing:0.2px; line-height:1.25;">${escapeHtmlSafe(programHeaderDisp)}</span>
             </div>
             <div class="cust-menu-wrap">
               <button type="button" class="cust-dots-btn" onclick="toggleCustCardMenu(event, this)" aria-label="更多操作">⋮</button>
@@ -5132,18 +5232,34 @@ function renderHomeCustomerList() {
             </div>
           </div>
           <div class="cust-card-body">
-            <div style="font-size:14px; font-weight:700; color:#111; margin-bottom:2px;">
-              ${getFormattedCustomerName(c.custTitle, c.custName) || "（未填寫客戶姓名）"}
+            <div style="font-size:15px; font-weight:800; color:var(--navy); letter-spacing:0.2px; margin-bottom:6px;">
+              ${escapeHtmlSafe(fullCustDisplayName)}
             </div>
-            <div class="cust-meta-sub">
-              ${unitAndAddrText ? `<div>📍 ${unitAndAddrText}</div>` : ""}
-              ${c.program ? `<div>📋 ${c.program}${extraBadgeHtml}</div>` : ""}
-              ${effectivePeriodText ? `<div>📅 生效期：${effectivePeriodText}</div>` : ""}
+            <div style="display:flex; flex-direction:column; gap:3px;">
+              <div style="${metaRowStyle}">
+                <span style="font-size:12px;">📍</span>
+                <span style="${metaLblStyle}">詳細地址</span>
+                <span style="${metaColonStyle}">：</span>
+                <span style="${metaValStyle}">${escapeHtmlSafe(unitAndAddrText)}</span>
+              </div>
+              <div style="${metaRowStyle}">
+                <span style="font-size:12px;">✍️</span>
+                <span style="${metaLblStyle}">簽單日子</span>
+                <span style="${metaColonStyle}">：</span>
+                <span style="${metaValStyle}">${escapeHtmlSafe(signDateDisp)}</span>
+              </div>
+              <div style="${metaRowStyle}">
+                <span style="font-size:12px;">📅</span>
+                <span style="${metaLblStyle}">生效日期</span>
+                <span style="${metaColonStyle}">：</span>
+                <span style="${metaValStyle}">${escapeHtmlSafe(effectivePeriodText)}</span>
+              </div>
             </div>
             ${buildCustomerScheduleSentence(c, custHist, total, isAllDone)}
             <div class="period-slots-wrap">
               <div class="period-slots-label">
-                <span>檢查次數紀錄</span>
+                <span style="display:inline-flex; align-items:center; flex-wrap:wrap; gap:4px;">檢查次數紀錄${extraBadgeHtml}</span>
+                <span style="font-size:11.5px; font-weight:800; color:${isAllDone ? '#1E8E3E' : '#8C6D23'}; letter-spacing:0.2px; white-space:nowrap;">已完成 ${completedCount} / ${total} 次</span>
               </div>
               <div class="period-slots-grid" style="grid-template-columns: repeat(8, minmax(0, 1fr));">${slotsHtml}</div>
               ${extraRemarkHtml}
@@ -6945,6 +7061,10 @@ function loadCustomer(ref, overrideInspNo = null) {
   document.getElementById("program").value = c.program || "";
   document.getElementById("periodStart").value = c.periodStart || "";
   document.getElementById("periodEnd").value = c.periodEnd || "";
+  const psDisp = document.getElementById("periodStartDisplay");
+  const peDisp = document.getElementById("periodEndDisplay");
+  if (psDisp) psDisp.value = c.periodStart ? fmtDMY(c.periodStart) : "";
+  if (peDisp) peDisp.value = c.periodEnd ? fmtDMY(c.periodEnd) : "";
   document.getElementById("period").value = c.period || "";
   if (c.periodStart || c.periodEnd) syncPeriodString();
   const total = parseInt(c.inspTotal || "0", 10) || PROGRAM_TOTAL_MAP[c.program] || "";
@@ -6990,6 +7110,8 @@ function newCustomer() {
     const el = document.getElementById(id);
     if (el) el.value = "";
   });
+  const refNoElInit = document.getElementById("refNo");
+  if (refNoElInit) refNoElInit.value = getNextSequentialRefNo();
   document.getElementById("inspNo").value = "1";
   document.getElementById("inspTotal").value = "";
   document.getElementById("inspDate").value = new Date().toISOString().split("T")[0];
@@ -8013,11 +8135,17 @@ function triggerNativeBrowserPrintPDF() {
     ? buildInvoiceExportFilename()
     : (buildExportPdfFilename() + (_previewOnlyPage3 ? "_Internal_Workflow" : ""));
   document.title = cleanTitle;
+  const wrap = document.getElementById("print-preview-wrapper");
+  if (wrap) {
+    wrap.scrollLeft = 0;
+    wrap.scrollTop = 0;
+  }
+  window.scrollTo(0, 0);
   resetA4PreviewScaleForPrint();
   showToast("請於列印視窗選擇「另存為 PDF」（建議勾選「背景圖形」）");
   setTimeout(() => {
     window.print();
-  }, 120);
+  }, 150);
 }
 
 function downloadBlobDirectly(blob, filename) {
@@ -8114,10 +8242,12 @@ function createCrispTextStamp(text, opts = {}) {
     ctx.fillText(ln, xPos, (idx + 0.5) * lineH + 2);
   });
 
+  const actualWidthPx = Math.max(...lines.map(ln => ctx.measureText(ln).width));
   return {
     dataUrl: canvas.toDataURL("image/png"),
     wMm: canvas.width / pxPerMm,
     hMm: canvas.height / pxPerMm,
+    actualWMm: (actualWidthPx + 4) / pxPerMm,
     lineCount: lines.length
   };
 }
@@ -8784,6 +8914,11 @@ function closeConfirmPrintP3Modal() {
 function executeConfirmedPrintOnlyPage3() {
   closeConfirmPrintP3Modal();
   togglePreview(true, true, true);
+}
+
+function goHomeFromPreview() {
+  togglePreview(false);
+  goHome();
 }
 
 function togglePreview(show, bypassWarning = false, onlyPage3 = false) {
@@ -9484,6 +9619,18 @@ function switchInvoiceTab(idx) {
 }
 
 function goToInvoicePackageStep() {
+  const titleVal = (document.getElementById("invCustTitle")?.value || "").trim();
+  const refVal = (document.getElementById("invRefNo")?.value || "").trim();
+  if (!refVal) {
+    showToast("⚠️ 請先填寫 Ref no. 參考編號！");
+    document.getElementById("invRefNo")?.focus();
+    return;
+  }
+  if (!titleVal) {
+    showToast("⚠️ 請先選擇客戶稱謂 (Mr. / Ms. / Mrs.)！");
+    document.getElementById("invCustTitle")?.focus();
+    return;
+  }
   saveCurrentInvoiceRecord(true);
   showToast("✓ 已儲存客戶資料");
   switchInvoiceTab(1);
@@ -9771,6 +9918,93 @@ function updateInvoiceFieldHighlights() {
   if (lamp3) lamp3.className = "lamp-dot " + (signOk ? "green" : "red");
 }
 
+function getNextSequentialRefNo() {
+  let maxNum = 1279; // 起始編號由 C001280 開始
+  const scanRef = (val) => {
+    const m = /^C0*(\d+)$/i.exec(String(val || "").trim());
+    if (m) {
+      const n = parseInt(m[1], 10);
+      if (isFinite(n) && n > maxNum) maxNum = n;
+    }
+  };
+  try {
+    const custDb = getCustomers();
+    Object.keys(custDb).forEach(k => {
+      scanRef(k);
+      if (custDb[k] && custDb[k].refNo) scanRef(custDb[k].refNo);
+    });
+  } catch (e) {}
+  try {
+    const invDb = getInvoicesDb();
+    Object.values(invDb).forEach(inv => {
+      if (inv && inv.refNo) scanRef(inv.refNo);
+    });
+  } catch (e) {}
+  const nextNum = maxNum + 1;
+  return "C" + String(nextNum).padStart(6, "0");
+}
+
+function isInvoiceFullySigned(invData) {
+  if (!invData) return false;
+  return !!(invData.custSigDataUrl && invData.authSigDataUrl);
+}
+
+function syncSignedInvoiceToCustomerReport(invData, showCreatedToast = false) {
+  if (!invData || !invData.refNo || !isInvoiceFullySigned(invData)) return false;
+  const ref = String(invData.refNo).trim();
+  const pkg = INVOICE_PACKAGES[invData.pkgKey] || INVOICE_PACKAGES.essential;
+  const progName = pkg.programName || "Essential Care 基礎方案";
+  const basePerYear = PROGRAM_TOTAL_MAP[progName] || 4;
+  const years = Math.max(0.25, Number(invData.pkgQty) || 1);
+  const calcTotal = Math.max(basePerYear, Math.round(basePerYear * years));
+
+  const dStart = parseFlexibleEnglishOrIsoDate(invData.periodStart);
+  const dEnd = parseFlexibleEnglishOrIsoDate(invData.periodEnd);
+  const pStartIso = dStart ? formatIsoLocal(dStart) : "";
+  const pEndIso = dEnd ? formatIsoLocal(dEnd) : "";
+  const periodDisp = (pStartIso && pEndIso)
+    ? `${fmtDMY(pStartIso)} 至 ${fmtDMY(pEndIso)}`
+    : [invData.periodStart, invData.periodEnd].filter(Boolean).join(" 至 ");
+
+  const db = getCustomers();
+  const existing = db[ref] || {};
+  const isBrandNew = !db[ref];
+  const mergedTotal = Math.max(calcTotal, parseInt(existing.inspTotal || "0", 10) || 0);
+  const extraCount = Math.max(0, mergedTotal - basePerYear);
+
+  const custObj = {
+    refNo: ref,
+    custTitle: invData.custTitle || existing.custTitle || "",
+    custName: invData.custName || existing.custName || "",
+    custPhone: formatSmartContactPhone(invData.custPhone || existing.custPhone || ""),
+    custEmail: invData.custEmail || existing.custEmail || "",
+    roomNo: invData.roomNo || existing.roomNo || "",
+    floorNo: formatSmartFloorNo(invData.floorNo || existing.floorNo || ""),
+    address: invData.address || existing.address || "",
+    program: progName,
+    period: periodDisp || existing.period || "",
+    periodStart: pStartIso || existing.periodStart || "",
+    periodEnd: pEndIso || existing.periodEnd || "",
+    lastInspNo: existing.lastInspNo || 0,
+    inspTotal: mergedTotal,
+    extraInspections: existing.extraInspections !== undefined ? existing.extraInspections : extraCount,
+    extraInspectionNotes: Array.isArray(existing.extraInspectionNotes) ? existing.extraInspectionNotes : [],
+    specialNotes: existing.specialNotes || "",
+    sourceInvoiceId: invData.invId || existing.sourceInvoiceId || ""
+  };
+
+  db[ref] = custObj;
+  setCustomers(db);
+  syncCustomerToCloud(custObj);
+  if (typeof renderHomeCustomerList === "function") {
+    renderHomeCustomerList();
+  }
+  if (showCreatedToast && (isBrandNew || !invData.reportCreated)) {
+    showToast(`🎉 發票已成功簽署，已自動建立客戶報告庫 [${ref}]！`);
+  }
+  return true;
+}
+
 function resetInvoiceForm(showNotify) {
   _currentInvoiceId = "INV_" + Date.now();
   const today = new Date();
@@ -9779,7 +10013,7 @@ function resetInvoiceForm(showNotify) {
   const todayEng = formatEnglishShortDate(today);
   const nextYear = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate() - 1);
 
-  document.getElementById("invRefNo").value = "";
+  document.getElementById("invRefNo").value = getNextSequentialRefNo();
   document.getElementById("invDatePicker").value = todayIso;
   document.getElementById("invDateDisplay").value = todayDmy;
   document.getElementById("invCustTitle").value = "";
@@ -10322,16 +10556,43 @@ function saveCurrentInvoiceRecord(silent = false) {
   if (!data.refNo && !silent) {
     showToast("⚠️ 請先填寫 Ref no. 參考編號！");
     document.getElementById("invRefNo")?.focus();
-    return;
+    return false;
+  }
+  if (!data.custTitle && !silent) {
+    showToast("⚠️ 請先選擇客戶稱謂 (Mr. / Ms. / Mrs.)！");
+    document.getElementById("invCustTitle")?.focus();
+    return false;
   }
   const db = getInvoicesDb();
+  const prevInv = db[data.invId] || {};
+  if (prevInv.reportCreated) data.reportCreated = true;
+  if (prevInv.paymentStatus) data.paymentStatus = prevInv.paymentStatus;
+  if (prevInv.paymentDate) data.paymentDate = prevInv.paymentDate;
+  if (prevInv.paymentMethod) data.paymentMethod = prevInv.paymentMethod;
+
+  if (isInvoiceFullySigned(data)) {
+    const wasAlreadyCreated = !!data.reportCreated;
+    const synced = syncSignedInvoiceToCustomerReport(data, !wasAlreadyCreated);
+    if (synced) {
+      data.reportCreated = true;
+    }
+  }
+
   db[data.invId] = data;
   setInvoicesDb(db);
   syncInvoiceToCloud(data);
   renderHomeInvoiceList();
   const foot = document.getElementById("invLastEditedFooterText");
   if (foot && data.updatedAt) foot.textContent = `最後編輯：${data.updatedAt}`;
-  if (!silent) showToast(`✓ 已儲存發票 (${data.refNo || data.custName})`);
+  if (!silent && !isInvoiceFullySigned(data)) {
+    if (data.custSigDataUrl && !data.authSigDataUrl) {
+      showToast(`✓ 已儲存發票（請完成受托人簽署以自動建立 [${data.refNo}] 報告庫）`);
+    } else if (!data.custSigDataUrl && data.authSigDataUrl) {
+      showToast(`✓ 已儲存發票（請完成客戶簽署以自動建立 [${data.refNo}] 報告庫）`);
+    } else {
+      showToast(`✓ 已儲存發票 (${data.refNo || data.custName})`);
+    }
+  }
 }
 
 function loadInvoiceIntoEditor(invId) {
@@ -10424,6 +10685,17 @@ function deleteInvoiceRecord(invId, e) {
   );
 }
 
+function formatInvoiceEffectivePeriodDisplay(inv) {
+  if (!inv) return "-";
+  const dStart = parseFlexibleEnglishOrIsoDate(inv.periodStart);
+  const dEnd = parseFlexibleEnglishOrIsoDate(inv.periodEnd);
+  if (dStart && dEnd) {
+    return `${formatDMYFromISO(formatIsoLocal(dStart))} 至 ${formatDMYFromISO(formatIsoLocal(dEnd))}`;
+  }
+  const raw = [inv.periodStart, inv.periodEnd].filter(Boolean).join(" 至 ");
+  return raw || "-";
+}
+
 function renderHomeInvoiceList() {
   const db = getInvoicesDb();
   const q = (document.getElementById("homeSearchInput")?.value || "").trim().toLowerCase();
@@ -10436,7 +10708,9 @@ function renderHomeInvoiceList() {
 
   const filtered = all.filter(inv => {
     if (!q) return true;
-    const hay = `${inv.refNo || ""} ${inv.custTitle || ""} ${inv.custName || ""} ${inv.address || ""}`.toLowerCase();
+    const parsedSearch = splitCustTitleAndName(inv.custTitle, inv.custName);
+    const displaySearchName = getFormattedCustomerName(parsedSearch.title, parsedSearch.name);
+    const hay = `${inv.refNo || ""} ${displaySearchName} ${inv.roomNo || ""} ${inv.address || ""} ${inv.paymentMethod || ""}`.toLowerCase();
     return hay.includes(q);
   });
 
@@ -10447,28 +10721,227 @@ function renderHomeInvoiceList() {
 
   listEl.innerHTML = filtered.map(inv => {
     const pkg = INVOICE_PACKAGES[inv.pkgKey] || INVOICE_PACKAGES.essential;
-    const fullName = [inv.custTitle, inv.custName].filter(Boolean).join(" ") || "未填寫客戶姓名";
+    const parsedCust = splitCustTitleAndName(inv.custTitle, inv.custName);
+    const fullName = getFormattedCustomerName(parsedCust.title, parsedCust.name) || "（未填寫客戶姓名）";
     const cur = inv.currency || "HKD";
+    const floorPart = inv.floorNo ? `(${inv.floorNo})` : "";
+    const unitAndAddr = [inv.roomNo, floorPart, inv.address].filter(Boolean).join(" ") || "未填寫地址";
+    const signDateRaw = (inv.custSignDate || inv.invDate || "").trim();
+    const dSign = parseFlexibleEnglishOrIsoDate(signDateRaw);
+    const signDateDisp = dSign ? formatDMYFromISO(formatIsoLocal(dSign)) : (signDateRaw || "-");
+    const effectivePeriodDisp = formatInvoiceEffectivePeriodDisplay(inv);
+
+    const hasReportDb = !!(inv.reportCreated || isInvoiceFullySigned(inv));
+    const reportStatusPillHtml = hasReportDb
+      ? `<span style="font-size:10.5px; font-weight:800; padding:2px 8px; border-radius:999px; background:#EEF2F7; color:var(--navy); border:1px solid #CBD5E1; white-space:nowrap; flex-shrink:0; letter-spacing:0.2px;">✓ 報告庫</span>`
+      : "";
+
+    const penSvgIcon = `<svg width="10.5" height="10.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="display:block;"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`;
+    const trashSvgIcon = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>`;
+
+    const isPaid = inv.paymentStatus === "paid";
+    const payDateText = (inv.paymentDate || "").trim();
+    const payMethodText = (inv.paymentMethod || "").trim();
+    const paidDetailParts = [payDateText, payMethodText].filter(Boolean).join(" · ");
+
+    const totalLabelText = isPaid ? "已付總額" : "應付總額";
+
+    const paymentRowHtml = isPaid
+      ? `
+        <div onclick="openInvoicePaymentModal('${inv.invId}', event)" style="position:relative; margin-top:9px; padding:7px 32px 7px 11px; border-radius:9px; background:linear-gradient(135deg, #FBF8F1 0%, #F5EBD4 100%); border:1.2px solid #D5C49A; display:flex; flex-direction:column; gap:3px; cursor:pointer;">
+          <span style="font-size:12.5px; font-weight:800; color:#8C6D23; letter-spacing:0.3px; display:inline-flex; align-items:center; gap:4px;">✦ 已繳費</span>
+          ${paidDetailParts ? `<span style="font-size:11.5px; font-weight:600; color:#5C481C; letter-spacing:0.2px; word-break:break-word;">📅 ${escapeHtmlSafe(paidDetailParts)}</span>` : ""}
+          <span title="修改繳費紀錄" aria-label="修改繳費紀錄" style="position:absolute; top:6px; right:6px; width:21px; height:21px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; color:#fff; background:linear-gradient(135deg, #C6A456 0%, #9E7C32 100%); box-shadow:0 1px 3px rgba(158, 124, 50, 0.28);">${penSvgIcon}</span>
+        </div>`
+      : `
+        <div onclick="openInvoicePaymentModal('${inv.invId}', event)" style="margin-top:9px; padding:8px 11px; border-radius:9px; background:linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%); border:1.2px solid #86EFAC; display:flex; justify-content:space-between; align-items:center; gap:6px; cursor:pointer;">
+          <span style="font-size:12.5px; font-weight:800; color:#15803D; letter-spacing:0.3px; display:inline-flex; align-items:center; gap:4px;">⏳ 未繳費</span>
+          <span style="display:inline-flex; align-items:center; gap:3px; font-size:11.5px; font-weight:800; color:#fff; letter-spacing:0.2px; background:linear-gradient(135deg, #16A34A 0%, #15803D 100%); padding:4px 11px; border-radius:999px; box-shadow:0 1px 4px rgba(21, 128, 61, 0.26); flex-shrink:0;">＋ 登記繳費</span>
+        </div>`;
+
+    const metaRowStyle = "display:grid; grid-template-columns:18px 50px 10px 1fr; align-items:baseline; line-height:1.52; font-size:12.5px;";
+    const metaLblStyle = "font-weight:700; color:#475569; letter-spacing:0.3px; white-space:nowrap; text-align:justify; text-align-last:justify;";
+    const metaColonStyle = "font-weight:700; color:#64748B; text-align:center;";
+    const metaValStyle = "font-weight:500; color:#1E293B; letter-spacing:0.15px; word-break:break-word;";
+
     return `
-      <div class="cust-card-v21" onclick="loadInvoiceIntoEditor('${inv.invId}')" style="cursor:pointer;">
+      <div class="cust-card-v21" onclick="loadInvoiceIntoEditor('${inv.invId}')" style="cursor:pointer; ${isPaid ? 'border-color:#C6A456;' : ''}">
         <div class="cust-card-header-band">
-          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-            <span class="cust-ref-pill" style="margin:0;">${inv.refNo || "未編訂 Ref"}</span>
-            <span style="font-size:11.5px; font-weight:800; color:#8C6D23;">${pkg.programName}</span>
+          <div style="display:flex; align-items:center; gap:7px; flex-wrap:wrap; min-width:0; flex:1; padding-top:1px;">
+            <span class="cust-ref-pill" style="margin:0; letter-spacing:0.4px;">${escapeHtmlSafe(inv.refNo || "未編訂 Ref")}</span>
+            <span style="font-size:13.5px; font-weight:800; color:#8C6D23; letter-spacing:0.2px; line-height:1.25;">${escapeHtmlSafe(pkg.programName)}</span>
           </div>
-          <button type="button" class="btn btn-sm" style="padding:3px 8px; font-size:11px; background:#FEE2E2; color:#DC2626;" onclick="deleteInvoiceRecord('${inv.invId}', event)">刪除</button>
+          <div style="display:flex; align-items:center; gap:5px; flex-shrink:0;">
+            ${reportStatusPillHtml}
+            <div class="cust-menu-wrap" onclick="event.stopPropagation()">
+              <button type="button" class="cust-dots-btn" onclick="toggleCustCardMenu(event, this)" aria-label="更多操作">⋮</button>
+              <div class="cust-dropdown-menu">
+                <button type="button" class="cust-dropdown-item danger" onclick="document.querySelectorAll('.cust-dropdown-menu.open').forEach(m => m.classList.remove('open')); deleteInvoiceRecord('${inv.invId}', event)">
+                  <span>🗑️</span><span>刪除</span>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="cust-card-body">
-          <div style="font-size:14px; font-weight:800; color:var(--navy);">${fullName}</div>
-          <div class="cust-meta-sub" style="margin-top:3px;">📍 ${inv.address || "未填寫地址"}</div>
-          <div style="margin-top:6px; display:flex; justify-content:space-between; align-items:center; font-size:11.5px; color:#475569;">
-            <span>📅 ${inv.invDate || "-"}</span>
-            <strong style="color:var(--navy); font-size:13px;">總額：${formatMoneyCommas(inv.grandTotal || 0)} ${cur}</strong>
+          <div style="font-size:15px; font-weight:800; color:var(--navy); letter-spacing:0.2px; margin-bottom:6px;">${escapeHtmlSafe(fullName)}</div>
+          <div style="display:flex; flex-direction:column; gap:3px;">
+            <div style="${metaRowStyle}">
+              <span style="font-size:12px;">📍</span>
+              <span style="${metaLblStyle}">詳細地址</span>
+              <span style="${metaColonStyle}">：</span>
+              <span style="${metaValStyle}">${escapeHtmlSafe(unitAndAddr)}</span>
+            </div>
+            <div style="${metaRowStyle}">
+              <span style="font-size:12px;">✍️</span>
+              <span style="${metaLblStyle}">簽單日子</span>
+              <span style="${metaColonStyle}">：</span>
+              <span style="${metaValStyle}">${escapeHtmlSafe(signDateDisp)}</span>
+            </div>
+            <div style="${metaRowStyle}">
+              <span style="font-size:12px;">📅</span>
+              <span style="${metaLblStyle}">生效日期</span>
+              <span style="${metaColonStyle}">：</span>
+              <span style="${metaValStyle}">${escapeHtmlSafe(effectivePeriodDisp)}</span>
+            </div>
           </div>
+          <div style="margin-top:8px; padding-top:7px; border-top:1px dashed #E2E8F0; display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12.5px; font-weight:700; letter-spacing:0.3px; color:${isPaid ? '#8C6D23' : '#475569'};">${totalLabelText}</span>
+            <strong style="color:var(--navy); font-size:15px; font-weight:800; letter-spacing:0.3px;">${formatMoneyCommas(inv.grandTotal || 0)} ${cur}</strong>
+          </div>
+          ${paymentRowHtml}
         </div>
       </div>
     `;
   }).join("");
+}
+
+// ================= 發票繳費狀態與紀錄彈窗邏輯 =================
+let _editingPayInvoiceId = "";
+let _editingPayStatus = "unpaid";
+
+function openInvoicePaymentModal(invId, e) {
+  if (e) e.stopPropagation();
+  const db = getInvoicesDb();
+  const inv = db[invId];
+  if (!inv) return;
+  _editingPayInvoiceId = invId;
+  const fullName = [inv.custTitle, inv.custName].filter(Boolean).join(" ") || "未填寫客戶姓名";
+  const cur = inv.currency || "HKD";
+  document.getElementById("invPayModalRefBadge").textContent = inv.refNo || "未編訂 Ref";
+  document.getElementById("invPayModalCustDesc").textContent = `${fullName} · 應付總額：${formatMoneyCommas(inv.grandTotal || 0)} ${cur}`;
+  document.getElementById("invPayModalErr").style.display = "none";
+
+  const todayIso = formatIsoLocal(new Date());
+  const defaultDmy = inv.paymentDate || formatDMYFromISO(todayIso);
+  const parsedIso = parseDMYToISO(defaultDmy) || todayIso;
+  document.getElementById("invPayDateText").value = defaultDmy;
+  document.getElementById("invPayDatePicker").value = parsedIso;
+  document.getElementById("invPayMethodInput").value = inv.paymentMethod || "";
+
+  selectInvPaymentStatusTab(inv.paymentStatus === "paid" ? "paid" : "unpaid");
+  document.getElementById("invPaymentModal").classList.add("active");
+}
+
+function closeInvPaymentModal() {
+  document.getElementById("invPaymentModal").classList.remove("active");
+  _editingPayInvoiceId = "";
+}
+
+function selectInvPaymentStatusTab(status) {
+  _editingPayStatus = status === "paid" ? "paid" : "unpaid";
+  const btnUnpaid = document.getElementById("invPayBtnUnpaid");
+  const btnPaid = document.getElementById("invPayBtnPaid");
+  const detailsBox = document.getElementById("invPaidDetailsFields");
+
+  if (_editingPayStatus === "paid") {
+    btnPaid.style.background = "linear-gradient(135deg, #16A34A 0%, #15803D 100%)";
+    btnPaid.style.color = "#fff";
+    btnPaid.style.border = "1.5px solid #15803D";
+    btnUnpaid.style.background = "#F8FAFC";
+    btnUnpaid.style.color = "#64748B";
+    btnUnpaid.style.border = "1.2px solid #CBD5E1";
+    detailsBox.style.display = "block";
+    if (!document.getElementById("invPayDateText").value.trim()) {
+      const todayIso = formatIsoLocal(new Date());
+      document.getElementById("invPayDateText").value = formatDMYFromISO(todayIso);
+      document.getElementById("invPayDatePicker").value = todayIso;
+    }
+  } else {
+    btnUnpaid.style.background = "linear-gradient(135deg, #D97706 0%, #B45309 100%)";
+    btnUnpaid.style.color = "#fff";
+    btnUnpaid.style.border = "1.5px solid #B45309";
+    btnPaid.style.background = "#F8FAFC";
+    btnPaid.style.color = "#64748B";
+    btnPaid.style.border = "1.2px solid #CBD5E1";
+    detailsBox.style.display = "none";
+  }
+  document.getElementById("invPayModalErr").style.display = "none";
+}
+
+function handleInvPayDateTextInput(el) {
+  const raw = (el.value || "").replace(/[^\d/]/g, "");
+  let digits = raw.replace(/\D/g, "").slice(0, 8);
+  let formatted = digits;
+  if (digits.length > 4) {
+    formatted = `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`;
+  } else if (digits.length > 2) {
+    formatted = `${digits.slice(0, 2)}/${digits.slice(2)}`;
+  }
+  el.value = formatted;
+  const iso = parseDMYToISO(formatted);
+  if (iso) document.getElementById("invPayDatePicker").value = iso;
+}
+
+function handleInvPayDatePicked(isoVal) {
+  if (!isoVal) return;
+  document.getElementById("invPayDateText").value = formatDMYFromISO(isoVal);
+}
+
+function pickInvPayMethodPreset(methodLabel) {
+  const inp = document.getElementById("invPayMethodInput");
+  if (inp) {
+    inp.value = methodLabel;
+    inp.focus();
+  }
+}
+
+function saveInvPaymentStatusModal() {
+  if (!_editingPayInvoiceId) return;
+  const db = getInvoicesDb();
+  const inv = db[_editingPayInvoiceId];
+  if (!inv) return;
+
+  if (_editingPayStatus === "paid") {
+    const payDate = (document.getElementById("invPayDateText")?.value || "").trim();
+    const payMethod = (document.getElementById("invPayMethodInput")?.value || "").trim();
+    if (!payDate || !payMethod) {
+      const errEl = document.getElementById("invPayModalErr");
+      errEl.textContent = !payDate ? "⚠️ 請輸入繳費日期！" : "⚠️ 請選擇或輸入繳費模式（如 FPS / Cash / PromptPay）！";
+      errEl.style.display = "block";
+      return;
+    }
+    inv.paymentStatus = "paid";
+    inv.paymentDate = payDate;
+    inv.paymentMethod = payMethod;
+  } else {
+    inv.paymentStatus = "unpaid";
+    inv.paymentDate = "";
+    inv.paymentMethod = "";
+  }
+
+  inv.updatedAt = formatDateTimeDeviceLocal(Date.now());
+  inv.updatedAtMs = Date.now();
+  db[_editingPayInvoiceId] = inv;
+  setInvoicesDb(db);
+  syncInvoiceToCloud(inv);
+  renderHomeInvoiceList();
+  const savedRef = inv.refNo || inv.custName || "";
+  const statusMsg = _editingPayStatus === "paid"
+    ? `✅ 已更新 [${savedRef}] 繳費紀錄（${inv.paymentDate} · ${inv.paymentMethod}）`
+    : `⏳ 已將 [${savedRef}] 設為未繳費`;
+  closeInvPaymentModal();
+  showToast(statusMsg);
 }
 
 // ================= 發票雙簽名板繪圖與預設套用 =================
@@ -10952,7 +11425,7 @@ async function generateMobileInvoiceVectorPdfBlob() {
   const boxBottomY = 250.5;
   const boxH = boxBottomY - boxTopY;
   doc.setDrawColor(189, 171, 125);
-  doc.setLineWidth(0.32);
+  doc.setLineWidth(0.35);
   doc.roundedRect(marginL, boxTopY, contentW, boxH, 3, 3);
 
   // 表頭底色與分隔線
@@ -10961,7 +11434,7 @@ async function generateMobileInvoiceVectorPdfBlob() {
   doc.roundedRect(marginL + 0.15, boxTopY + 0.15, contentW - 0.3, theadH, 2.8, 2.8, "F");
   doc.rect(marginL + 0.15, boxTopY + 3.5, contentW - 0.3, theadH - 3.35, "F");
   doc.setDrawColor(189, 171, 125);
-  doc.setLineWidth(0.32);
+  doc.setLineWidth(0.35);
   doc.line(marginL, boxTopY + theadH, pageW - marginR, boxTopY + theadH);
 
   // 表格欄座標 (完全對應 CSS: 1fr | 24mm | 27.5mm | 24mm，左右內邊距 3.6mm)
@@ -11005,13 +11478,13 @@ async function generateMobileInvoiceVectorPdfBlob() {
   let curPkgX = innerL;
   if (sPkgLbl) {
     doc.addImage(sPkgLbl.dataUrl, "PNG", curPkgX, ty - 0.4, sPkgLbl.wMm, sPkgLbl.hMm);
-    curPkgX += sPkgLbl.wMm + 1.2;
+    curPkgX += (sPkgLbl.actualWMm || 19.5) + 1.6;
   }
   doc.setDrawColor(182, 154, 88);
   doc.setLineWidth(0.35);
   doc.line(curPkgX, ty + 0.3, curPkgX, ty + 3.6);
   curPkgX += 2.2;
-  const sPkgName = createCrispTextStamp(pkgFullDisplay, { fontSizePt: 9.6, bold: true, color: "#1E3250", maxWidthMm: 78, lineHeightMm: 4.6 });
+  const sPkgName = createCrispTextStamp(pkgFullDisplay, { fontSizePt: 9.6, bold: true, color: "#1E3250", maxWidthMm: 86, lineHeightMm: 4.6 });
   if (sPkgName) {
     doc.addImage(sPkgName.dataUrl, "PNG", curPkgX, ty - 0.5, sPkgName.wMm, sPkgName.hMm);
   }
@@ -11021,7 +11494,7 @@ async function generateMobileInvoiceVectorPdfBlob() {
   ty += 4.8;
   const sSpEn = createCrispTextStamp("Service Period:", { fontSizePt: 8.1, bold: false, color: "#111111", maxWidthMm: 46, lineHeightMm: 4.2 });
   if (sSpEn) doc.addImage(sSpEn.dataUrl, "PNG", innerL + 4, ty - 0.3, sSpEn.wMm, sSpEn.hMm);
-  const sSpZh = createCrispTextStamp(`服務期: ${data.periodStart} - ${data.periodEnd}`, { fontSizePt: 8.1, bold: false, color: "#111111", maxWidthMm: 62, lineHeightMm: 4.2 });
+  const sSpZh = createCrispTextStamp(`服務期: ${data.periodStart} - ${data.periodEnd}`, { fontSizePt: 8.1, bold: false, color: "#111111", maxWidthMm: 80, lineHeightMm: 4.2 });
   if (sSpZh) doc.addImage(sSpZh.dataUrl, "PNG", innerL + 51, ty - 0.3, sSpZh.wMm, sSpZh.hMm);
 
   // Package Contents 套餐內容
@@ -11133,7 +11606,7 @@ async function generateMobileInvoiceVectorPdfBlob() {
   drawSumRow("Other", "其他", otherPriceFormatted, false);
   sy += 5.4;
   doc.setDrawColor(30, 50, 80);
-  doc.setLineWidth(0.42);
+  doc.setLineWidth(0.35);
   doc.line(sumColX, sy - 0.8, innerR, sy - 0.8);
   sy += 0.8;
   drawSumRow("Total Amount", "總額", `${formatMoneyCommas(data.grandTotal)} ${cur}`, true);
@@ -11157,7 +11630,7 @@ async function generateMobileInvoiceVectorPdfBlob() {
     }
     const lineY = signTopY + sigPadH;
     doc.setDrawColor(189, 171, 125);
-    doc.setLineWidth(0.42);
+    doc.setLineWidth(0.35);
     doc.line(boxX, lineY, boxX + sigW, lineY);
 
     const sTitle = createCrispTextStamp(titleStr, { fontSizePt: 8.4, bold: true, color: "#1E3250", maxWidthMm: sigW, lineHeightMm: 4.4 });
@@ -11176,8 +11649,10 @@ async function generateMobileInvoiceVectorPdfBlob() {
 
       const valStartX = boxX + 20.2;
       doc.setDrawColor(197, 203, 211);
-      doc.setLineWidth(0.22);
+      doc.setLineWidth(0.25);
+      if (typeof doc.setLineDash === "function") doc.setLineDash([1.2, 1.0], 0);
       doc.line(valStartX, fy + 3.6, boxX + sigW, fy + 3.6);
+      if (typeof doc.setLineDash === "function") doc.setLineDash([], 0);
       if (valText) {
         const sV = createCrispTextStamp(String(valText), { fontSizePt: 8.0, bold: true, color: "#111111", maxWidthMm: sigW - 21, lineHeightMm: 4.2 });
         if (sV) doc.addImage(sV.dataUrl, "PNG", valStartX + 1.0, fy - 0.4, sV.wMm, sV.hMm);
@@ -11196,13 +11671,15 @@ async function generateMobileInvoiceVectorPdfBlob() {
   const footTopY = 278.5;
   doc.setDrawColor(189, 171, 125);
   doc.setLineWidth(0.25);
+  if (typeof doc.setLineDash === "function") doc.setLineDash([1.2, 1.0], 0);
   doc.line(marginL, footTopY, pageW - marginR, footTopY);
+  if (typeof doc.setLineDash === "function") doc.setLineDash([], 0);
 
   const sF1 = createCrispTextStamp("Accepted Payment Method 繳費方法", { fontSizePt: 7.6, bold: true, color: "#222222", maxWidthMm: contentW, lineHeightMm: 3.8 });
   if (sF1) doc.addImage(sF1.dataUrl, "PNG", marginL, footTopY + 1.1, sF1.wMm, sF1.hMm);
   const sF2 = createCrispTextStamp("Hong Kong: FPS, Cash / Thailand: PromptPay, Cash (according to the exchange rate at that time)", { fontSizePt: 7.6, bold: false, color: "#333333", maxWidthMm: contentW, lineHeightMm: 3.8 });
   if (sF2) doc.addImage(sF2.dataUrl, "PNG", marginL, footTopY + 4.9, sF2.wMm, sF2.hMm);
-  const sF3 = createCrispTextStamp("Contact Number 聯絡號碼: +6662064 1601   |   Email 電郵: manity.propertycare@gmail.com", { fontSizePt: 7.6, bold: true, color: "#222222", maxWidthMm: contentW, lineHeightMm: 3.8 });
+  const sF3 = createCrispTextStamp("Contact Number 聯絡號碼: +66 62 064 1601   |   Email 電郵: manity.propertycare@gmail.com", { fontSizePt: 7.6, bold: true, color: "#222222", maxWidthMm: contentW, lineHeightMm: 3.8 });
   if (sF3) doc.addImage(sF3.dataUrl, "PNG", marginL, footTopY + 8.7, sF3.wMm, sF3.hMm);
 
   return doc.output("blob");
